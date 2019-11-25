@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
 
-Widget articleBoxFeatured() {
-  return SizedBox(
-    height: 280,
-    width: 360,
+Widget articleBoxFeatured(String title, String excerpt, String image,
+    String authorName, String avatar) {
+  return ConstrainedBox(
+    constraints: new BoxConstraints(
+        minHeight: 280.0, maxHeight: 290.0, minWidth: 360.0, maxWidth: 360.0),
     child: Stack(
       children: <Widget>[
         Padding(
@@ -15,7 +18,7 @@ Widget articleBoxFeatured() {
               child: ClipRRect(
                 borderRadius: new BorderRadius.circular(8.0),
                 child: Image.network(
-                  'https://images.pexels.com/photos/3098847/pexels-photo-3098847.jpeg?crop=entropy&cs=srgb&dl=woman-wearing-red-and-white-striped-long-sleeved-top-3098847.jpg&fit=crop&fm=jpg&h=960&w=1280',
+                  image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -40,13 +43,12 @@ Widget articleBoxFeatured() {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const ListTile(
+                    ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://greendestinations.org/wp-content/uploads/2019/05/avatar-exemple.jpg"),
+                        backgroundImage: NetworkImage(avatar),
                       ),
                       title: Text(
-                        'By Icilome',
+                        "By " + authorName,
                         style: TextStyle(fontSize: 13),
                       ),
                       subtitle: Text(
@@ -55,32 +57,50 @@ Widget articleBoxFeatured() {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 16),
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 8),
                       child: Column(
                         children: <Widget>[
                           Align(
                             alignment: Alignment.topLeft,
-                            child: Text(
-                              "Silicon Valley Guru Affected by the Fulminant Slashed Investments",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: "Poppins",
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
+                            child: Html(
+                                data: title.length > 50
+                                    ? "<h1>" +
+                                        title.substring(0, 50) +
+                                        "...</h1>"
+                                    : "<h1>" + title + "</h1>",
+                                customTextStyle:
+                                    (dom.Node node, TextStyle baseStyle) {
+                                  if (node is dom.Element) {
+                                    switch (node.localName) {
+                                      case "h1":
+                                        return baseStyle.merge(TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: "Poppins",
+                                            color: Colors.black,
+                                            height: 1.3,
+                                            fontWeight: FontWeight.w500));
+                                    }
+                                  }
+                                  return baseStyle;
+                                }),
                           ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "We woke reasonably late following the feast.. ",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.black54,
-                                    fontFamily: "Nunito"),
-                              ),
-                            ),
+                          Container(
+                            child: Html(
+                                data: excerpt.substring(0, 36) + "...",
+                                customTextStyle:
+                                    (dom.Node node, TextStyle baseStyle) {
+                                  if (node is dom.Element) {
+                                    switch (node.localName) {
+                                      case "p":
+                                        return baseStyle.merge(TextStyle(
+                                            fontSize: 13,
+                                            height: 0.5,
+                                            color: Colors.black54,
+                                            fontFamily: "Nunito"));
+                                    }
+                                  }
+                                  return baseStyle;
+                                }),
                           ),
                         ],
                       ),
