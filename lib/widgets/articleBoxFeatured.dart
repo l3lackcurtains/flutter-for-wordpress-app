@@ -3,7 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 
 Widget articleBoxFeatured(String title, String excerpt, String image,
-    String authorName, String avatar) {
+    String authorName, String avatar, String HeroId) {
   return ConstrainedBox(
     constraints: new BoxConstraints(
         minHeight: 280.0, maxHeight: 290.0, minWidth: 360.0, maxWidth: 360.0),
@@ -15,11 +15,14 @@ Widget articleBoxFeatured(String title, String excerpt, String image,
             height: 200,
             width: 400,
             child: Card(
-              child: ClipRRect(
-                borderRadius: new BorderRadius.circular(8.0),
-                child: Image.network(
-                  image,
-                  fit: BoxFit.cover,
+              child: Hero(
+                tag: HeroId,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(8.0),
+                  child: Image.network(
+                    image,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               shape: RoundedRectangleBorder(
