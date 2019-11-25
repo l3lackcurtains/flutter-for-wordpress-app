@@ -3,8 +3,16 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:icilome_mobile/models/article.dart';
+import 'package:icilome_mobile/pages/single_article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
 import 'package:icilome_mobile/widgets/articleBoxFeatured.dart';
+
+class SingleArticleScreenArguments {
+  final Article article;
+  final String heroId;
+
+  SingleArticleScreenArguments(this.article, this.heroId);
+}
 
 Future<List<dynamic>> fetchArticles() async {
   try {
@@ -106,8 +114,21 @@ Widget featuredPost(Future<List<dynamic>> featuredArticles) {
         if (articleSnapshot.hasData) {
           return Row(
               children: articleSnapshot.data.map((item) {
-            return articleBoxFeatured(
-                item.title, item.excerpt, item.image, item.author, item.avatar);
+            final heroId = item.id.toString() + "-featured";
+            return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SingleArticle(),
+                      settings: RouteSettings(
+                        arguments: SingleArticleScreenArguments(item, heroId),
+                      ),
+                    ),
+                  );
+                },
+                child: articleBoxFeatured(item.title, item.excerpt, item.image,
+                    item.author, item.avatar, heroId));
           }).toList());
         } else if (articleSnapshot.hasError) {
           return Container(
@@ -131,8 +152,22 @@ Widget latestPosts(Future<List<dynamic>> articles) {
       if (articleSnapshot.hasData) {
         return Column(
             children: articleSnapshot.data.map((item) {
-          return articleBox(
-              item.title, item.excerpt, item.image, item.author, item.avatar);
+          final heroId = item.id.toString() + "-latest";
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SingleArticle(),
+                  settings: RouteSettings(
+                    arguments: SingleArticleScreenArguments(item, heroId),
+                  ),
+                ),
+              );
+            },
+            child: articleBox(item.title, item.excerpt, item.image, item.author,
+                item.avatar, heroId),
+          );
         }).toList());
       } else if (articleSnapshot.hasError) {
         return Container(
@@ -146,8 +181,4 @@ Widget latestPosts(Future<List<dynamic>> articles) {
               "https://static-steelkiwi-dev.s3.amazonaws.com/media/filer_public/2b/3b/2b3b2d3a-437b-4e0a-99cc-d837b5177baf/7d707b62-bb0c-4828-8376-59c624b2937b.gif"));
     },
   );
-
-  // return Column(
-  //   children: <Widget>[articleBox(), articleBox(), articleBox(), articleBox()],
-  // );
 }
