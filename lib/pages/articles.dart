@@ -2,17 +2,11 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:icilome_mobile/models/article.dart';
-import 'package:icilome_mobile/pages/single_article.dart';
+import 'package:icilome_mobile/common/screen_arguments.dart';
+import 'package:icilome_mobile/models/Article.dart';
+import 'package:icilome_mobile/pages/single_Article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
 import 'package:icilome_mobile/widgets/articleBoxFeatured.dart';
-
-class SingleArticleScreenArguments {
-  final Article article;
-  final String heroId;
-
-  SingleArticleScreenArguments(this.article, this.heroId);
-}
 
 Future<List<dynamic>> fetchArticles() async {
   try {

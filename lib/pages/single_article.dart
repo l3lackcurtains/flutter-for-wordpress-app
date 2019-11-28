@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
-
-import 'articles.dart';
+import 'package:icilome_mobile/common/screen_arguments.dart';
 
 class SingleArticle extends StatefulWidget {
   @override
