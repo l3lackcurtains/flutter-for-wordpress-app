@@ -99,38 +99,41 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
                         ),
                       ),
                       children: <Widget>[
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: categorySnapshot.data.length,
-                            itemBuilder: (BuildContext ctxt2, int index2) {
-                              Category subCategory =
-                                  categorySnapshot.data[index2];
-                              if (subCategory.parent == category.id) {
-                                return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CategoryArticles(),
-                                          settings: RouteSettings(
-                                            arguments:
-                                                CategoryArticlesScreenArguments(
-                                                    subCategory.id,
-                                                    subCategory.name),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: categorySnapshot.data.length,
+                              itemBuilder: (BuildContext ctxt2, int index2) {
+                                Category subCategory =
+                                    categorySnapshot.data[index2];
+                                if (subCategory.parent == category.id) {
+                                  return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CategoryArticles(),
+                                            settings: RouteSettings(
+                                              arguments:
+                                                  CategoryArticlesScreenArguments(
+                                                      subCategory.id,
+                                                      subCategory.name),
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    child: ListTile(
-                                      title: Text(subCategory.name +
-                                          " (" +
-                                          subCategory.count.toString() +
-                                          ")"),
-                                    ));
-                              }
-                              return Container();
-                            }),
+                                        );
+                                      },
+                                      child: ListTile(
+                                        title: Text(subCategory.name +
+                                            " (" +
+                                            subCategory.count.toString() +
+                                            ")"),
+                                      ));
+                                }
+                                return Container();
+                              }),
+                        ),
                       ],
                     ));
               }
