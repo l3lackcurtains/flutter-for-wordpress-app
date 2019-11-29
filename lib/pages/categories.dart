@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Category.dart';
 import 'package:icilome_mobile/pages/category_articles.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 Future<List<dynamic>> fetchCategories() async {
   try {
@@ -61,72 +63,76 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
     builder: (context, categorySnapshot) {
       if (categorySnapshot.hasData) {
         return ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             itemCount: categorySnapshot.data.length,
             itemBuilder: (BuildContext ctxt, int index) {
               Category category = categorySnapshot.data[index];
               if (category.parent == 0) {
                 return Card(
+                    elevation: 0,
                     child: ExpansionTile(
-                  initiallyExpanded: false,
-                  title: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryArticles(),
-                          settings: RouteSettings(
-                            arguments: CategoryArticlesScreenArguments(
-                                category.id, category.name),
+                      initiallyExpanded: false,
+                      backgroundColor: Color(0xFFBDBDBDE3E3E3),
+                      title: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryArticles(),
+                              settings: RouteSettings(
+                                arguments: CategoryArticlesScreenArguments(
+                                    category.id, category.name),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8, 12, 8, 12),
+                          child: Text(
+                            category.name +
+                                " (" +
+                                category.count.toString() +
+                                ")",
+                            style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Text(
-                        category.name + " (" + category.count.toString() + ")",
-                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                    ),
-                  ),
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: ListView.builder(
-                          itemCount: categorySnapshot.data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext ctxt2, int index2) {
-                            Category subCategory =
-                                categorySnapshot.data[index2];
-                            if (subCategory.parent == category.id) {
-                              return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CategoryArticles(),
-                                        settings: RouteSettings(
-                                          arguments:
-                                              CategoryArticlesScreenArguments(
-                                                  subCategory.id,
-                                                  subCategory.name),
+                      children: <Widget>[
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: categorySnapshot.data.length,
+                            itemBuilder: (BuildContext ctxt2, int index2) {
+                              Category subCategory =
+                                  categorySnapshot.data[index2];
+                              if (subCategory.parent == category.id) {
+                                return InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CategoryArticles(),
+                                          settings: RouteSettings(
+                                            arguments:
+                                                CategoryArticlesScreenArguments(
+                                                    subCategory.id,
+                                                    subCategory.name),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  child: ListTile(
-                                    title: Text(subCategory.name +
-                                        " (" +
-                                        subCategory.count.toString() +
-                                        ")"),
-                                  ));
-                            }
-                            return Container();
-                          }),
-                    )
-                  ],
-                ));
+                                      );
+                                    },
+                                    child: ListTile(
+                                      title: Text(subCategory.name +
+                                          " (" +
+                                          subCategory.count.toString() +
+                                          ")"),
+                                    ));
+                              }
+                              return Container();
+                            }),
+                      ],
+                    ));
               }
               return Container();
             });
@@ -138,8 +144,10 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
       }
       return Container(
           alignment: Alignment.center,
-          child: Image.network(
-              "https://static-steelkiwi-dev.s3.amazonaws.com/media/filer_public/2b/3b/2b3b2d3a-437b-4e0a-99cc-d837b5177baf/7d707b62-bb0c-4828-8376-59c624b2937b.gif"));
+          child: Loading(
+              indicator: BallBeatIndicator(),
+              size: 60.0,
+              color: Colors.redAccent));
     },
   );
 }

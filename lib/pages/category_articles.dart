@@ -4,6 +4,8 @@ import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_Article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 Future<List<dynamic>> fetchCategoryArticles(int id) async {
   try {
@@ -101,9 +103,13 @@ Widget categoryPosts(Future<List<dynamic>> articles) {
             child: Text("${articleSnapshot.error}"));
       }
       return Container(
-          alignment: Alignment.center,
-          child: Image.network(
-              "https://static-steelkiwi-dev.s3.amazonaws.com/media/filer_public/2b/3b/2b3b2d3a-437b-4e0a-99cc-d837b5177baf/7d707b62-bb0c-4828-8376-59c624b2937b.gif"));
+        alignment: Alignment.center,
+        height: 400,
+        child: Loading(
+            indicator: BallBeatIndicator(),
+            size: 60.0,
+            color: Colors.redAccent),
+      );
     },
   );
 }
