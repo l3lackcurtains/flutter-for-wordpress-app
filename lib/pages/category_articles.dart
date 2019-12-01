@@ -93,7 +93,7 @@ Widget categoryPosts(Future<List<dynamic>> articles) {
               );
             },
             child: articleBox(item.title, item.excerpt, item.image, item.author,
-                item.avatar, heroId),
+                item.avatar, item.category, item.date, heroId),
           );
         }).toList());
       } else if (articleSnapshot.hasError) {

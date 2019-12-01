@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 
-Widget articleBoxFeatured(String title, String excerpt, String image,
-    String authorName, String avatar, String heroId) {
+Widget articleBoxFeatured(
+    String title,
+    String excerpt,
+    String image,
+    String authorName,
+    String avatar,
+    String category,
+    String date,
+    String heroId) {
   return ConstrainedBox(
     constraints: new BoxConstraints(
         minHeight: 280.0, maxHeight: 290.0, minWidth: 360.0, maxWidth: 360.0),
@@ -46,19 +53,6 @@ Widget articleBoxFeatured(String title, String excerpt, String image,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(avatar),
-                      ),
-                      title: Text(
-                        "By " + authorName,
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      subtitle: Text(
-                        'Janaury 23, 2019',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
                     Container(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 8),
                       child: Column(
@@ -77,15 +71,40 @@ Widget articleBoxFeatured(String title, String excerpt, String image,
                                     switch (node.localName) {
                                       case "h1":
                                         return baseStyle.merge(TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             fontFamily: "Poppins",
                                             color: Colors.black,
                                             height: 1.3,
-                                            fontWeight: FontWeight.w500));
+                                            fontWeight: FontWeight.w600));
                                     }
                                   }
                                   return baseStyle;
                                 }),
+                          ),
+                          SizedBox(
+                            height: 35,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration:
+                                      BoxDecoration(color: Colors.black),
+                                  padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                  child: Text(
+                                    category,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                  child: Text(
+                                    date,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 11),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           Container(
                             child: Html(
