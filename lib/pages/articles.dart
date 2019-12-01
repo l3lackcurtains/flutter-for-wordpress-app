@@ -38,7 +38,7 @@ Future<List<dynamic>> fetchFeaturedArticles() async {
       throw Exception('Failed to load posts');
     }
   } catch (e) {
-    throw Exception('Failed to load posts');
+    throw Exception('Failed to load posts' + e.toString());
   }
 }
 
@@ -123,8 +123,15 @@ Widget featuredPost(Future<List<dynamic>> featuredArticles) {
                     ),
                   );
                 },
-                child: articleBoxFeatured(item.title, item.excerpt, item.image,
-                    item.author, item.avatar, heroId));
+                child: articleBoxFeatured(
+                    item.title,
+                    item.excerpt,
+                    item.image,
+                    item.author,
+                    item.avatar,
+                    item.category,
+                    item.date,
+                    heroId));
           }).toList());
         } else if (articleSnapshot.hasError) {
           return Container(
@@ -166,7 +173,7 @@ Widget latestPosts(Future<List<dynamic>> articles) {
               );
             },
             child: articleBox(item.title, item.excerpt, item.image, item.author,
-                item.avatar, heroId),
+                item.avatar, item.category, item.date, heroId),
           );
         }).toList());
       } else if (articleSnapshot.hasError) {

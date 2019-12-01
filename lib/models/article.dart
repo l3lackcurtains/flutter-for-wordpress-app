@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Article {
   final int id;
   final String title;
@@ -6,6 +8,8 @@ class Article {
   final String image;
   final String author;
   final String avatar;
+  final String category;
+  final String date;
 
   Article(
       {this.id,
@@ -14,7 +18,9 @@ class Article {
       this.excerpt,
       this.image,
       this.author,
-      this.avatar});
+      this.avatar,
+      this.category,
+      this.date});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     String content = json['content'] != null ? json['content']['rendered'] : "";
@@ -29,6 +35,14 @@ class Article {
         ? json["_embedded"]["author"][0]["avatar_urls"]["48"]
         : "https://images.wallpaperscraft.com/image/surface_dark_background_texture_50754_1920x1080.jpg";
 
+    String category = json["_embedded"]["wp:term"][0][0] != null
+        ? json["_embedded"]["wp:term"][0][0]["name"]
+        : "N/A";
+
+    String date = DateFormat('dd MMMM, yyyy', 'en_US')
+        .format(DateTime.parse(json["date"]))
+        .toString();
+
     return Article(
         id: json['id'],
         title: json['title']['rendered'],
@@ -36,6 +50,8 @@ class Article {
         excerpt: json['excerpt']['rendered'],
         image: image,
         author: author,
-        avatar: avatar);
+        avatar: avatar,
+        category: category,
+        date: date);
   }
 }

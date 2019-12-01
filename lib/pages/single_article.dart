@@ -83,6 +83,15 @@ class _SingleArticleState extends State<SingleArticle> {
                         alignment: Alignment.topLeft,
                         decoration: BoxDecoration(color: Colors.blueAccent),
                       ),
+                      Container(
+                        decoration: BoxDecoration(color: Colors.black),
+                        margin: EdgeInsets.fromLTRB(18, 8, 16, 8),
+                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                        child: Text(
+                          article.category,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ),
                       SizedBox(
                         height: 45,
                         child: ListTile(
@@ -94,7 +103,7 @@ class _SingleArticleState extends State<SingleArticle> {
                             style: TextStyle(fontSize: 12),
                           ),
                           subtitle: Text(
-                            'Janaury 23, 2019',
+                            article.date,
                             style: TextStyle(fontSize: 11),
                           ),
                         ),
