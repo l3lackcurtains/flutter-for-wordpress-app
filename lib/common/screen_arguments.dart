@@ -12,3 +12,8 @@ class CategoryArticlesScreenArguments {
   final String name;
   CategoryArticlesScreenArguments(this.id, this.name);
 }
+
+class CommentScreenArguments {
+  final int id;
+  CommentScreenArguments(this.id);
+}

@@ -29,6 +29,7 @@ dependencies:
   dio: ^3.0.6
   loading: ^1.0.2
   intl: ^0.16.0
+  share: ^0.6.3+3
 
 dev_dependencies:
   flutter_test:

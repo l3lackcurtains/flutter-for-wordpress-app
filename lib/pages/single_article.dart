@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:icilome_mobile/common/screen_arguments.dart';
+import 'package:icilome_mobile/pages/comments.dart';
+import 'package:share/share.dart';
 
 class SingleArticle extends StatefulWidget {
   @override
@@ -110,7 +112,7 @@ class _SingleArticleState extends State<SingleArticle> {
                       ),
                       Html(
                           data: "<div>" + article.content + "</div>",
-                          padding: EdgeInsets.fromLTRB(16, 36, 16, 16),
+                          padding: EdgeInsets.fromLTRB(16, 36, 16, 50),
                           customTextStyle:
                               (dom.Node node, TextStyle baseStyle) {
                             if (node is dom.Element) {
@@ -130,6 +132,65 @@ class _SingleArticleState extends State<SingleArticle> {
               ],
             ),
           )),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white10),
+          height: 50,
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(),
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Colors.red,
+                    size: 24.0,
+                  ),
+                  onPressed: () {
+                    // Favourite post
+                  },
+                ),
+              ),
+              Container(
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(
+                    Icons.comment,
+                    color: Colors.blue,
+                    size: 24.0,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Comments(),
+                            fullscreenDialog: true,
+                            settings: RouteSettings(
+                              arguments: CommentScreenArguments(article.id),
+                            )));
+                  },
+                ),
+              ),
+              Container(
+                child: IconButton(
+                  padding: EdgeInsets.all(0),
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.green,
+                    size: 24.0,
+                  ),
+                  onPressed: () {
+                    Share.share('check out my website https://example.com');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
