@@ -63,7 +63,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     children: <Widget>[
                       Html(
                           data: "<h1>" + article.title + "</h1>",
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                           customTextStyle:
                               (dom.Node node, TextStyle baseStyle) {
                             if (node is dom.Element) {
@@ -79,19 +79,14 @@ class _SingleArticleState extends State<SingleArticle> {
                             return baseStyle;
                           }),
                       Container(
-                        height: 5,
-                        width: 75,
-                        margin: EdgeInsets.fromLTRB(18, 0, 16, 8),
-                        alignment: Alignment.topLeft,
-                        decoration: BoxDecoration(color: Colors.blueAccent),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(color: Colors.black),
-                        margin: EdgeInsets.fromLTRB(18, 8, 16, 8),
+                        decoration: BoxDecoration(
+                            color: Colors.amber.shade200,
+                            borderRadius: BorderRadius.circular(3)),
                         padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                        margin: EdgeInsets.all(16),
                         child: Text(
                           article.category,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                          style: TextStyle(color: Colors.black, fontSize: 11),
                         ),
                       ),
                       SizedBox(
