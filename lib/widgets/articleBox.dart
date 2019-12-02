@@ -50,16 +50,22 @@ Widget articleBox(String title, String excerpt, String image, String authorName,
                           child: Row(
                             children: <Widget>[
                               Container(
-                                decoration: BoxDecoration(color: Colors.black),
+                                decoration: BoxDecoration(
+                                    color: Colors.amber.shade200,
+                                    borderRadius: BorderRadius.circular(3)),
                                 padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                                 child: Text(
                                   category,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                      color: Colors.black, fontSize: 11),
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(3)),
+                                padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
                                 child: Text(
                                   date,
                                   style: TextStyle(
