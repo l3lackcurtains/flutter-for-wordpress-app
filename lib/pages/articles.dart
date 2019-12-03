@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_Article.dart';
@@ -10,57 +11,97 @@ import 'package:icilome_mobile/widgets/articleBoxFeatured.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 
-Future<List<dynamic>> fetchArticles() async {
-  try {
-    Dio dio = new Dio();
-    Response response =
-        await dio.get("https://demo.icilome.net/wp-json/wp/v2/posts/?_embed");
-
-    if (response.statusCode == 200) {
-      return response.data.map((m) => Article.fromJson(m)).toList();
-    } else {
-      throw Exception('Failed to load posts');
-    }
-  } catch (e) {
-    throw Exception('Failed to load posts');
-  }
-}
-
-Future<List<dynamic>> fetchFeaturedArticles() async {
-  try {
-    Dio dio = new Dio();
-    Response response = await dio
-        .get("https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&tags=140");
-
-    if (response.statusCode == 200) {
-      return response.data.map((m) => Article.fromJson(m)).toList();
-    } else {
-      throw Exception('Failed to load posts');
-    }
-  } catch (e) {
-    throw Exception('Failed to load posts' + e.toString());
-  }
-}
-
 class Articles extends StatefulWidget {
   @override
   _ArticlesState createState() => _ArticlesState();
 }
 
 class _ArticlesState extends State<Articles> {
-  Future<List<dynamic>> articles;
-  Future<List<dynamic>> featuredArticles;
+  List<dynamic> latestArticles = [];
+  List<dynamic> featuredArticles = [];
+  Future<List<dynamic>> _futureLastestArticles;
+  Future<List<dynamic>> _futureFeaturedArticles;
+  ScrollController _controller;
+  int page = 1;
+  bool _infiniteStop;
 
   @override
   void initState() {
     super.initState();
-    articles = fetchArticles();
-    featuredArticles = fetchFeaturedArticles();
+    _futureLastestArticles = fetchLatestArticles(1);
+    _futureFeaturedArticles = fetchFeaturedArticles(1);
+    _controller =
+        ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+    _controller.addListener(_scrollListener);
+    _infiniteStop = false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  Future<List<dynamic>> fetchLatestArticles(int page) async {
+    var response = await http.get(
+        "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&page=$page&per_page=10");
+    if (this.mounted) {
+      if (response.statusCode == 200) {
+        setState(() {
+          featuredArticles.addAll(json
+              .decode(response.body)
+              .map((m) => Article.fromJson(m))
+              .toList());
+        });
+
+        return featuredArticles;
+      } else {
+        setState(() {
+          _infiniteStop = true;
+        });
+      }
+    }
+    return featuredArticles;
+  }
+
+  Future<List<dynamic>> fetchFeaturedArticles(int page) async {
+    var response = await http.get(
+        "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&tags=140&page=$page&per_page=10");
+
+    if (this.mounted) {
+      if (response.statusCode == 200) {
+        setState(() {
+          latestArticles.addAll(json
+              .decode(response.body)
+              .map((m) => Article.fromJson(m))
+              .toList());
+        });
+
+        return latestArticles;
+      } else {
+        setState(() {
+          _infiniteStop = true;
+        });
+      }
+    }
+    return latestArticles;
+  }
+
+  _scrollListener() {
+    var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange;
+    if (isEnd) {
+      setState(() {
+        page += 1;
+        _futureLastestArticles = fetchLatestArticles(page);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('Icilome News',
               style: TextStyle(
@@ -74,10 +115,11 @@ class _ArticlesState extends State<Articles> {
         body: Container(
           decoration: BoxDecoration(color: Colors.white70),
           child: SingleChildScrollView(
+            controller: _controller,
             scrollDirection: Axis.vertical,
             child: Column(
               children: <Widget>[
-                featuredPost(featuredArticles),
+                featuredPost(_futureFeaturedArticles),
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -93,46 +135,57 @@ class _ArticlesState extends State<Articles> {
                     ),
                   ),
                 ),
-                latestPosts(articles)
+                latestPosts(_futureLastestArticles)
               ],
             ),
           ),
         ));
   }
-}
 
-Widget featuredPost(Future<List<dynamic>> featuredArticles) {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: FutureBuilder<List<dynamic>>(
-      future: featuredArticles,
+  Widget latestPosts(Future<List<dynamic>> latestArticles) {
+    return FutureBuilder<List<dynamic>>(
+      future: latestArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          return Row(
-              children: articleSnapshot.data.map((item) {
-            final heroId = item.id.toString() + "-featured";
-            return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SingleArticle(),
-                      settings: RouteSettings(
-                        arguments: SingleArticleScreenArguments(item, heroId),
+          return Column(
+            children: <Widget>[
+              Column(
+                  children: articleSnapshot.data.map((item) {
+                final heroId = item.id.toString() + "-latest";
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleArticle(),
+                        settings: RouteSettings(
+                          arguments: SingleArticleScreenArguments(item, heroId),
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: articleBoxFeatured(
-                    item.title,
-                    item.excerpt,
-                    item.image,
-                    item.author,
-                    item.avatar,
-                    item.category,
-                    item.date,
-                    heroId));
-          }).toList());
+                    );
+                  },
+                  child: articleBox(
+                      item.title,
+                      item.excerpt,
+                      item.image,
+                      item.author,
+                      item.avatar,
+                      item.category,
+                      item.date,
+                      heroId),
+                );
+              }).toList()),
+              !_infiniteStop
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 30,
+                      child: Loading(
+                          indicator: BallBeatIndicator(),
+                          size: 60.0,
+                          color: Colors.redAccent))
+                  : Container()
+            ],
+          );
         } else if (articleSnapshot.hasError) {
           return Container(
               height: 500,
@@ -142,54 +195,63 @@ Widget featuredPost(Future<List<dynamic>> featuredArticles) {
         return Container(
             alignment: Alignment.center,
             width: 300,
-            height: 280,
+            height: 150,
             child: Loading(
                 indicator: BallBeatIndicator(),
                 size: 60.0,
                 color: Colors.redAccent));
       },
-    ),
-  );
-}
+    );
+  }
 
-Widget latestPosts(Future<List<dynamic>> articles) {
-  return FutureBuilder<List<dynamic>>(
-    future: articles,
-    builder: (context, articleSnapshot) {
-      if (articleSnapshot.hasData) {
-        return Column(
-            children: articleSnapshot.data.map((item) {
-          final heroId = item.id.toString() + "-latest";
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SingleArticle(),
-                  settings: RouteSettings(
-                    arguments: SingleArticleScreenArguments(item, heroId),
-                  ),
-                ),
-              );
-            },
-            child: articleBox(item.title, item.excerpt, item.image, item.author,
-                item.avatar, item.category, item.date, heroId),
-          );
-        }).toList());
-      } else if (articleSnapshot.hasError) {
-        return Container(
-            height: 500,
-            alignment: Alignment.center,
-            child: Text("${articleSnapshot.error}"));
-      }
-      return Container(
-          alignment: Alignment.center,
-          width: 300,
-          height: 150,
-          child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 60.0,
-              color: Colors.redAccent));
-    },
-  );
+  Widget featuredPost(Future<List<dynamic>> featuredArticles) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: FutureBuilder<List<dynamic>>(
+        future: featuredArticles,
+        builder: (context, articleSnapshot) {
+          if (articleSnapshot.hasData) {
+            return Row(
+                children: articleSnapshot.data.map((item) {
+              final heroId = item.id.toString() + "-featured";
+              return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleArticle(),
+                        settings: RouteSettings(
+                          arguments: SingleArticleScreenArguments(item, heroId),
+                        ),
+                      ),
+                    );
+                  },
+                  child: articleBoxFeatured(
+                      item.title,
+                      item.excerpt,
+                      item.image,
+                      item.author,
+                      item.avatar,
+                      item.category,
+                      item.date,
+                      heroId));
+            }).toList());
+          } else if (articleSnapshot.hasError) {
+            return Container(
+                height: 500,
+                alignment: Alignment.center,
+                child: Text("${articleSnapshot.error}"));
+          }
+          return Container(
+              alignment: Alignment.center,
+              width: 300,
+              height: 280,
+              child: Loading(
+                  indicator: BallBeatIndicator(),
+                  size: 60.0,
+                  color: Colors.redAccent));
+        },
+      ),
+    );
+  }
 }

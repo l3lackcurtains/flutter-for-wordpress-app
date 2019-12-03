@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icilome_mobile/pages/articles.dart';
 import 'package:icilome_mobile/pages/categories.dart';
+import 'package:icilome_mobile/pages/local_articles.dart';
 import 'package:icilome_mobile/pages/search.dart';
 import 'package:icilome_mobile/pages/settings.dart';
 
@@ -29,6 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
     Articles(),
+    LocalArticles(),
     Categories(),
     Search(),
     Settings()
@@ -41,15 +43,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          backgroundColor: Colors.white,
+          selectedLabelStyle:
+              TextStyle(fontWeight: FontWeight.w500, fontFamily: "Poppins"),
+          unselectedLabelStyle: TextStyle(fontFamily: "Poppins"),
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.home), title: Text('Articles')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.broken_image), title: Text('Local')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.category), title: Text('Categories')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.search), title: Text('Search')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), title: Text('Settings')),
+                icon: Icon(Icons.menu), title: Text('More')),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Colors.deepPurple,

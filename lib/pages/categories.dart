@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Category.dart';
 import 'package:icilome_mobile/pages/category_articles.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -79,11 +78,8 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CategoryArticles(),
-                              settings: RouteSettings(
-                                arguments: CategoryArticlesScreenArguments(
-                                    category.id, category.name),
-                              ),
+                              builder: (context) =>
+                                  CategoryArticles(category.id, category.name),
                             ),
                           );
                         },
@@ -114,13 +110,8 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                CategoryArticles(),
-                                            settings: RouteSettings(
-                                              arguments:
-                                                  CategoryArticlesScreenArguments(
-                                                      subCategory.id,
-                                                      subCategory.name),
-                                            ),
+                                                CategoryArticles(subCategory.id,
+                                                    subCategory.name),
                                           ),
                                         );
                                       },
