@@ -9,17 +9,14 @@ import 'package:icilome_mobile/widgets/articleBox.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 
-class CategoryArticles extends StatefulWidget {
-  final int id;
-  final String name;
-  CategoryArticles(this.id, this.name, {Key key}) : super(key: key);
+class LocalArticles extends StatefulWidget {
   @override
-  _CategoryArticlesState createState() => _CategoryArticlesState();
+  _LocalArticlesState createState() => _LocalArticlesState();
 }
 
-class _CategoryArticlesState extends State<CategoryArticles> {
-  List<dynamic> categoryArticles = [];
-  Future<List<dynamic>> _futureCategoryArticles;
+class _LocalArticlesState extends State<LocalArticles> {
+  List<dynamic> articles = [];
+  Future<List<dynamic>> _futureArticles;
   ScrollController _controller;
   int page = 1;
   bool _infiniteStop;
@@ -27,7 +24,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   @override
   void initState() {
     super.initState();
-    _futureCategoryArticles = fetchCategoryArticles(1);
+    _futureArticles = fetchLocalArticles(1);
     _controller =
         ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
     _controller.addListener(_scrollListener);
@@ -40,29 +37,26 @@ class _CategoryArticlesState extends State<CategoryArticles> {
     _controller.dispose();
   }
 
-  Future<List<dynamic>> fetchCategoryArticles(int page) async {
+  Future<List<dynamic>> fetchLocalArticles(int page) async {
     var response = await http.get(
-        "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=" +
-            widget.id.toString() +
-            "&page=$page&per_page=4");
-
+        "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=94&page=$page&per_page=10");
     if (this.mounted) {
       if (response.statusCode == 200) {
         setState(() {
-          categoryArticles.addAll(json
+          articles.addAll(json
               .decode(response.body)
               .map((m) => Article.fromJson(m))
               .toList());
         });
 
-        return categoryArticles;
+        return articles;
       } else {
         setState(() {
           _infiniteStop = true;
         });
       }
     }
-    return categoryArticles;
+    return articles;
   }
 
   _scrollListener() {
@@ -71,7 +65,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
     if (isEnd) {
       setState(() {
         page += 1;
-        _futureCategoryArticles = fetchCategoryArticles(page);
+        _futureArticles = fetchLocalArticles(page);
       });
     }
   }
@@ -79,15 +73,9 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(widget.name,
+        title: Text("Local News",
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.black,
@@ -100,24 +88,23 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
-            controller: _controller,
             scrollDirection: Axis.vertical,
-            child: Column(
-                children: <Widget>[categoryPosts(_futureCategoryArticles)])),
+            controller: _controller,
+            child: categoryPosts(_futureArticles)),
       ),
     );
   }
 
-  Widget categoryPosts(Future<List<dynamic>> categoryArticles) {
+  Widget categoryPosts(Future<List<dynamic>> futureArticles) {
     return FutureBuilder<List<dynamic>>(
-      future: categoryArticles,
+      future: futureArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
           return Column(
             children: <Widget>[
               Column(
                   children: articleSnapshot.data.map((item) {
-                final heroId = item.id.toString() + "-categorypost";
+                final heroId = item.id.toString() + "-latest";
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -159,13 +146,13 @@ class _CategoryArticlesState extends State<CategoryArticles> {
               child: Text("${articleSnapshot.error}"));
         }
         return Container(
-          alignment: Alignment.center,
-          height: 400,
-          child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 60.0,
-              color: Colors.redAccent),
-        );
+            alignment: Alignment.center,
+            height: 400,
+            width: MediaQuery.of(context).size.width - 30,
+            child: Loading(
+                indicator: BallBeatIndicator(),
+                size: 60.0,
+                color: Colors.redAccent));
       },
     );
   }
