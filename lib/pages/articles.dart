@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_Article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
@@ -43,48 +43,56 @@ class _ArticlesState extends State<Articles> {
   }
 
   Future<List<dynamic>> fetchLatestArticles(int page) async {
-    var response = await http.get(
-        "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&page=$page&per_page=10");
-    if (this.mounted) {
-      if (response.statusCode == 200) {
-        setState(() {
-          featuredArticles.addAll(json
-              .decode(response.body)
-              .map((m) => Article.fromJson(m))
-              .toList());
-          if (featuredArticles.length % 10 != 0) {
-            _infiniteStop = true;
-          }
-        });
+    try {
+      var response = await http.get(
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&page=$page&per_page=10");
+      if (this.mounted) {
+        if (response.statusCode == 200) {
+          setState(() {
+            featuredArticles.addAll(json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList());
+            if (featuredArticles.length % 10 != 0) {
+              _infiniteStop = true;
+            }
+          });
 
-        return featuredArticles;
+          return featuredArticles;
+        }
+        setState(() {
+          _infiniteStop = true;
+        });
       }
-      setState(() {
-        _infiniteStop = true;
-      });
+    } on SocketException {
+      throw 'No Internet connection';
     }
     return featuredArticles;
   }
 
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
-    var response = await http.get(
-        "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&tags=140&page=$page&per_page=10");
+    try {
+      var response = await http.get(
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&tags=140&page=$page&per_page=10");
 
-    if (this.mounted) {
-      if (response.statusCode == 200) {
-        setState(() {
-          latestArticles.addAll(json
-              .decode(response.body)
-              .map((m) => Article.fromJson(m))
-              .toList());
-        });
+      if (this.mounted) {
+        if (response.statusCode == 200) {
+          setState(() {
+            latestArticles.addAll(json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList());
+          });
 
-        return latestArticles;
-      } else {
-        setState(() {
-          _infiniteStop = true;
-        });
+          return latestArticles;
+        } else {
+          setState(() {
+            _infiniteStop = true;
+          });
+        }
       }
+    } on SocketException {
+      throw 'No Internet connection';
     }
     return latestArticles;
   }
@@ -159,10 +167,7 @@ class _ArticlesState extends State<Articles> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SingleArticle(),
-                        settings: RouteSettings(
-                          arguments: SingleArticleScreenArguments(item, heroId),
-                        ),
+                        builder: (context) => SingleArticle(item, heroId),
                       ),
                     );
                   },
@@ -221,10 +226,7 @@ class _ArticlesState extends State<Articles> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SingleArticle(),
-                        settings: RouteSettings(
-                          arguments: SingleArticleScreenArguments(item, heroId),
-                        ),
+                        builder: (context) => SingleArticle(item, heroId),
                       ),
                     );
                   },

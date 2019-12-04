@@ -31,6 +31,8 @@ dependencies:
   intl: ^0.16.0
   share: ^0.6.3+3
   curved_navigation_bar: ^0.3.1
+  path_provider: ^1.4.5
+  sqflite: ^1.1.7+3
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - assets/logo.png
 
   fonts:
     - family: Poppins
