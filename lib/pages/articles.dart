@@ -52,14 +52,16 @@ class _ArticlesState extends State<Articles> {
               .decode(response.body)
               .map((m) => Article.fromJson(m))
               .toList());
+          if (featuredArticles.length % 10 != 0) {
+            _infiniteStop = true;
+          }
         });
 
         return featuredArticles;
-      } else {
-        setState(() {
-          _infiniteStop = true;
-        });
       }
+      setState(() {
+        _infiniteStop = true;
+      });
     }
     return featuredArticles;
   }

@@ -44,7 +44,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
     var response = await http.get(
         "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=" +
             widget.id.toString() +
-            "&page=$page&per_page=4");
+            "&page=$page&per_page=10");
 
     if (this.mounted) {
       if (response.statusCode == 200) {
@@ -53,14 +53,16 @@ class _CategoryArticlesState extends State<CategoryArticles> {
               .decode(response.body)
               .map((m) => Article.fromJson(m))
               .toList());
+          if (categoryArticles.length % 10 != 0) {
+            _infiniteStop = true;
+          }
         });
 
         return categoryArticles;
-      } else {
-        setState(() {
-          _infiniteStop = true;
-        });
       }
+      setState(() {
+        _infiniteStop = true;
+      });
     }
     return categoryArticles;
   }
@@ -79,6 +81,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
