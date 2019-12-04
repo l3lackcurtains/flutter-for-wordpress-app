@@ -1,5 +1,8 @@
-import 'package:dio/dio.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_article.dart';
@@ -7,39 +10,78 @@ import 'package:icilome_mobile/widgets/articleBox.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 
-Future<List<dynamic>> fetchArticles(String searchText, bool empty) async {
-  try {
-    if (empty) {
-      searchText = "12g2g12vhgv2hg1v2ghv1hg2vhg1v2gh1v2"; // No posts.
-    }
-
-    Dio dio = new Dio();
-    Response response = await dio.get(
-        "http://demo.icilome.net/wp-json/wp/v2/posts?_embed&search=" +
-            searchText);
-
-    if (response.statusCode == 200) {
-      return response.data.map((m) => Article.fromJson(m)).toList();
-    } else {
-      throw Exception('Failed to load posts');
-    }
-  } catch (e) {
-    throw Exception('Failed to load posts');
-  }
-}
-
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  Future<List<dynamic>> articles;
+  String _searchText = "";
+  List<dynamic> searchedArticles = [];
+  Future<List<dynamic>> _futureSearchedArticles;
+  ScrollController _controller;
+  int page = 1;
+  bool _infiniteStop;
 
   @override
   void initState() {
     super.initState();
-    articles = fetchArticles("", true);
+    _futureSearchedArticles =
+        fetchSearchedArticles(_searchText, _searchText == "", page, false);
+    _controller =
+        ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+    _controller.addListener(_scrollListener);
+    _infiniteStop = false;
+  }
+
+  Future<List<dynamic>> fetchSearchedArticles(
+      String searchText, bool empty, int page, bool scrollUpdate) async {
+    if (empty) {
+      searchText = "12g2g12vhgv2hg1v2ghv1hg2vhg1v2gh1v2"; // No posts.
+    }
+
+    var response = await http.get(
+        "http://demo.icilome.net/wp-json/wp/v2/posts?_embed&search=$searchText&page=$page&per_page=10");
+
+    if (this.mounted) {
+      if (response.statusCode == 200) {
+        setState(() {
+          if (scrollUpdate) {
+            searchedArticles.addAll(json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList());
+          } else {
+            searchedArticles = json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList();
+          }
+
+          if (searchedArticles.length % 10 != 0) {
+            _infiniteStop = true;
+          }
+        });
+
+        return searchedArticles;
+      }
+      setState(() {
+        _infiniteStop = true;
+      });
+    }
+    return searchedArticles;
+  }
+
+  _scrollListener() {
+    var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange;
+    if (isEnd) {
+      setState(() {
+        page += 1;
+        _futureSearchedArticles =
+            fetchSearchedArticles(_searchText, _searchText == "", page, true);
+      });
+    }
   }
 
   @override
@@ -57,6 +99,7 @@ class _SearchState extends State<Search> {
       ),
       body: Container(
         child: SingleChildScrollView(
+          controller: _controller,
           scrollDirection: Axis.vertical,
           child: Column(
             children: <Widget>[
@@ -75,68 +118,91 @@ class _SearchState extends State<Search> {
                         ),
                         onChanged: (text) {
                           setState(() {
-                            articles = fetchArticles(text, text == "");
+                            _searchText = text;
+                            page = 1;
+                            _futureSearchedArticles = fetchSearchedArticles(
+                                _searchText, _searchText == "", page, false);
                           });
                         }),
                   ),
                 ),
               ),
-              searchPosts(articles)
+              searchPosts(_futureSearchedArticles)
             ],
           ),
         ),
       ),
     );
   }
-}
 
-Widget searchPosts(Future<List<dynamic>> articles) {
-  return FutureBuilder<List<dynamic>>(
-    future: articles,
-    builder: (context, articleSnapshot) {
-      if (articleSnapshot.hasData) {
-        if (articleSnapshot.data.length == 0) {
-          return Container(
-              height: 300,
-              alignment: Alignment.center,
-              child: Text(
-                "Type some query to search news.",
-                style: TextStyle(fontSize: 18),
-              ));
-        }
-        return Column(
-            children: articleSnapshot.data.map((item) {
-          final heroId = item.id.toString() + "-searched";
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SingleArticle(),
-                  settings: RouteSettings(
-                    arguments: SingleArticleScreenArguments(item, heroId),
-                  ),
-                ),
-              );
-            },
-            child: articleBox(item.title, item.excerpt, item.image, item.author,
-                item.avatar, item.category, item.date, heroId),
+  Widget searchPosts(Future<List<dynamic>> articles) {
+    return FutureBuilder<List<dynamic>>(
+      future: articles,
+      builder: (context, articleSnapshot) {
+        if (articleSnapshot.hasData) {
+          if (articleSnapshot.data.length == 0) {
+            return Container(
+                height: 300,
+                alignment: Alignment.center,
+                child: Text(
+                  "Type some query to search news.",
+                  style: TextStyle(fontSize: 18),
+                ));
+          }
+          return Column(
+            children: <Widget>[
+              Column(
+                  children: articleSnapshot.data.map((item) {
+                final heroId = item.id.toString() + "-searched";
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleArticle(),
+                        settings: RouteSettings(
+                          arguments: SingleArticleScreenArguments(item, heroId),
+                        ),
+                      ),
+                    );
+                  },
+                  child: articleBox(
+                      item.title,
+                      item.excerpt,
+                      item.image,
+                      item.author,
+                      item.avatar,
+                      item.category,
+                      item.date,
+                      heroId),
+                );
+              }).toList()),
+              !_infiniteStop
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 30,
+                      child: Loading(
+                          indicator: BallBeatIndicator(),
+                          size: 60.0,
+                          color: Colors.redAccent))
+                  : Container()
+            ],
           );
-        }).toList());
-      } else if (articleSnapshot.hasError) {
+        } else if (articleSnapshot.hasError) {
+          return Container(
+              height: 500,
+              alignment: Alignment.center,
+              child: Text("${articleSnapshot.error}"));
+        }
         return Container(
-            height: 500,
             alignment: Alignment.center,
-            child: Text("${articleSnapshot.error}"));
-      }
-      return Container(
-          alignment: Alignment.center,
-          width: 300,
-          height: 150,
-          child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 60.0,
-              color: Colors.redAccent));
-    },
-  );
+            width: 300,
+            height: 150,
+            child: Loading(
+                indicator: BallBeatIndicator(),
+                size: 60.0,
+                color: Colors.redAccent));
+      },
+    );
+  }
 }

@@ -47,14 +47,16 @@ class _LocalArticlesState extends State<LocalArticles> {
               .decode(response.body)
               .map((m) => Article.fromJson(m))
               .toList());
+          if (articles.length % 10 != 0) {
+            _infiniteStop = true;
+          }
         });
 
         return articles;
-      } else {
-        setState(() {
-          _infiniteStop = true;
-        });
       }
+      setState(() {
+        _infiniteStop = true;
+      });
     }
     return articles;
   }
