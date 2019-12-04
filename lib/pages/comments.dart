@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Comment.dart';
 import 'package:icilome_mobile/widgets/commentBox.dart';
@@ -12,18 +14,20 @@ import 'add_comment.dart';
 
 Future<List<dynamic>> fetchComments(int id) async {
   try {
-    Dio dio = new Dio();
-    Response response = await dio.get(
+    var response = await http.get(
         "https://demo.icilome.net/wp-json/wp/v2/comments?post=" +
             id.toString());
 
     if (response.statusCode == 200) {
-      return response.data.map((m) => Comment.fromJson(m)).toList();
+      return json
+          .decode(response.body)
+          .map((m) => Comment.fromJson(m))
+          .toList();
     } else {
-      throw Exception('Failed to load posts');
+      throw "Error loading posts";
     }
-  } catch (e) {
-    throw Exception('Failed to load posts' + e.toString());
+  } on SocketException {
+    throw 'No Internet connection';
   }
 }
 

@@ -1,5 +1,8 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/models/Category.dart';
 import 'package:icilome_mobile/pages/category_articles.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -7,17 +10,19 @@ import 'package:loading/loading.dart';
 
 Future<List<dynamic>> fetchCategories() async {
   try {
-    Dio dio = new Dio();
-    Response response = await dio
+    var response = await http
         .get("https://demo.icilome.net/wp-json/wp/v2/categories?per_page=100");
 
     if (response.statusCode == 200) {
-      return response.data.map((m) => Category.fromJson(m)).toList();
+      return json
+          .decode(response.body)
+          .map((m) => Category.fromJson(m))
+          .toList();
     } else {
       throw Exception('Failed to load posts');
     }
-  } catch (e) {
-    throw Exception('Failed to load posts' + e.toString());
+  } on SocketException {
+    throw 'No Internet connection';
   }
 }
 

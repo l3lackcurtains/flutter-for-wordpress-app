@@ -54,4 +54,27 @@ class Article {
         category: category,
         date: date);
   }
+
+  factory Article.fromDatabaseJson(Map<String, dynamic> data) => Article(
+      id: data['id'],
+      title: data['title'],
+      content: data['content'],
+      excerpt: data['excerpt'],
+      image: data['image'],
+      author: data['author'],
+      avatar: data['avatar'],
+      category: data['category'],
+      date: data['date']);
+
+  Map<String, dynamic> toDatabaseJson() => {
+        'id': this.id,
+        'title': this.title,
+        'content': this.content,
+        'excerpt': this.excerpt,
+        'image': this.image,
+        'author': this.author,
+        'avatar': this.avatar,
+        'category': this.category,
+        'date': this.date
+      };
 }

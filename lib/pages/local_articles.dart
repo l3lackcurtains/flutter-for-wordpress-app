@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_Article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
@@ -38,26 +38,31 @@ class _LocalArticlesState extends State<LocalArticles> {
   }
 
   Future<List<dynamic>> fetchLocalArticles(int page) async {
-    var response = await http.get(
-        "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=94&page=$page&per_page=10");
-    if (this.mounted) {
-      if (response.statusCode == 200) {
-        setState(() {
-          articles.addAll(json
-              .decode(response.body)
-              .map((m) => Article.fromJson(m))
-              .toList());
-          if (articles.length % 10 != 0) {
-            _infiniteStop = true;
-          }
-        });
+    try {
+      http.Response response = await http.get(
+          "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=94&page=$page&per_page=10");
+      if (this.mounted) {
+        if (response.statusCode == 200) {
+          setState(() {
+            articles.addAll(json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList());
+            if (articles.length % 10 != 0) {
+              _infiniteStop = true;
+            }
+          });
 
-        return articles;
+          return articles;
+        }
+        setState(() {
+          _infiniteStop = true;
+        });
       }
-      setState(() {
-        _infiniteStop = true;
-      });
+    } on SocketException {
+      throw 'No Internet connection';
     }
+
     return articles;
   }
 
@@ -112,10 +117,7 @@ class _LocalArticlesState extends State<LocalArticles> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SingleArticle(),
-                        settings: RouteSettings(
-                          arguments: SingleArticleScreenArguments(item, heroId),
-                        ),
+                        builder: (context) => SingleArticle(item, heroId),
                       ),
                     );
                   },

@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:icilome_mobile/blocs/favArticleBloc.dart';
 import 'package:icilome_mobile/common/screen_arguments.dart';
 import 'package:icilome_mobile/pages/comments.dart';
 import 'package:share/share.dart';
 
 class SingleArticle extends StatefulWidget {
+  final dynamic article;
+  final String heroId;
+
+  SingleArticle(this.article, this.heroId, {Key key}) : super(key: key);
+
   @override
   _SingleArticleState createState() => _SingleArticleState();
 }
 
 class _SingleArticleState extends State<SingleArticle> {
+  final FavArticleBloc favArticleBloc = FavArticleBloc();
+
+  Future<dynamic> favArticle;
+
+  @override
+  void initState() {
+    super.initState();
+    favArticle = favArticleBloc.getFavArticle(widget.article.id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final SingleArticleScreenArguments args =
-        ModalRoute.of(context).settings.arguments;
-
-    final article = args.article;
-    final heroId = args.heroId;
+    final article = widget.article;
+    final heroId = widget.heroId;
 
     return Scaffold(
       body: Container(
@@ -135,20 +148,50 @@ class _SingleArticleState extends State<SingleArticle> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(),
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                    size: 24.0,
-                  ),
-                  onPressed: () {
-                    // Favourite post
-                  },
-                ),
-              ),
+              FutureBuilder<dynamic>(
+                  future: favArticle,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return Container(
+                        decoration: BoxDecoration(),
+                        child: IconButton(
+                          padding: EdgeInsets.all(0),
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 24.0,
+                          ),
+                          onPressed: () {
+                            // Favourite post
+                            favArticleBloc.deleteFavArticleById(article.id);
+                            setState(() {
+                              favArticle =
+                                  favArticleBloc.getFavArticle(article.id);
+                            });
+                          },
+                        ),
+                      );
+                    }
+                    return Container(
+                      decoration: BoxDecoration(),
+                      child: IconButton(
+                        padding: EdgeInsets.all(0),
+                        icon: Icon(
+                          Icons.favorite_border,
+                          color: Colors.red,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          favArticleBloc.addFavArticle(article);
+                          setState(() {
+                            favArticle =
+                                favArticleBloc.getFavArticle(article.id);
+                          });
+                        },
+                      ),
+                    );
+                  }),
               Container(
                 child: IconButton(
                   padding: EdgeInsets.all(0),
