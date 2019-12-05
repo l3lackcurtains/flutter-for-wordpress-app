@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:icilome_mobile/models/Article.dart';
 
 Widget articleBoxFeatured(
-    String title,
-    String excerpt,
-    String image,
-    String authorName,
-    String avatar,
-    String category,
-    String date,
-    String heroId) {
+    BuildContext context, Article article, String heroId) {
   return ConstrainedBox(
     constraints: new BoxConstraints(
         minHeight: 280.0, maxHeight: 290.0, minWidth: 360.0, maxWidth: 360.0),
@@ -27,7 +21,7 @@ Widget articleBoxFeatured(
                 child: ClipRRect(
                   borderRadius: new BorderRadius.circular(8.0),
                   child: Image.network(
-                    image,
+                    article.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -50,89 +44,88 @@ Widget articleBoxFeatured(
             child: Padding(
               padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
               child: Card(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 8),
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Html(
-                                data: title.length > 50
-                                    ? "<h1>" +
-                                        title.substring(0, 50) +
-                                        "...</h1>"
-                                    : "<h1>" + title + "</h1>",
-                                customTextStyle:
-                                    (dom.Node node, TextStyle baseStyle) {
-                                  if (node is dom.Element) {
-                                    switch (node.localName) {
-                                      case "h1":
-                                        return baseStyle.merge(TextStyle(
-                                            fontSize: 15,
-                                            fontFamily: "Poppins",
-                                            color: Colors.black,
-                                            height: 1.3,
-                                            fontWeight: FontWeight.w600));
-                                    }
-                                  }
-                                  return baseStyle;
-                                }),
-                          ),
-                          SizedBox(
-                            height: 40,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.amber.shade200,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                                  child: Text(
-                                    category,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 11),
-                                  ),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.shade100,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                                  margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                  child: Text(
-                                    date,
-                                    style: TextStyle(
-                                        color: Colors.black54, fontSize: 11),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Html(
-                                data: excerpt.substring(0, 36) + "...",
-                                customTextStyle:
-                                    (dom.Node node, TextStyle baseStyle) {
-                                  if (node is dom.Element) {
-                                    switch (node.localName) {
-                                      case "p":
-                                        return baseStyle.merge(TextStyle(
-                                            fontSize: 13,
-                                            height: 0.5,
-                                            color: Colors.black54,
-                                            fontFamily: "Nunito"));
-                                    }
-                                  }
-                                  return baseStyle;
-                                }),
-                          ),
-                        ],
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(8, 16, 8, 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        child: Html(
+                            data: article.title.length > 100
+                                ? "<h1>" +
+                                    article.title.substring(0, 50) +
+                                    "...</h1>"
+                                : "<h1>" + article.title + "</h1>",
+                            customTextStyle:
+                                (dom.Node node, TextStyle baseStyle) {
+                              if (node is dom.Element) {
+                                switch (node.localName) {
+                                  case "h1":
+                                    return baseStyle.merge(
+                                        Theme.of(context).textTheme.title);
+                                }
+                              }
+                              return baseStyle;
+                            }),
                       ),
-                    ),
-                  ],
+                      Container(
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.fromLTRB(4, 0, 8, 8),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.timer,
+                                    color: Colors.black45,
+                                    size: 12.0,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    article.date,
+                                    style: TextStyle(
+                                        color: Colors.black45, fontSize: 10),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Icon(
+                                    Icons.person,
+                                    color: Colors.black45,
+                                    size: 12.0,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    article.author,
+                                    style: TextStyle(
+                                        color: Colors.black45, fontSize: 10),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.amber.shade200,
+                                  borderRadius: BorderRadius.circular(3)),
+                              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                              child: Text(
+                                article.category,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 11),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

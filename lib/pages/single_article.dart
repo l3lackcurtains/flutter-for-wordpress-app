@@ -82,11 +82,8 @@ class _SingleArticleState extends State<SingleArticle> {
                             if (node is dom.Element) {
                               switch (node.localName) {
                                 case "h1":
-                                  return baseStyle.merge(TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: "Poppins",
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500));
+                                  return baseStyle
+                                      .merge(Theme.of(context).textTheme.title);
                               }
                             }
                             return baseStyle;
@@ -126,10 +123,8 @@ class _SingleArticleState extends State<SingleArticle> {
                             if (node is dom.Element) {
                               switch (node.localName) {
                                 case "div":
-                                  return baseStyle.merge(TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black87,
-                                      fontFamily: "Nunito"));
+                                  return baseStyle
+                                      .merge(Theme.of(context).textTheme.body1);
                               }
                             }
                             return baseStyle;

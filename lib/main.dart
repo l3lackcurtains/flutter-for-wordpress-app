@@ -11,11 +11,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Khata',
+        title: 'Icilome',
         theme: ThemeData(
-            primarySwatch: Colors.purple,
-            primaryColor: Colors.deepPurple,
-            fontFamily: 'Roboto'),
+          brightness: Brightness.light,
+          primaryColor: Color(0xFF5F27CD),
+          accentColor: Color(0xFFE74C3C),
+          textTheme: TextTheme(
+              title: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                height: 1.2,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Soleil",
+              ),
+              caption: TextStyle(color: Colors.black45, fontSize: 10),
+              body1: TextStyle(
+                fontSize: 15,
+                color: Colors.black87,
+              )),
+        ),
         home: MyHomePage());
   }
 }
@@ -45,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Colors.white,
           selectedLabelStyle:
-              TextStyle(fontWeight: FontWeight.w500, fontFamily: "Poppins"),
-          unselectedLabelStyle: TextStyle(fontFamily: "Poppins"),
+              TextStyle(fontWeight: FontWeight.w500, fontFamily: "Soleil"),
+          unselectedLabelStyle: TextStyle(fontFamily: "Soleil"),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.home), title: Text('Articles')),
@@ -60,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.menu), title: Text('More')),
           ],
           currentIndex: _selectedIndex,
-          fixedColor: Colors.deepPurple,
+          fixedColor: Theme.of(context).primaryColor,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed),
     );

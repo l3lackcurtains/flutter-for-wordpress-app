@@ -94,12 +94,12 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         title: Text('Search News',
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
-        elevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -167,15 +167,7 @@ class _SearchState extends State<Search> {
                       ),
                     );
                   },
-                  child: articleBox(
-                      item.title,
-                      item.excerpt,
-                      item.image,
-                      item.author,
-                      item.avatar,
-                      item.category,
-                      item.date,
-                      heroId),
+                  child: articleBox(context, item, heroId),
                 );
               }).toList()),
               !_infiniteStop
@@ -202,7 +194,7 @@ class _SearchState extends State<Search> {
             child: Loading(
                 indicator: BallBeatIndicator(),
                 size: 60.0,
-                color: Colors.redAccent));
+                color: Theme.of(context).accentColor));
       },
     );
   }

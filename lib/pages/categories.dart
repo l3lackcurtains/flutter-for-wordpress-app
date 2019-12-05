@@ -46,12 +46,12 @@ class _CategoriesState extends State<Categories> {
       appBar: AppBar(
         title: const Text('Categories',
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
-        elevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),

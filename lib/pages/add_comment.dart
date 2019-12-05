@@ -54,12 +54,12 @@ class _AddCommentState extends State<AddComment> {
         ),
         title: const Text('Add Comment',
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
-        elevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
