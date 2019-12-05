@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:icilome_mobile/models/Article.dart';
 
-Widget articleBox(String title, String excerpt, String image, String authorName,
-    String avatar, String category, String date, String heroId) {
+Widget articleBox(BuildContext context, Article article, String heroId) {
   return ConstrainedBox(
     constraints: new BoxConstraints(
       minHeight: 160.0,
@@ -13,7 +13,7 @@ Widget articleBox(String title, String excerpt, String image, String authorName,
       children: <Widget>[
         Container(
           alignment: Alignment.bottomRight,
-          margin: EdgeInsets.fromLTRB(20, 16, 8, 10),
+          margin: EdgeInsets.fromLTRB(20, 16, 8, 0),
           child: Card(
             elevation: 6,
             child: Padding(
@@ -26,73 +26,79 @@ Widget articleBox(String title, String excerpt, String image, String authorName,
                       children: <Widget>[
                         Container(
                           child: Html(
-                              data: title.length > 50
-                                  ? "<h1>" + title.substring(0, 50) + "...</h1>"
-                                  : "<h1>" + title + "</h1>",
+                              data: article.title.length > 100
+                                  ? "<h1>" +
+                                      article.title.substring(0, 50) +
+                                      "...</h1>"
+                                  : "<h1>" + article.title + "</h1>",
                               customTextStyle:
                                   (dom.Node node, TextStyle baseStyle) {
                                 if (node is dom.Element) {
                                   switch (node.localName) {
                                     case "h1":
-                                      return baseStyle.merge(TextStyle(
-                                          fontSize: 15,
-                                          fontFamily: "Poppins",
-                                          color: Colors.black,
-                                          height: 1.3,
-                                          fontWeight: FontWeight.w600));
+                                      return baseStyle.merge(
+                                          Theme.of(context).textTheme.title);
                                   }
                                 }
                                 return baseStyle;
                               }),
                         ),
-                        SizedBox(
-                          height: 25,
-                          child: Row(
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(4, 0, 8, 8),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.timer,
+                                        color: Colors.black45,
+                                        size: 12.0,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        article.date,
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.black45,
+                                        size: 12.0,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        article.author,
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ],
+                                  )),
                               Container(
                                 decoration: BoxDecoration(
                                     color: Colors.amber.shade200,
                                     borderRadius: BorderRadius.circular(3)),
                                 padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                                 child: Text(
-                                  category,
+                                  article.category,
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 11),
+                                      color: Colors.black,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
-                                    borderRadius: BorderRadius.circular(3)),
-                                padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                                margin: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                child: Text(
-                                  date,
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 11),
-                                ),
-                              )
                             ],
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                          child: Html(
-                              data: excerpt.substring(0, 36) + "...",
-                              customTextStyle:
-                                  (dom.Node node, TextStyle baseStyle) {
-                                if (node is dom.Element) {
-                                  switch (node.localName) {
-                                    case "p":
-                                      return baseStyle.merge(TextStyle(
-                                          fontSize: 13,
-                                          height: 0.5,
-                                          color: Colors.black54,
-                                          fontFamily: "Nunito"));
-                                  }
-                                }
-                                return baseStyle;
-                              }),
                         ),
                       ],
                     ),
@@ -111,7 +117,7 @@ Widget articleBox(String title, String excerpt, String image, String authorName,
               child: ClipRRect(
                 borderRadius: new BorderRadius.circular(8.0),
                 child: Image.network(
-                  image,
+                  article.image,
                   fit: BoxFit.cover,
                 ),
               ),

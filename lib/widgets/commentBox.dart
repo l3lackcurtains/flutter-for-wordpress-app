@@ -17,17 +17,18 @@ Widget commentBox(String author, String avatar, String content) {
               switch (node.localName) {
                 case "p":
                   return baseStyle.merge(TextStyle(
-                      fontSize: 13,
-                      height: 0.5,
-                      color: Colors.black,
-                      fontFamily: "Nunito"));
+                      fontSize: 13, color: Colors.black, fontFamily: "Nunito"));
               }
             }
             return baseStyle;
           }),
-      subtitle: Text(
-        author,
-        style: TextStyle(fontSize: 11),
+      subtitle: Container(
+        margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
+        decoration: BoxDecoration(border: ),
+        child: Text(
+          "━ " + author,
+          style: TextStyle(fontSize: 12),
+        ),
       ),
     ),
   );

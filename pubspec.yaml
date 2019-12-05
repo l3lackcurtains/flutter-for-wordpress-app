@@ -94,37 +94,16 @@ flutter:
         - asset: fonts/Poppins/Poppins-SemiBold.ttf
         - asset: fonts/Poppins/Poppins-Regular.ttf
         - asset: fonts/Poppins/Poppins-Bold.ttf
-
-    - family: Quicksand
+  
+    - family: Soleil
       fonts:
-        - asset: fonts/Quicksand/Quicksand-Light.ttf
-        - asset: fonts/Quicksand/Quicksand-Medium.ttf
-        - asset: fonts/Quicksand/Quicksand-Regular.ttf
-        - asset: fonts/Quicksand/Quicksand-Bold.ttf
-    
-    - family: Nunito
-      fonts:
-        - asset: fonts/Nunito/Nunito-Black.ttf
-        - asset: fonts/Nunito/Nunito-ExtraBold.ttf
-        - asset: fonts/Nunito/Nunito-ExtraLight.ttf
-        - asset: fonts/Nunito/Nunito-Light.ttf
-        - asset: fonts/Nunito/Nunito-SemiBold.ttf
-        - asset: fonts/Nunito/Nunito-Regular.ttf
-        - asset: fonts/Nunito/Nunito-Bold.ttf
-
-    - family: Bitter
-      fonts:
-        - asset: fonts/Bitter/Bitter-Italic.ttf
-        - asset: fonts/Bitter/Bitter-Regular.ttf
-        - asset: fonts/Bitter/Bitter-Bold.ttf
-    
-    - family: Raleway
-      fonts:
-        - asset: fonts/Raleway/Raleway-Black.ttf
-        - asset: fonts/Raleway/Raleway-ExtraBold.ttf
-        - asset: fonts/Raleway/Raleway-ExtraLight.ttf
-        - asset: fonts/Raleway/Raleway-Light.ttf
-        - asset: fonts/Raleway/Raleway-Medium.ttf
-        - asset: fonts/Raleway/Raleway-SemiBold.ttf
-        - asset: fonts/Raleway/Raleway-Regular.ttf
-        - asset: fonts/Raleway/Raleway-Bold.ttf
+        - asset: fonts/Soleil/Soleil-Bold-italic.otf
+        - asset: fonts/Soleil/Soleil-Bold.otf
+        - asset: fonts/Soleil/Soleil-ExtraBold-italic.otf
+        - asset: fonts/Soleil/Soleil-ExtraBold.otf
+        - asset: fonts/Soleil/Soleil-italic.otf
+        - asset: fonts/Soleil/Soleil-Light-italic.otf
+        - asset: fonts/Soleil/Soleil-Light.otf
+        - asset: fonts/Soleil/Soleil-Regular.otf
+        - asset: fonts/Soleil/Soleil-SemiBold-italic.otf
+        - asset: fonts/Soleil/Soleil-SemiBold.otf

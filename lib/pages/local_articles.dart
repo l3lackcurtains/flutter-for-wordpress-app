@@ -85,12 +85,12 @@ class _LocalArticlesState extends State<LocalArticles> {
         title: Text("Local News",
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
-        elevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -121,15 +121,7 @@ class _LocalArticlesState extends State<LocalArticles> {
                       ),
                     );
                   },
-                  child: articleBox(
-                      item.title,
-                      item.excerpt,
-                      item.image,
-                      item.author,
-                      item.avatar,
-                      item.category,
-                      item.date,
-                      heroId),
+                  child: articleBox(context, item, heroId),
                 );
               }).toList()),
               !_infiniteStop
@@ -156,7 +148,7 @@ class _LocalArticlesState extends State<LocalArticles> {
             child: Loading(
                 indicator: BallBeatIndicator(),
                 size: 60.0,
-                color: Colors.redAccent));
+                color: Theme.of(context).accentColor));
       },
     );
   }

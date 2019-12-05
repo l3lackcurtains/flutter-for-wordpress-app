@@ -113,14 +113,14 @@ class _ArticlesState extends State<Articles> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Icilome News',
+          title: Text('Icilome News',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   fontFamily: 'Poppins')),
-          elevation: 1,
-          backgroundColor: Colors.white,
+          elevation: 5,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: Container(
           decoration: BoxDecoration(color: Colors.white70),
@@ -133,15 +133,15 @@ class _ArticlesState extends State<Articles> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Text(
                       "Latest News",
                       style: TextStyle(
-                          fontFamily: "Bitter",
+                          fontFamily: "Poppins",
                           fontSize: 22,
                           color: Colors.black,
                           letterSpacing: 0.8,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
@@ -171,15 +171,7 @@ class _ArticlesState extends State<Articles> {
                       ),
                     );
                   },
-                  child: articleBox(
-                      item.title,
-                      item.excerpt,
-                      item.image,
-                      item.author,
-                      item.avatar,
-                      item.category,
-                      item.date,
-                      heroId),
+                  child: articleBox(context, item, heroId),
                 );
               }).toList()),
               !_infiniteStop
@@ -206,7 +198,7 @@ class _ArticlesState extends State<Articles> {
             child: Loading(
                 indicator: BallBeatIndicator(),
                 size: 60.0,
-                color: Colors.redAccent));
+                color: Theme.of(context).accentColor));
       },
     );
   }
@@ -230,15 +222,7 @@ class _ArticlesState extends State<Articles> {
                       ),
                     );
                   },
-                  child: articleBoxFeatured(
-                      item.title,
-                      item.excerpt,
-                      item.image,
-                      item.author,
-                      item.avatar,
-                      item.category,
-                      item.date,
-                      heroId));
+                  child: articleBoxFeatured(context, item, heroId));
             }).toList());
           } else if (articleSnapshot.hasError) {
             return Container(

@@ -89,7 +89,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.black,
+          color: Colors.white,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -97,12 +97,12 @@ class _CategoryArticlesState extends State<CategoryArticles> {
         title: Text(widget.name,
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
-        elevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 5,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -134,15 +134,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
                       ),
                     );
                   },
-                  child: articleBox(
-                      item.title,
-                      item.excerpt,
-                      item.image,
-                      item.author,
-                      item.avatar,
-                      item.category,
-                      item.date,
-                      heroId),
+                  child: articleBox(context, item, heroId),
                 );
               }).toList()),
               !_infiniteStop
