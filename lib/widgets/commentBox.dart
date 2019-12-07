@@ -23,10 +23,15 @@ Widget commentBox(String author, String avatar, String content) {
             return baseStyle;
           }),
       subtitle: Container(
-        margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-        decoration: BoxDecoration(border: ),
+        margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+        padding: EdgeInsets.fromLTRB(4, 8, 0, 8),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(width: 1, color: Colors.black12),
+          ),
+        ),
         child: Text(
-          "━ " + author,
+          author,
           style: TextStyle(fontSize: 12),
         ),
       ),
