@@ -33,6 +33,9 @@ dependencies:
   curved_navigation_bar: ^0.3.1
   path_provider: ^1.4.5
   sqflite: ^1.1.7+3
+  video_player: ^0.10.4+1
+  chewie: ^0.9.8+1
+  youtube_player_flutter: ^6.0.3+2
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +85,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/logo.png
+    - assets/icon.png
 
   fonts:
     - family: Poppins

@@ -42,7 +42,7 @@ class _SearchState extends State<Search> {
       }
 
       var response = await http.get(
-          "http://demo.icilome.net/wp-json/wp/v2/posts?_embed&search=$searchText&page=$page&per_page=10");
+          "http://demo.icilome.net/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search News',
+        title: Text('Parcourir',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

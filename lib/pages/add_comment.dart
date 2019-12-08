@@ -47,12 +47,12 @@ class _AddCommentState extends State<AddComment> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          color: Colors.black,
+          color: Colors.white,
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Add Comment',
+        title: const Text('Laisser un commentaire',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _AddCommentState extends State<AddComment> {
                   children: <Widget>[
                     TextFormField(
                         decoration: const InputDecoration(
-                          labelText: 'Name *',
+                          labelText: 'Nom *',
                         ),
                         keyboardType: TextInputType.text,
                         validator: (value) {
@@ -102,7 +102,7 @@ class _AddCommentState extends State<AddComment> {
                     TextFormField(
                         keyboardType: TextInputType.text,
                         decoration: const InputDecoration(
-                          labelText: 'Website',
+                          labelText: 'Site',
                         ),
                         onSaved: (String val) {
                           _website = val;
@@ -143,7 +143,7 @@ class _AddCommentState extends State<AddComment> {
                           }
                         },
                         label: Text(
-                          'Post Comment',
+                          'Laisser un commentaire',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

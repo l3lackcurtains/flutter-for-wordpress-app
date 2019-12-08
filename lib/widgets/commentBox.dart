@@ -17,7 +17,10 @@ Widget commentBox(String author, String avatar, String content) {
               switch (node.localName) {
                 case "p":
                   return baseStyle.merge(TextStyle(
-                      fontSize: 13, color: Colors.black, fontFamily: "Nunito"));
+                      fontSize: 14,
+                      color: Colors.black,
+                      height: 1.5,
+                      fontFamily: "Nunito"));
               }
             }
             return baseStyle;
