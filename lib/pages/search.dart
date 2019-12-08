@@ -170,7 +170,11 @@ class _SearchState extends State<Search> {
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
           if (articleSnapshot.data.length == 0) {
-            return searchBoxes(context);
+            return Column(
+              children: <Widget>[
+                searchBoxes(context),
+              ],
+            );
           }
           return Column(
             children: <Widget>[

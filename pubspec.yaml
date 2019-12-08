@@ -97,6 +97,10 @@ flutter:
     - assets/boxed/revue-de-presse.png
     - assets/boxed/sante.png
     - assets/boxed/sport.png
+    - assets/boxed/benin.png
+    - assets/boxed/society.png
+    - assets/boxed/international.png
+    - assets/boxed/diplomatie.png
     
 
   fonts:
