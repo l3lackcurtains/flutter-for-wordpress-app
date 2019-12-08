@@ -117,6 +117,22 @@ Widget articleBoxFeatured(
             ),
           ),
         ),
+        article.video != ""
+            ? Positioned(
+                left: 18,
+                top: 18,
+                child: Card(
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset("assets/play-button.png"),
+                  ),
+                  elevation: 18.0,
+                  shape: CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
+                ),
+              )
+            : Container()
       ],
     ),
   );

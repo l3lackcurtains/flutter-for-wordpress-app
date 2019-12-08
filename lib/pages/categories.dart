@@ -66,6 +66,7 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
     future: categories,
     builder: (context, categorySnapshot) {
       if (categorySnapshot.hasData) {
+        if (categorySnapshot.data.length == 0) return Container();
         return ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

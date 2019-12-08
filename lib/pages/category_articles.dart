@@ -120,6 +120,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       future: categoryArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
+          if (articleSnapshot.data.length == 0) return Container();
           return Column(
             children: <Widget>[
               Column(

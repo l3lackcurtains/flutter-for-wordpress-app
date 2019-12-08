@@ -144,6 +144,7 @@ class _LocalArticlesState extends State<LocalArticles> {
       future: futureArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
+          if (articleSnapshot.data.length == 0) return Container();
           return Column(
             children: <Widget>[
               Column(
@@ -197,6 +198,7 @@ class _LocalArticlesState extends State<LocalArticles> {
         future: featuredArticles,
         builder: (context, articleSnapshot) {
           if (articleSnapshot.hasData) {
+            if (articleSnapshot.data.length == 0) return Container();
             return Row(
                 children: articleSnapshot.data.map((item) {
               final heroId = item.id.toString() + "-featured";

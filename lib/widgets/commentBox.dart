@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 
-Widget commentBox(String author, String avatar, String content) {
+Widget commentBox(BuildContext context, String author, String avatar, String content) {
   return Card(
     margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
     child: ListTile(
@@ -16,11 +16,7 @@ Widget commentBox(String author, String avatar, String content) {
             if (node is dom.Element) {
               switch (node.localName) {
                 case "p":
-                  return baseStyle.merge(TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      height: 1.5,
-                      fontFamily: "Nunito"));
+                  return baseStyle.merge(Theme.of(context).textTheme.body1);
               }
             }
             return baseStyle;

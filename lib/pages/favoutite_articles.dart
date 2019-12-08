@@ -56,6 +56,7 @@ class _FavouriteArticlesState extends State<FavouriteArticles> {
       future: favArticleBloc.getFavArticles(),
       builder: (context, AsyncSnapshot<List<Article>> articleSnapshot) {
         if (articleSnapshot.hasData) {
+          if (articleSnapshot.data.length == 0) return Container();
           return Column(
               children: articleSnapshot.data.map((item) {
             final heroId = item.id.toString() + "-favpost";

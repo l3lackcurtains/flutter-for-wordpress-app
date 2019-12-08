@@ -114,7 +114,23 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
             elevation: 0,
             margin: EdgeInsets.all(10),
           ),
-        )
+        ),
+        article.video != ""
+            ? Positioned(
+                left: 12,
+                top: 12,
+                child: Card(
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset("assets/play-button.png"),
+                  ),
+                  elevation: 18,
+                  shape: CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
+                ),
+              )
+            : Container(),
       ],
     ),
   );
