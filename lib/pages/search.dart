@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/single_article.dart';
 import 'package:icilome_mobile/widgets/articleBox.dart';
+import 'package:icilome_mobile/widgets/searchBoxes.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 
@@ -20,6 +21,9 @@ class _SearchState extends State<Search> {
   List<dynamic> searchedArticles = [];
   Future<List<dynamic>> _futureSearchedArticles;
   ScrollController _controller;
+  final TextEditingController _textFieldController =
+      new TextEditingController();
+
   int page = 1;
   bool _infiniteStop;
 
@@ -89,6 +93,13 @@ class _SearchState extends State<Search> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _textFieldController.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -114,9 +125,23 @@ class _SearchState extends State<Search> {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(16, 4, 16, 4),
                     child: TextField(
+                        controller: _textFieldController,
                         decoration: InputDecoration(
                           labelText: 'Type some query',
-                          suffixIcon: Icon(Icons.search),
+                          suffixIcon: _searchText == ""
+                              ? Icon(Icons.search)
+                              : IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () {
+                                    _textFieldController.clear();
+                                    setState(() {
+                                      _searchText = "";
+                                      _futureSearchedArticles =
+                                          fetchSearchedArticles(_searchText,
+                                              _searchText == "", page, false);
+                                    });
+                                  },
+                                ),
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                         ),
@@ -145,13 +170,7 @@ class _SearchState extends State<Search> {
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
           if (articleSnapshot.data.length == 0) {
-            return Container(
-                height: 300,
-                alignment: Alignment.center,
-                child: Text(
-                  "Type some query to search news.",
-                  style: TextStyle(fontSize: 18),
-                ));
+            return searchBoxes(context);
           }
           return Column(
             children: <Widget>[

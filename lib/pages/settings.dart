@@ -32,12 +32,17 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.all(16),
               child: Image(
                 image: AssetImage('assets/logo.png'),
-                height: 60,
+                height: 50,
               ),
             ),
             Container(
+              alignment: Alignment.center,
               padding: EdgeInsets.all(16),
-              child: Text("Portail togolais par excellence"),
+              child: Text(
+                "Version 1.0 \n iciLome.com \n Le portail togolais par excellence! \n Copyright @iciLome.com",
+                textAlign: TextAlign.center,
+                style: TextStyle(height: 1.6, color: Colors.black54),
+              ),
             ),
             Divider(
               height: 10,
@@ -66,19 +71,17 @@ class _SettingsState extends State<Settings> {
                     //
                   },
                   child: ListTile(
-                    leading: Icon(Icons.info_outline),
-                    title: Text('A propos'),
-                    subtitle: Text("Know more about Icilome"),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    //
-                  },
-                  child: ListTile(
                     leading: Icon(Icons.phone),
                     title: Text('Contactez-nous'),
-                    subtitle: Text("Get in touch with us"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 8),
+                        Text("https://www.iciLome.com"),
+                        SizedBox(height: 8),
+                        Text("info@iciLome.com")
+                      ],
+                    ),
                   ),
                 ),
                 InkWell(

@@ -89,11 +89,12 @@ Widget commentSection(Future<List<dynamic>> comments) {
     future: comments,
     builder: (context, commentSnapshot) {
       if (commentSnapshot.hasData) {
+        if (commentSnapshot.data.length == 0) return Container();
         return Column(
             children: commentSnapshot.data.map((item) {
           return InkWell(
             onTap: () {},
-            child: commentBox(item.author, item.avatar, item.content),
+            child: commentBox(context, item.author, item.avatar, item.content),
           );
         }).toList());
       } else if (commentSnapshot.hasError) {

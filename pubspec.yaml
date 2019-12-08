@@ -33,9 +33,7 @@ dependencies:
   curved_navigation_bar: ^0.3.1
   path_provider: ^1.4.5
   sqflite: ^1.1.7+3
-  video_player: ^0.10.4+1
-  chewie: ^0.9.8+1
-  youtube_player_flutter: ^6.0.3+2
+  flutter_widget_from_html: ^0.2.4+4
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +84,20 @@ flutter:
   assets:
     - assets/logo.png
     - assets/icon.png
+    - assets/play-button.png
+    - assets/boxed/A-ne-pas-manquer.png
+    - assets/boxed/buzz.png
+    - assets/boxed/conseil-des-ministres.png
+    - assets/boxed/economie.png
+    - assets/boxed/English.png
+    - assets/boxed/faits-divers.png
+    - assets/boxed/favoris.png
+    - assets/boxed/opinion.png
+    - assets/boxed/politic.png
+    - assets/boxed/revue-de-presse.png
+    - assets/boxed/sante.png
+    - assets/boxed/sport.png
+    
 
   fonts:
     - family: Poppins
