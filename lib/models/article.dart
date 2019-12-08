@@ -6,10 +6,13 @@ class Article {
   final String content;
   final String excerpt;
   final String image;
+  final String video;
   final String author;
   final String avatar;
   final String category;
   final String date;
+  final String link;
+  final int catId;
 
   Article(
       {this.id,
@@ -17,27 +20,34 @@ class Article {
       this.content,
       this.excerpt,
       this.image,
+      this.video,
       this.author,
       this.avatar,
       this.category,
-      this.date});
+      this.date,
+      this.link,
+      this.catId});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     String content = json['content'] != null ? json['content']['rendered'] : "";
 
-    String image = json['_embedded']["wp:featuredmedia"] != null
-        ? json['_embedded']["wp:featuredmedia"][0]["source_url"]
+    String image = json['custom']["featured_image"] != ""
+        ? json['custom']["featured_image"]
         : "https://images.wallpaperscraft.com/image/surface_dark_background_texture_50754_1920x1080.jpg";
 
-    String author = json['_embedded']["author"][0]["name"];
+    String video = json['custom']["td_video"];
 
-    String avatar = json["_embedded"]["author"][0] != null
-        ? json["_embedded"]["author"][0]["avatar_urls"]["48"]
-        : "https://images.wallpaperscraft.com/image/surface_dark_background_texture_50754_1920x1080.jpg";
+    String author = json['custom']["author"]["name"];
 
-    String category = json["_embedded"]["wp:term"][0][0] != null
-        ? json["_embedded"]["wp:term"][0][0]["name"]
-        : "N/A";
+    String avatar = json['custom']["author"]["avatar"];
+
+    String category = json["custom"]["categories"] != ""
+        ? json["custom"]["categories"][0]["name"]
+        : "";
+
+    int catId = json["custom"]["categories"] != ""
+        ? json["custom"]["categories"][0]["cat_ID"]
+        : 0;
 
     String date = DateFormat('dd MMMM, yyyy', 'en_US')
         .format(DateTime.parse(json["date"]))
@@ -49,10 +59,13 @@ class Article {
         content: content,
         excerpt: json['excerpt']['rendered'],
         image: image,
+        video: video,
         author: author,
         avatar: avatar,
         category: category,
-        date: date);
+        date: date,
+        link: json["link"],
+        catId: catId);
   }
 
   factory Article.fromDatabaseJson(Map<String, dynamic> data) => Article(
@@ -61,10 +74,13 @@ class Article {
       content: data['content'],
       excerpt: data['excerpt'],
       image: data['image'],
+      video: data['video'],
       author: data['author'],
       avatar: data['avatar'],
       category: data['category'],
-      date: data['date']);
+      date: data['date'],
+      link: data['link'],
+      catId: data["catId"]);
 
   Map<String, dynamic> toDatabaseJson() => {
         'id': this.id,
@@ -72,9 +88,12 @@ class Article {
         'content': this.content,
         'excerpt': this.excerpt,
         'image': this.image,
+        'video': this.video,
         'author': this.author,
         'avatar': this.avatar,
         'category': this.category,
-        'date': this.date
+        'date': this.date,
+        'link': this.link,
+        'catId': this.catId
       };
 }

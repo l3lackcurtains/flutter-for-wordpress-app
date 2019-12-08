@@ -44,7 +44,7 @@ class _CategoriesState extends State<Categories> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Categories',
+        title: const Text('Section',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -74,10 +74,11 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
               Category category = categorySnapshot.data[index];
               if (category.parent == 0) {
                 return Card(
-                    elevation: 0,
+                    elevation: 1,
+                    margin: EdgeInsets.all(8),
                     child: ExpansionTile(
                       initiallyExpanded: false,
-                      backgroundColor: Color(0xFFBDBDBDE3E3E3),
+                      backgroundColor: Color(0xFFF9F9F9),
                       title: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -88,20 +89,14 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
                             ),
                           );
                         },
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 12, 8, 12),
-                          child: Text(
-                            category.name +
-                                " (" +
-                                category.count.toString() +
-                                ")",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
+                        child: Text(
+                          category.name,
+                          style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ),
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: categorySnapshot.data.length,
@@ -121,10 +116,7 @@ Widget getCategoriesList(Future<List<dynamic>> categories) {
                                         );
                                       },
                                       child: ListTile(
-                                        title: Text(subCategory.name +
-                                            " (" +
-                                            subCategory.count.toString() +
-                                            ")"),
+                                        title: Text(subCategory.name),
                                       ));
                                 }
                                 return Container();

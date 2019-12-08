@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
           accentColor: Color(0xFFE74C3C),
           textTheme: TextTheme(
               title: TextStyle(
-                fontSize: 16,
+                fontSize: 17,
                 color: Colors.black,
                 height: 1.2,
                 fontWeight: FontWeight.w500,
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               ),
               caption: TextStyle(color: Colors.black45, fontSize: 10),
               body1: TextStyle(
-                fontSize: 15,
+                fontSize: 16,
                 color: Colors.black87,
               )),
         ),
@@ -63,15 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
           unselectedLabelStyle: TextStyle(fontFamily: "Soleil"),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Articles')),
+                icon: Icon(Icons.home), title: Text('Actualites')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.broken_image), title: Text('Local')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: Text('Categories')),
+                icon: Icon(Icons.category), title: Text('Section')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), title: Text('Search')),
+                icon: Icon(Icons.search), title: Text('Recherche')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.menu), title: Text('More')),
+                icon: Icon(Icons.menu), title: Text('Plus')),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Theme.of(context).primaryColor,

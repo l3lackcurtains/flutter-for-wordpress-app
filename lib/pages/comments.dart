@@ -50,7 +50,7 @@ class _CommentsState extends State<Comments> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Comments',
+        title: const Text('Commentaires',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

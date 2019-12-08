@@ -51,9 +51,9 @@ Widget articleBoxFeatured(
                     children: <Widget>[
                       Container(
                         child: Html(
-                            data: article.title.length > 100
+                            data: article.title.length > 70
                                 ? "<h1>" +
-                                    article.title.substring(0, 50) +
+                                    article.title.substring(0, 70) +
                                     "...</h1>"
                                 : "<h1>" + article.title + "</h1>",
                             customTextStyle:
@@ -75,7 +75,21 @@ Widget articleBoxFeatured(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Container(
-                              padding: EdgeInsets.fromLTRB(4, 0, 8, 8),
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFE3E3E3),
+                                  borderRadius: BorderRadius.circular(3)),
+                              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                              child: Text(
+                                article.category,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
                               child: Row(
                                 children: <Widget>[
                                   Icon(
@@ -88,37 +102,9 @@ Widget articleBoxFeatured(
                                   ),
                                   Text(
                                     article.date,
-                                    style: TextStyle(
-                                        color: Colors.black45, fontSize: 10),
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Icon(
-                                    Icons.person,
-                                    color: Colors.black45,
-                                    size: 12.0,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    article.author,
-                                    style: TextStyle(
-                                        color: Colors.black45, fontSize: 10),
+                                    style: Theme.of(context).textTheme.caption,
                                   ),
                                 ],
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.amber.shade200,
-                                  borderRadius: BorderRadius.circular(3)),
-                              padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                              child: Text(
-                                article.category,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 11),
                               ),
                             ),
                           ],

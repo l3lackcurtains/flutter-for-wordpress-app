@@ -14,7 +14,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Settings',
+        title: Text('Plus',
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class _SettingsState extends State<Settings> {
                   },
                   child: ListTile(
                     leading: Icon(Icons.info_outline),
-                    title: Text('About'),
+                    title: Text('A propos'),
                     subtitle: Text("Know more about Icilome"),
                   ),
                 ),
@@ -77,17 +77,17 @@ class _SettingsState extends State<Settings> {
                   },
                   child: ListTile(
                     leading: Icon(Icons.phone),
-                    title: Text('Contact Us'),
+                    title: Text('Contactez-nous'),
                     subtitle: Text("Get in touch with us"),
                   ),
                 ),
                 InkWell(
                   onTap: () {
-                    Share.share('https://demo.icilome.net');
+                    Share.share('https://icilome.net');
                   },
                   child: ListTile(
                     leading: Icon(Icons.share),
-                    title: Text('Share'),
+                    title: Text('Partager'),
                     subtitle: Text("Spread the words of Icilome"),
                   ),
                 ),

@@ -17,8 +17,8 @@ class Articles extends StatefulWidget {
 }
 
 class _ArticlesState extends State<Articles> {
-  List<dynamic> latestArticles = [];
   List<dynamic> featuredArticles = [];
+  List<dynamic> latestArticles = [];
   Future<List<dynamic>> _futureLastestArticles;
   Future<List<dynamic>> _futureFeaturedArticles;
   ScrollController _controller;
@@ -45,20 +45,20 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchLatestArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?page=$page&per_page=10");
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
-            featuredArticles.addAll(json
+            latestArticles.addAll(json
                 .decode(response.body)
                 .map((m) => Article.fromJson(m))
                 .toList());
-            if (featuredArticles.length % 10 != 0) {
+            if (latestArticles.length % 10 != 0) {
               _infiniteStop = true;
             }
           });
 
-          return featuredArticles;
+          return latestArticles;
         }
         setState(() {
           _infiniteStop = true;
@@ -67,24 +67,24 @@ class _ArticlesState extends State<Articles> {
     } on SocketException {
       throw 'No Internet connection';
     }
-    return featuredArticles;
+    return latestArticles;
   }
 
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?_embed&tags=140&page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
-            latestArticles.addAll(json
+            featuredArticles.addAll(json
                 .decode(response.body)
                 .map((m) => Article.fromJson(m))
                 .toList());
           });
 
-          return latestArticles;
+          return featuredArticles;
         } else {
           setState(() {
             _infiniteStop = true;
@@ -94,7 +94,7 @@ class _ArticlesState extends State<Articles> {
     } on SocketException {
       throw 'No Internet connection';
     }
-    return latestArticles;
+    return featuredArticles;
   }
 
   _scrollListener() {
@@ -113,14 +113,40 @@ class _ArticlesState extends State<Articles> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Icilome News',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  fontFamily: 'Poppins')),
+          centerTitle: true,
+          title: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width / 6, 0, 8, 0),
+                child: Image(
+                  image: AssetImage('assets/icon.png'),
+                  height: 35,
+                ),
+              ),
+              Text(
+                "iciLome News",
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    height: 2,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
           elevation: 5,
           backgroundColor: Theme.of(context).primaryColor,
+          actions: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Voir TV",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ],
+            )
+          ],
         ),
         body: Container(
           decoration: BoxDecoration(color: Colors.white70),
@@ -130,21 +156,6 @@ class _ArticlesState extends State<Articles> {
             child: Column(
               children: <Widget>[
                 featuredPost(_futureFeaturedArticles),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "Latest News",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 22,
-                          color: Colors.black,
-                          letterSpacing: 0.8,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ),
                 latestPosts(_futureLastestArticles)
               ],
             ),
@@ -193,7 +204,7 @@ class _ArticlesState extends State<Articles> {
         }
         return Container(
             alignment: Alignment.center,
-            width: 300,
+            width: MediaQuery.of(context).size.width,
             height: 150,
             child: Loading(
                 indicator: BallBeatIndicator(),
@@ -232,7 +243,7 @@ class _ArticlesState extends State<Articles> {
           }
           return Container(
               alignment: Alignment.center,
-              width: 300,
+              width: MediaQuery.of(context).size.width,
               height: 280,
               child: Loading(
                   indicator: BallBeatIndicator(),

@@ -7,7 +7,7 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
   return ConstrainedBox(
     constraints: new BoxConstraints(
       minHeight: 160.0,
-      maxHeight: 180.0,
+      maxHeight: 175.0,
     ),
     child: Stack(
       children: <Widget>[
@@ -21,14 +21,14 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 8),
+                    padding: EdgeInsets.fromLTRB(8, 0, 4, 8),
                     child: Column(
                       children: <Widget>[
                         Container(
                           child: Html(
-                              data: article.title.length > 100
+                              data: article.title.length > 70
                                   ? "<h1>" +
-                                      article.title.substring(0, 50) +
+                                      article.title.substring(0, 70) +
                                       "...</h1>"
                                   : "<h1>" + article.title + "</h1>",
                               customTextStyle:
@@ -50,51 +50,37 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                  padding: EdgeInsets.fromLTRB(4, 0, 8, 8),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.timer,
-                                        color: Colors.black45,
-                                        size: 12.0,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        article.date,
-                                        style:
-                                            Theme.of(context).textTheme.caption,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Icon(
-                                        Icons.person,
-                                        color: Colors.black45,
-                                        size: 12.0,
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text(
-                                        article.author,
-                                        style:
-                                            Theme.of(context).textTheme.caption,
-                                      ),
-                                    ],
-                                  )),
-                              Container(
                                 decoration: BoxDecoration(
-                                    color: Colors.amber.shade200,
+                                    color: Color(0xFFE3E3E3),
                                     borderRadius: BorderRadius.circular(3)),
                                 padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
                                 child: Text(
                                   article.category,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 11,
                                       fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.timer,
+                                      color: Colors.black45,
+                                      size: 12.0,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      article.date,
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

@@ -43,7 +43,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   Future<List<dynamic>> fetchCategoryArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts?_embed&categories[]=" +
+          "https://demo.icilome.net/wp-json/wp/v2/posts?categories[]=" +
               widget.id.toString() +
               "&page=$page&per_page=10");
 

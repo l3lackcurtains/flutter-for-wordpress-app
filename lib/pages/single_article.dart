@@ -1,10 +1,22 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/blocs/favArticleBloc.dart';
 import 'package:icilome_mobile/common/screen_arguments.dart';
+import 'package:icilome_mobile/models/Article.dart';
 import 'package:icilome_mobile/pages/comments.dart';
+import 'package:icilome_mobile/widgets/articleBox.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:share/share.dart';
+import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class SingleArticle extends StatefulWidget {
   final dynamic article;
@@ -17,14 +29,88 @@ class SingleArticle extends StatefulWidget {
 }
 
 class _SingleArticleState extends State<SingleArticle> {
+  List<dynamic> relatedArticles = [];
+  Future<List<dynamic>> _futureRelatedArticles;
+
   final FavArticleBloc favArticleBloc = FavArticleBloc();
 
   Future<dynamic> favArticle;
 
+  VideoPlayerController videoPlayerController;
+  YoutubePlayerController _youtubeController;
+  ChewieController chewieController;
+
   @override
   void initState() {
     super.initState();
+
+    _futureRelatedArticles = fetchRelatedArticles();
+
     favArticle = favArticleBloc.getFavArticle(widget.article.id);
+
+    if (widget.article.video != "") {
+      if (widget.article.video.contains("youtube")) {
+        String youtubeId = widget.article.video.split("?v=")[1];
+        _youtubeController = YoutubePlayerController(
+          initialVideoId: youtubeId,
+          flags: YoutubePlayerFlags(
+            mute: false,
+            autoPlay: true,
+            forceHideAnnotation: true,
+          ),
+        );
+      } else {
+        videoPlayerController =
+            VideoPlayerController.network(widget.article.video);
+        chewieController = ChewieController(
+            videoPlayerController: videoPlayerController,
+            aspectRatio: 3 / 2,
+            autoPlay: true,
+            looping: true,
+            errorBuilder: (context, errorMessage) {
+              return Center(
+                child: Text(
+                  errorMessage,
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            });
+      }
+    }
+  }
+
+  Future<List<dynamic>> fetchRelatedArticles() async {
+    try {
+      int postId = widget.article.id;
+      int catId = widget.article.catId;
+      var response = await http.get(
+          "https://demo.icilome.net/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
+
+      if (this.mounted) {
+        if (response.statusCode == 200) {
+          setState(() {
+            relatedArticles = json
+                .decode(response.body)
+                .map((m) => Article.fromJson(m))
+                .toList();
+          });
+
+          return relatedArticles;
+        }
+      }
+    } on SocketException {
+      throw 'No Internet connection';
+    }
+    return relatedArticles;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    videoPlayerController.dispose();
+    chewieController.dispose();
+    _youtubeController.dispose();
+    relatedArticles = [];
   }
 
   @override
@@ -48,13 +134,41 @@ class _SingleArticleState extends State<SingleArticle> {
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(60.0)),
                           child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.3),
-                                  BlendMode.overlay),
-                              child: Image.network(
-                                article.image,
-                                fit: BoxFit.cover,
-                              )),
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.3),
+                                BlendMode.overlay),
+                            child: article.video != ""
+                                ? article.video.contains("youtube")
+                                    ? Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.black),
+                                        padding: EdgeInsets.fromLTRB(
+                                            0,
+                                            MediaQuery.of(context).padding.top,
+                                            0,
+                                            0),
+                                        child: YoutubePlayer(
+                                          controller: _youtubeController,
+                                          showVideoProgressIndicator: true,
+                                        ),
+                                      )
+                                    : Container(
+                                        decoration:
+                                            BoxDecoration(color: Colors.black),
+                                        padding: EdgeInsets.fromLTRB(
+                                            0,
+                                            MediaQuery.of(context).padding.top,
+                                            0,
+                                            0),
+                                        child: Chewie(
+                                          controller: chewieController,
+                                        ),
+                                      )
+                                : Image.network(
+                                    article.image,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
                         ),
                       ),
                     ),
@@ -73,6 +187,7 @@ class _SingleArticleState extends State<SingleArticle> {
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Html(
                           data: "<h1>" + article.title + "</h1>",
@@ -90,7 +205,7 @@ class _SingleArticleState extends State<SingleArticle> {
                           }),
                       Container(
                         decoration: BoxDecoration(
-                            color: Colors.amber.shade200,
+                            color: Color(0xFFE3E3E3),
                             borderRadius: BorderRadius.circular(3)),
                         padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                         margin: EdgeInsets.all(16),
@@ -131,7 +246,8 @@ class _SingleArticleState extends State<SingleArticle> {
                           }),
                     ],
                   ),
-                )
+                ),
+                relatedPosts(_futureRelatedArticles)
               ],
             ),
           )),
@@ -216,7 +332,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     size: 24.0,
                   ),
                   onPressed: () {
-                    Share.share('check out my website https://example.com');
+                    Share.share('Visitez iciLome.com ' + article.link);
                   },
                 ),
               ),
@@ -224,6 +340,60 @@ class _SingleArticleState extends State<SingleArticle> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget relatedPosts(Future<List<dynamic>> latestArticles) {
+    return FutureBuilder<List<dynamic>>(
+      future: latestArticles,
+      builder: (context, articleSnapshot) {
+        if (articleSnapshot.hasData) {
+          return Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  "Autres sujets",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins"),
+                ),
+              ),
+              Column(
+                  children: articleSnapshot.data.map((item) {
+                final heroId = item.id.toString() + "-related";
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SingleArticle(item, heroId),
+                      ),
+                    );
+                  },
+                  child: articleBox(context, item, heroId),
+                );
+              }).toList()),
+            ],
+          );
+        } else if (articleSnapshot.hasError) {
+          return Container(
+              height: 500,
+              alignment: Alignment.center,
+              child: Text("${articleSnapshot.error}"));
+        }
+        return Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: 150,
+            child: Loading(
+                indicator: BallBeatIndicator(),
+                size: 60.0,
+                color: Theme.of(context).accentColor));
+      },
     );
   }
 }
