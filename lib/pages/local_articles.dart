@@ -45,7 +45,7 @@ class _LocalArticlesState extends State<LocalArticles> {
   Future<List<dynamic>> fetchLocalArticles(int page) async {
     try {
       http.Response response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags_exclude[]=140&categories[]=94&page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags_exclude[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom");
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -74,7 +74,7 @@ class _LocalArticlesState extends State<LocalArticles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags[]=140&categories[]=94&page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -114,13 +114,15 @@ class _LocalArticlesState extends State<LocalArticles> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Local News",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                fontFamily: 'Poppins')),
+        centerTitle: true,
+        title: Text(
+          "Local News",
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Poppins'),
+        ),
         elevation: 5,
         backgroundColor: Theme.of(context).primaryColor,
       ),

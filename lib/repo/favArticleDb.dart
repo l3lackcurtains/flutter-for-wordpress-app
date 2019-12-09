@@ -28,6 +28,6 @@ class FavArticleDatabaseProvider {
 
   void initDB(Database database, int version) async {
     await database.execute(
-        'CREATE TABLE $favArticleTABLE (id INTEGER PRIMARY KEY, title TEXT, content TEXT, excerpt TEXT, image TEXT, video TEXT, author TEXT, avatar TEXT, category TEXT, date TEXT, link TEXT, catId INTEGER)');
+        'CREATE TABLE $favArticleTABLE (id INTEGER PRIMARY KEY, title TEXT, content TEXT, image TEXT, video TEXT, author TEXT, avatar TEXT, category TEXT, date TEXT, link TEXT, catId INTEGER)');
   }
 }

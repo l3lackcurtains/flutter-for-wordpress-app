@@ -4,7 +4,6 @@ class Article {
   final int id;
   final String title;
   final String content;
-  final String excerpt;
   final String image;
   final String video;
   final String author;
@@ -18,7 +17,6 @@ class Article {
       {this.id,
       this.title,
       this.content,
-      this.excerpt,
       this.image,
       this.video,
       this.author,
@@ -57,7 +55,6 @@ class Article {
         id: json['id'],
         title: json['title']['rendered'],
         content: content,
-        excerpt: json['excerpt']['rendered'],
         image: image,
         video: video,
         author: author,
@@ -72,7 +69,6 @@ class Article {
       id: data['id'],
       title: data['title'],
       content: data['content'],
-      excerpt: data['excerpt'],
       image: data['image'],
       video: data['video'],
       author: data['author'],
@@ -86,7 +82,6 @@ class Article {
         'id': this.id,
         'title': this.title,
         'content': this.content,
-        'excerpt': this.excerpt,
         'image': this.image,
         'video': this.video,
         'author': this.author,
