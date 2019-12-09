@@ -45,7 +45,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       var response = await http.get(
           "https://demo.icilome.net/wp-json/wp/v2/posts?categories[]=" +
               widget.id.toString() +
-              "&page=$page&per_page=10");
+              "&page=$page&per_page=10&_fields=id,date,title,content,custom");
 
       if (this.mounted) {
         if (response.statusCode == 200) {

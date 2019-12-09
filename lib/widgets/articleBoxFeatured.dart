@@ -122,6 +122,7 @@ Widget articleBoxFeatured(
                 left: 18,
                 top: 18,
                 child: Card(
+                  color: Theme.of(context).accentColor,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.transparent,

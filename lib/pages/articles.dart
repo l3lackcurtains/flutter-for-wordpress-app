@@ -11,6 +11,8 @@ import 'package:icilome_mobile/widgets/articleBoxFeatured.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 
+import 'category_articles.dart';
+
 class Articles extends StatefulWidget {
   @override
   _ArticlesState createState() => _ArticlesState();
@@ -45,7 +47,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchLatestArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom");
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -73,7 +75,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10&_fields=id,date,title,content,custom");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -114,24 +116,9 @@ class _ArticlesState extends State<Articles> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width / 6, 0, 8, 0),
-                child: Image(
-                  image: AssetImage('assets/icon.png'),
-                  height: 35,
-                ),
-              ),
-              Text(
-                "iciLome News",
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    height: 2,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
+          title: Image(
+            image: AssetImage('assets/icon.png'),
+            height: 35,
           ),
           elevation: 5,
           backgroundColor: Theme.of(context).primaryColor,
@@ -140,9 +127,18 @@ class _ArticlesState extends State<Articles> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  "Voir TV",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryArticles(70, "Voir TV"),
+                      ),
+                    );
+                  },
+                  child: Text("Voir TV",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white)),
                 ),
               ],
             )

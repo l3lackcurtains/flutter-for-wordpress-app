@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         title: 'Icilome',
         theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: Color(0xFF5F27CD),
+          primaryColor: Colors.blue.shade500,
           accentColor: Color(0xFFE74C3C),
           textTheme: TextTheme(
               title: TextStyle(
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.menu), title: Text('Plus')),
           ],
           currentIndex: _selectedIndex,
-          fixedColor: Theme.of(context).primaryColor,
+          fixedColor: Theme.of(context).accentColor,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'favoutite_articles.dart';
 
@@ -14,6 +15,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Plus',
             style: TextStyle(
                 color: Colors.white,
@@ -41,7 +43,7 @@ class _SettingsState extends State<Settings> {
               child: Text(
                 "Version 1.0 \n iciLome.com \n Le portail togolais par excellence! \n Copyright @iciLome.com",
                 textAlign: TextAlign.center,
-                style: TextStyle(height: 1.6, color: Colors.black54),
+                style: TextStyle(height: 1.6, color: Colors.black87),
               ),
             ),
             Divider(
@@ -61,7 +63,10 @@ class _SettingsState extends State<Settings> {
                     );
                   },
                   child: ListTile(
-                    leading: Icon(Icons.favorite),
+                    leading: Image.asset(
+                      "assets/more/favourite.png",
+                      width: 36,
+                    ),
                     title: Text('Favourites'),
                     subtitle: Text("Browse Favourite articles"),
                   ),
@@ -71,25 +76,61 @@ class _SettingsState extends State<Settings> {
                     //
                   },
                   child: ListTile(
-                    leading: Icon(Icons.phone),
+                    leading: Image.asset(
+                      "assets/more/contact.png",
+                      width: 36,
+                    ),
                     title: Text('Contactez-nous'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 8),
-                        Text("https://www.iciLome.com"),
-                        SizedBox(height: 8),
-                        Text("info@iciLome.com")
+                        FlatButton.icon(
+                            onPressed: () async {
+                              const url = 'https://icilome.com';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            icon: Icon(
+                              Icons.link,
+                              color: Colors.black54,
+                            ),
+                            label: Text(
+                              "https://icilome.com",
+                              style: TextStyle(color: Colors.black54),
+                            )),
+                        FlatButton.icon(
+                            onPressed: () async {
+                              const url = 'mailto:info@icilome.com';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            icon: Icon(
+                              Icons.mail_outline,
+                              color: Colors.black54,
+                            ),
+                            label: Text(
+                              "info@icilome.com",
+                              style: TextStyle(color: Colors.black54),
+                            )),
                       ],
                     ),
                   ),
                 ),
                 InkWell(
                   onTap: () {
-                    Share.share('https://icilome.net');
+                    Share.share('Visitez iciLome: https://icilome.net');
                   },
                   child: ListTile(
-                    leading: Icon(Icons.share),
+                    leading: Image.asset(
+                      "assets/more/share.png",
+                      width: 36,
+                    ),
                     title: Text('Partager'),
                     subtitle: Text("Spread the words of Icilome"),
                   ),

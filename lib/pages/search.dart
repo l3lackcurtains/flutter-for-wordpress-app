@@ -46,7 +46,7 @@ class _SearchState extends State<Search> {
       }
 
       var response = await http.get(
-          "http://demo.icilome.net/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10");
+          "http://demo.icilome.net/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -103,6 +103,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Parcourir',
             style: TextStyle(
                 color: Colors.white,

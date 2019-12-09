@@ -240,7 +240,6 @@ class _SingleArticleState extends State<SingleArticle> {
                   builder:
                       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data.length == 0) return Container();
                       return Container(
                         decoration: BoxDecoration(),
                         child: IconButton(
@@ -309,7 +308,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     size: 24.0,
                   ),
                   onPressed: () {
-                    Share.share('Visitez iciLome.com ' + article.link);
+                    Share.share('Visitez iciLome: ' + article.link);
                   },
                 ),
               ),

@@ -120,12 +120,13 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                 left: 12,
                 top: 12,
                 child: Card(
+                  color: Theme.of(context).accentColor,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.transparent,
                     child: Image.asset("assets/play-button.png"),
                   ),
-                  elevation: 18,
+                  elevation: 8,
                   shape: CircleBorder(),
                   clipBehavior: Clip.antiAlias,
                 ),
