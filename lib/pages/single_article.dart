@@ -80,9 +80,14 @@ class _SingleArticleState extends State<SingleArticle> {
     final heroId = widget.heroId;
     final articleVideo = widget.article.video;
     String youtubeUrl = "";
+    String dailymotionUrl = "";
     if (articleVideo.contains("youtube")) {
       youtubeUrl = articleVideo.split('?v=')[1];
     }
+    if (articleVideo.contains("dailymotion")) {
+      dailymotionUrl = articleVideo.split("/video/")[1];
+    }
+
     return Scaffold(
       body: Container(
           decoration: BoxDecoration(color: Colors.white70),
@@ -120,24 +125,48 @@ class _SingleArticleState extends State<SingleArticle> {
                                           bodyPadding: EdgeInsets.all(0),
                                         ),
                                       )
-                                    : Container(
-                                        padding: EdgeInsets.fromLTRB(
-                                            0,
-                                            MediaQuery.of(context).padding.top,
-                                            0,
-                                            0),
-                                        decoration:
-                                            BoxDecoration(color: Colors.black),
-                                        child: HtmlWidget(
-                                          """
+                                    : articleVideo.contains("dailymotion")
+                                        ? Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0,
+                                                MediaQuery.of(context)
+                                                    .padding
+                                                    .top,
+                                                0,
+                                                0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black),
+                                            child: HtmlWidget(
+                                              """
+                                      <iframe frameborder="0"
+                                      src="https://www.dailymotion.com/embed/video/$dailymotionUrl?autoplay=1&mute=1"
+                                      allowfullscreen allow="autoplay">
+                                      </iframe>
+                                      """,
+                                              webView: true,
+                                              bodyPadding: EdgeInsets.all(0),
+                                            ),
+                                          )
+                                        : Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0,
+                                                MediaQuery.of(context)
+                                                    .padding
+                                                    .top,
+                                                0,
+                                                0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black),
+                                            child: HtmlWidget(
+                                              """
                                       <video autoplay="" playsinline="" controls>
                                       <source type="video/mp4" src="$articleVideo">
                                       </video>
                                       """,
-                                          webView: true,
-                                          bodyPadding: EdgeInsets.all(0),
-                                        ),
-                                      )
+                                              webView: true,
+                                              bodyPadding: EdgeInsets.all(0),
+                                            ),
+                                          )
                                 : Image.network(
                                     article.image,
                                     fit: BoxFit.cover,
