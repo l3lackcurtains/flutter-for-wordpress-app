@@ -81,6 +81,7 @@ class _SingleArticleState extends State<SingleArticle> {
     final articleVideo = widget.article.video;
     String youtubeUrl = "";
     String dailymotionUrl = "";
+    String link = article.link;
     if (articleVideo.contains("youtube")) {
       youtubeUrl = articleVideo.split('?v=')[1];
     }
@@ -337,7 +338,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     size: 24.0,
                   ),
                   onPressed: () {
-                    Share.share('Visitez iciLome: ' + article.link);
+                    Share.share("""Visitez iciLome: $link""");
                   },
                 ),
               ),

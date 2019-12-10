@@ -35,6 +35,9 @@ dependencies:
   sqflite: ^1.1.7+3
   flutter_widget_from_html: ^0.2.4+4
 
+  firebase_core: ^0.4.2+1
+  firebase_messaging: ^6.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

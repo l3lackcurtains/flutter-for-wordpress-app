@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "602000757893",
+    "firebase_url": "https://icilome-news.firebaseio.com",
+    "project_id": "icilome-news",
+    "storage_bucket": "icilome-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602000757893:android:8e1bece01753070b6fc5ec",
+        "android_client_info": {
+          "package_name": "com.example.icilome_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602000757893-95cbk2nto9g63fk72obuamk7pf717u83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtLXkBySgTeJuamJA6eqw8fbuY2i9XD6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602000757893-95cbk2nto9g63fk72obuamk7pf717u83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
