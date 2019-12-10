@@ -78,27 +78,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.7"
-  firebase_core:
-    dependency: "direct main"
-    description:
-      name: firebase_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.2+1"
-  firebase_core_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_core_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  firebase_messaging:
-    dependency: "direct main"
-    description:
-      name: firebase_messaging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -228,13 +207,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  quiver_hashcode:
-    dependency: transitive
-    description:
-      name: quiver_hashcode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   screen:
     dependency: transitive
     description:

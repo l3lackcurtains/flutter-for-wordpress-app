@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:icilome_mobile/pages/articles.dart';
 import 'package:icilome_mobile/pages/categories.dart';
@@ -44,7 +43,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // Firebase Cloud Messeging setup
-  final FirebaseMessaging _fcm = FirebaseMessaging();
 
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
@@ -58,37 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // Allow notification access
-
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) {
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return object of type Dialog
-            return AlertDialog(
-              title: new Text("Alert Dialog title"),
-              content: new Text("Alert Dialog body"),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                new FlatButton(
-                  child: new Text("Close"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-    _fcm.subscribeToTopic('all');
-    _fcm.requestNotificationPermissions(IosNotificationSettings(
-      sound: true,
-      badge: true,
-      alert: true,
-    ));
   }
 
   @override
