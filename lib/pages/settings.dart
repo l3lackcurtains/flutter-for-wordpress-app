@@ -112,7 +112,7 @@ class _SettingsState extends State<Settings> {
                   child: ListTile(
                     leading: Image.asset(
                       "assets/more/favourite.png",
-                      width: 36,
+                      width: 30,
                     ),
                     title: Text('Favourites'),
                     subtitle: Text("Browse Favourite articles"),
@@ -121,13 +121,13 @@ class _SettingsState extends State<Settings> {
                 ListTile(
                   leading: Image.asset(
                     "assets/more/contact.png",
-                    width: 36,
+                    width: 30,
                   ),
                   title: Text('Contactez-nous'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FlatButton.icon(
+                      FlatButton(
                           onPressed: () async {
                             const url = 'https://icilome.com';
                             if (await canLaunch(url)) {
@@ -136,15 +136,11 @@ class _SettingsState extends State<Settings> {
                               throw 'Could not launch $url';
                             }
                           },
-                          icon: Icon(
-                            Icons.link,
-                            color: Colors.black54,
-                          ),
-                          label: Text(
+                          child: Text(
                             "https://icilome.com",
                             style: TextStyle(color: Colors.black54),
                           )),
-                      FlatButton.icon(
+                      FlatButton(
                           onPressed: () async {
                             const url = 'mailto:info@icilome.com';
                             if (await canLaunch(url)) {
@@ -153,11 +149,7 @@ class _SettingsState extends State<Settings> {
                               throw 'Could not launch $url';
                             }
                           },
-                          icon: Icon(
-                            Icons.mail_outline,
-                            color: Colors.black54,
-                          ),
-                          label: Text(
+                          child: Text(
                             "info@icilome.com",
                             style: TextStyle(color: Colors.black54),
                           )),
@@ -171,7 +163,7 @@ class _SettingsState extends State<Settings> {
                   child: ListTile(
                     leading: Image.asset(
                       "assets/more/share.png",
-                      width: 36,
+                      width: 30,
                     ),
                     title: Text('Partager'),
                     subtitle: Text("Spread the words of Icilome"),
@@ -179,8 +171,8 @@ class _SettingsState extends State<Settings> {
                 ),
                 ListTile(
                   leading: Image.asset(
-                    "assets/more/share.png",
-                    width: 36,
+                    "assets/more/notification.png",
+                    width: 30,
                   ),
                   isThreeLine: true,
                   title: Text('Notification'),

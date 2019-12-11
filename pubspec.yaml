@@ -41,6 +41,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: assets/icon.png
+
 
 flutter:
   # The following line ensures that the Material Icons font is
@@ -71,6 +78,7 @@ flutter:
     - assets/more/favourite.png
     - assets/more/contact.png
     - assets/more/share.png
+    - assets/more/notification.png
     
 
   fonts:
