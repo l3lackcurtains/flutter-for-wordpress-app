@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../main.dart';
 import 'favoutite_articles.dart';
 
 class Settings extends StatefulWidget {
@@ -10,18 +12,63 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  bool _notification = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkNotificationSetting();
+  }
+
+  checkNotificationSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'notification';
+    final value = prefs.getInt(key) ?? 0;
+    if (value == 0) {
+      setState(() {
+        _notification = false;
+      });
+    } else {
+      setState(() {
+        _notification = true;
+      });
+    }
+  }
+
+  saveNotificationSetting(bool val) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'notification';
+    final value = val ? 1 : 0;
+    prefs.setInt(key, value);
+    if (value == 1) {
+      setState(() {
+        _notification = true;
+      });
+    } else {
+      setState(() {
+        _notification = false;
+      });
+    }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Plus',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                fontFamily: 'Poppins')),
+        title: Text(
+          'Plus',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Poppins'),
+        ),
         elevation: 5,
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -71,55 +118,50 @@ class _SettingsState extends State<Settings> {
                     subtitle: Text("Browse Favourite articles"),
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    //
-                  },
-                  child: ListTile(
-                    leading: Image.asset(
-                      "assets/more/contact.png",
-                      width: 36,
-                    ),
-                    title: Text('Contactez-nous'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        FlatButton.icon(
-                            onPressed: () async {
-                              const url = 'https://icilome.com';
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                            icon: Icon(
-                              Icons.link,
-                              color: Colors.black54,
-                            ),
-                            label: Text(
-                              "https://icilome.com",
-                              style: TextStyle(color: Colors.black54),
-                            )),
-                        FlatButton.icon(
-                            onPressed: () async {
-                              const url = 'mailto:info@icilome.com';
-                              if (await canLaunch(url)) {
-                                await launch(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                            icon: Icon(
-                              Icons.mail_outline,
-                              color: Colors.black54,
-                            ),
-                            label: Text(
-                              "info@icilome.com",
-                              style: TextStyle(color: Colors.black54),
-                            )),
-                      ],
-                    ),
+                ListTile(
+                  leading: Image.asset(
+                    "assets/more/contact.png",
+                    width: 36,
+                  ),
+                  title: Text('Contactez-nous'),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      FlatButton.icon(
+                          onPressed: () async {
+                            const url = 'https://icilome.com';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          icon: Icon(
+                            Icons.link,
+                            color: Colors.black54,
+                          ),
+                          label: Text(
+                            "https://icilome.com",
+                            style: TextStyle(color: Colors.black54),
+                          )),
+                      FlatButton.icon(
+                          onPressed: () async {
+                            const url = 'mailto:info@icilome.com';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          icon: Icon(
+                            Icons.mail_outline,
+                            color: Colors.black54,
+                          ),
+                          label: Text(
+                            "info@icilome.com",
+                            style: TextStyle(color: Colors.black54),
+                          )),
+                    ],
                   ),
                 ),
                 InkWell(
@@ -134,6 +176,20 @@ class _SettingsState extends State<Settings> {
                     title: Text('Partager'),
                     subtitle: Text("Spread the words of Icilome"),
                   ),
+                ),
+                ListTile(
+                  leading: Image.asset(
+                    "assets/more/share.png",
+                    width: 36,
+                  ),
+                  isThreeLine: true,
+                  title: Text('Notification'),
+                  subtitle: Text("Change your notification preferences"),
+                  trailing: Switch(
+                      onChanged: (val) async {
+                        await saveNotificationSetting(val);
+                      },
+                      value: _notification),
                 ),
               ],
             )
