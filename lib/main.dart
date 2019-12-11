@@ -1,9 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:icilome_mobile/pages/articles.dart';
 import 'package:icilome_mobile/pages/categories.dart';
 import 'package:icilome_mobile/pages/local_articles.dart';
 import 'package:icilome_mobile/pages/search.dart';
 import 'package:icilome_mobile/pages/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,13 +38,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   // Firebase Cloud Messeging setup
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
@@ -56,6 +58,50 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    startFirebase();
+  }
+
+  startFirebase() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'notification';
+    final value = prefs.getInt(key) ?? 0;
+    if (value == 1) {
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                  message["notification"]["title"],
+                  style: TextStyle(fontFamily: "Soleil", fontSize: 18),
+                ),
+                content: Text(message["notification"]["body"]),
+                actions: <Widget>[
+                  FlatButton(
+                    child: new Text("Dismiss"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+        },
+      );
+      _firebaseMessaging.getToken().then((token) {
+        print("Firebase Token:" + token);
+      });
+    }
   }
 
   @override

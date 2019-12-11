@@ -34,6 +34,8 @@ dependencies:
   path_provider: ^1.4.5
   sqflite: ^1.1.7+3
   flutter_widget_from_html: ^0.2.4+4
+  firebase_messaging: ^5.0.1
+  shared_preferences: ^0.5.0
   
 dev_dependencies:
   flutter_test:
