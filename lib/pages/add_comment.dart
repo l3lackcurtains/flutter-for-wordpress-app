@@ -47,19 +47,19 @@ class _AddCommentState extends State<AddComment> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          color: Colors.white,
+          color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Laisser un commentaire',
+        title: Text('Laisser un commentaire',
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -72,7 +72,7 @@ class _AddCommentState extends State<AddComment> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Nom *',
                         ),
                         keyboardType: TextInputType.text,
@@ -86,7 +86,7 @@ class _AddCommentState extends State<AddComment> {
                           _name = val;
                         }),
                     TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Email *',
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -101,14 +101,14 @@ class _AddCommentState extends State<AddComment> {
                         }),
                     TextFormField(
                         keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Site',
                         ),
                         onSaved: (String val) {
                           _website = val;
                         }),
                     TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Comment *',
                         ),
                         keyboardType: TextInputType.multiline,
@@ -123,7 +123,7 @@ class _AddCommentState extends State<AddComment> {
                           _comment = val;
                         }),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 36.0),
+                      padding: EdgeInsets.symmetric(vertical: 36.0),
                       child: RaisedButton.icon(
                         icon: Icon(
                           Icons.check,

@@ -45,7 +45,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       var response = await http.get(
           "https://demo.icilome.net/wp-json/wp/v2/posts?categories[]=" +
               widget.id.toString() +
-              "&page=$page&per_page=10&_fields=id,date,title,content,custom");
+              "&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -89,7 +89,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.white,
+          color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -97,12 +97,12 @@ class _CategoryArticlesState extends State<CategoryArticles> {
         title: Text(widget.name,
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),

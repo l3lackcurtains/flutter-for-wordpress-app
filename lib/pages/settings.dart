@@ -64,13 +64,13 @@ class _SettingsState extends State<Settings> {
         title: Text(
           'Plus',
           style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 20,
               fontFamily: 'Poppins'),
         ),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -114,8 +114,8 @@ class _SettingsState extends State<Settings> {
                       "assets/more/favourite.png",
                       width: 30,
                     ),
-                    title: Text('Favourites'),
-                    subtitle: Text("Browse Favourite articles"),
+                    title: Text('Favoris'),
+                    subtitle: Text("Parcourir vos favoris"),
                   ),
                 ),
                 ListTile(
@@ -158,7 +158,7 @@ class _SettingsState extends State<Settings> {
                 ),
                 InkWell(
                   onTap: () {
-                    Share.share('Visitez iciLome: https://icilome.net');
+                    Share.share('Visitez iciLome: https://icilome.com');
                   },
                   child: ListTile(
                     leading: Image.asset(
@@ -175,8 +175,8 @@ class _SettingsState extends State<Settings> {
                     width: 30,
                   ),
                   isThreeLine: true,
-                  title: Text('Notification'),
-                  subtitle: Text("Change your notification preferences"),
+                  title: Text('Alerte'),
+                  subtitle: Text("Changer vos préférences"),
                   trailing: Switch(
                       onChanged: (val) async {
                         await saveNotificationSetting(val);

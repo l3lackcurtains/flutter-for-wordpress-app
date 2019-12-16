@@ -27,7 +27,7 @@ class _FavouriteArticlesState extends State<FavouriteArticles> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.white,
+          color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -35,12 +35,12 @@ class _FavouriteArticlesState extends State<FavouriteArticles> {
         title: Text("Favourite Articles",
             textAlign: TextAlign.left,
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),

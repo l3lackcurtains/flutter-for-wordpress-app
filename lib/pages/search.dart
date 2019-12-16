@@ -46,7 +46,7 @@ class _SearchState extends State<Search> {
       }
 
       var response = await http.get(
-          "http://demo.icilome.net/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom");
+          "http://demo.icilome.net/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -106,12 +106,12 @@ class _SearchState extends State<Search> {
         centerTitle: true,
         title: Text('Parcourir',
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         child: SingleChildScrollView(
@@ -128,7 +128,7 @@ class _SearchState extends State<Search> {
                     child: TextField(
                         controller: _textFieldController,
                         decoration: InputDecoration(
-                          labelText: 'Type some query',
+                          labelText: 'Rechercher dans iciLome',
                           suffixIcon: _searchText == ""
                               ? Icon(Icons.search)
                               : IconButton(
@@ -207,9 +207,28 @@ class _SearchState extends State<Search> {
           );
         } else if (articleSnapshot.hasError) {
           return Container(
-              height: 500,
-              alignment: Alignment.center,
-              child: Text("${articleSnapshot.error}"));
+            alignment: Alignment.center,
+            margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  "assets/no-internet.png",
+                  width: 250,
+                ),
+                Text("No Internet Connection."),
+                FlatButton.icon(
+                  icon: Icon(Icons.refresh),
+                  label: Text("Reload"),
+                  onPressed: () {
+                    _futureSearchedArticles = fetchSearchedArticles(
+                        _searchText, _searchText == "", page, false);
+                  },
+                )
+              ],
+            ),
+          );
         }
         return Container(
             alignment: Alignment.center,

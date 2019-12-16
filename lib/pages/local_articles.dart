@@ -45,7 +45,7 @@ class _LocalArticlesState extends State<LocalArticles> {
   Future<List<dynamic>> fetchLocalArticles(int page) async {
     try {
       http.Response response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags_exclude[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags_exclude[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -74,7 +74,7 @@ class _LocalArticlesState extends State<LocalArticles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom");
+          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -116,15 +116,15 @@ class _LocalArticlesState extends State<LocalArticles> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Local News",
+          "Local",
           style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 20,
               fontFamily: 'Poppins'),
         ),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -176,10 +176,7 @@ class _LocalArticlesState extends State<LocalArticles> {
             ],
           );
         } else if (articleSnapshot.hasError) {
-          return Container(
-              height: 500,
-              alignment: Alignment.center,
-              child: Text("${articleSnapshot.error}"));
+          return Container();
         }
         return Container(
             alignment: Alignment.center,
@@ -217,9 +214,28 @@ class _LocalArticlesState extends State<LocalArticles> {
             }).toList());
           } else if (articleSnapshot.hasError) {
             return Container(
-                height: 500,
-                alignment: Alignment.center,
-                child: Text("${articleSnapshot.error}"));
+              alignment: Alignment.center,
+              margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: <Widget>[
+                  Image.asset(
+                    "assets/no-internet.png",
+                    width: 250,
+                  ),
+                  Text("No Internet Connection."),
+                  FlatButton.icon(
+                    icon: Icon(Icons.refresh),
+                    label: Text("Reload"),
+                    onPressed: () {
+                      _futureArticles = fetchLocalArticles(1);
+                      _futureFeaturedArticles = fetchFeaturedArticles(1);
+                    },
+                  )
+                ],
+              ),
+            );
           }
           return Container(
               alignment: Alignment.center,
