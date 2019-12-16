@@ -45,19 +45,19 @@ class _CommentsState extends State<Comments> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          color: Colors.white,
+          color: Colors.black,
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         title: const Text('Commentaires',
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 fontFamily: 'Poppins')),
         elevation: 5,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         child: SingleChildScrollView(

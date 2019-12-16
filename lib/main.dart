@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.broken_image), title: Text('Local')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: Text('Section')),
+                icon: Icon(Icons.category), title: Text('Sections')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.search), title: Text('Recherche')),
             BottomNavigationBarItem(
