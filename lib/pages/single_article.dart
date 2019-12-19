@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
 import 'package:icilome_mobile/blocs/favArticleBloc.dart';
@@ -14,7 +15,6 @@ import 'package:icilome_mobile/widgets/articleBox.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:share/share.dart';
-import 'package:youtube_player/youtube_player.dart';
 
 class SingleArticle extends StatefulWidget {
   final dynamic article;
@@ -47,7 +47,6 @@ class _SingleArticleState extends State<SingleArticle> {
     try {
       int postId = widget.article.id;
       int catId = widget.article.catId;
-
       var response = await http.get(
           "https://demo.icilome.net/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
 
@@ -80,7 +79,14 @@ class _SingleArticleState extends State<SingleArticle> {
     final article = widget.article;
     final heroId = widget.heroId;
     final articleVideo = widget.article.video;
-    String link = article.link;
+    String youtubeUrl = "";
+    String dailymotionUrl = "";
+    if (articleVideo.contains("youtube")) {
+      youtubeUrl = articleVideo.split('?v=')[1];
+    }
+    if (articleVideo.contains("dailymotion")) {
+      dailymotionUrl = articleVideo.split("/video/")[1];
+    }
 
     return Scaffold(
       body: Container(
@@ -111,16 +117,56 @@ class _SingleArticleState extends State<SingleArticle> {
                                             0),
                                         decoration:
                                             BoxDecoration(color: Colors.black),
-                                        child: YoutubePlayer(
-                                          context: context,
-                                          source: articleVideo.split('?v=')[1],
-                                          quality: YoutubeQuality.HD,
+                                        child: HtmlWidget(
+                                          """
+                                      <iframe src="https://www.youtube.com/embed/$youtubeUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                      """,
+                                          webView: true,
+                                          bodyPadding: EdgeInsets.all(0),
                                         ),
                                       )
-                                    : Image.network(
-                                        article.image,
-                                        fit: BoxFit.cover,
-                                      )
+                                    : articleVideo.contains("dailymotion")
+                                        ? Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0,
+                                                MediaQuery.of(context)
+                                                    .padding
+                                                    .top,
+                                                0,
+                                                0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black),
+                                            child: HtmlWidget(
+                                              """
+                                      <iframe frameborder="0"
+                                      src="https://www.dailymotion.com/embed/video/$dailymotionUrl?autoplay=1&mute=1"
+                                      allowfullscreen allow="autoplay">
+                                      </iframe>
+                                      """,
+                                              webView: true,
+                                              bodyPadding: EdgeInsets.all(0),
+                                            ),
+                                          )
+                                        : Container(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0,
+                                                MediaQuery.of(context)
+                                                    .padding
+                                                    .top,
+                                                0,
+                                                0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black),
+                                            child: HtmlWidget(
+                                              """
+                                      <video autoplay="" playsinline="" controls>
+                                      <source type="video/mp4" src="$articleVideo">
+                                      </video>
+                                      """,
+                                              webView: true,
+                                              bodyPadding: EdgeInsets.all(0),
+                                            ),
+                                          )
                                 : Image.network(
                                     article.image,
                                     fit: BoxFit.cover,
@@ -291,7 +337,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     size: 24.0,
                   ),
                   onPressed: () {
-                    Share.share("""Visitez iciLome: $link""");
+                    Share.share('Visitez iciLome: ' + article.link);
                   },
                 ),
               ),
