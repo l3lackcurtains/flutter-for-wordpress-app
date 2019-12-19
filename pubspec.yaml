@@ -24,6 +24,7 @@ dependencies:
   youtube_player: ^3.5.0
   firebase_messaging: ^5.0.1
   shared_preferences: ^0.5.6
+  flutter_widget_from_html: ^0.3.1-rc
   
 dev_dependencies:
   flutter_test:
