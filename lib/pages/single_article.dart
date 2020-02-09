@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:flutter_wordpress_app/blocs/favArticleBloc.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/comments.dart';
@@ -48,7 +49,7 @@ class _SingleArticleState extends State<SingleArticle> {
       int postId = widget.article.id;
       int catId = widget.article.catId;
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
+          "$WORDPRESS_URL/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
 
       if (this.mounted) {
         if (response.statusCode == 200) {

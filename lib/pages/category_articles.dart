@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/single_Article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
@@ -43,7 +44,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   Future<List<dynamic>> fetchCategoryArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts?categories[]=" +
+          "$WORDPRESS_URL/wp-json/wp/v2/posts?categories[]=" +
               widget.id.toString() +
               "&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 

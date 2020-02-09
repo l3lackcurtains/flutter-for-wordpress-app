@@ -117,15 +117,15 @@ class _MyHomePageState extends State<MyHomePage> {
           unselectedLabelStyle: TextStyle(fontFamily: "Soleil"),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Actualites')),
+                icon: Icon(Icons.home), title: Text('Home')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.broken_image), title: Text('Local')),
+                icon: Icon(Icons.broken_image), title: Text('National')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.category), title: Text('Sections')),
+                icon: Icon(Icons.category), title: Text('Categories')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), title: Text('Recherche')),
+                icon: Icon(Icons.search), title: Text('Search')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.menu), title: Text('Plus')),
+                icon: Icon(Icons.menu), title: Text('More')),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Theme.of(context).accentColor,

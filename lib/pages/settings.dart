@@ -62,7 +62,7 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Plus',
+          'More',
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,

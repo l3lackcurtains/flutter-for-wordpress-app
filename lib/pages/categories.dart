@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Category.dart';
 import 'package:flutter_wordpress_app/pages/category_articles.dart';
 import 'package:http/http.dart' as http;
@@ -25,8 +26,8 @@ class _CategoriesState extends State<Categories> {
 
   Future<List<dynamic>> fetchCategories() async {
     try {
-      var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/categories?per_page=100");
+      var response = await http
+          .get("$WORDPRESS_URL/wp-json/wp/v2/categories?per_page=100");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -51,7 +52,7 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Section',
+        title: Text('Categories',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,

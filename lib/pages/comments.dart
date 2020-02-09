@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 import 'package:flutter_wordpress_app/models/Comment.dart';
 import 'package:flutter_wordpress_app/widgets/commentBox.dart';
@@ -14,9 +15,8 @@ import 'add_comment.dart';
 
 Future<List<dynamic>> fetchComments(int id) async {
   try {
-    var response = await http.get(
-        "https://demo.icilome.net/wp-json/wp/v2/comments?post=" +
-            id.toString());
+    var response = await http
+        .get("$WORDPRESS_URL/wp-json/wp/v2/comments?post=" + id.toString());
 
     if (response.statusCode == 200) {
       return json
@@ -50,7 +50,7 @@ class _CommentsState extends State<Comments> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Commentaires',
+        title: const Text('Comments',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -89,7 +89,15 @@ Widget commentSection(Future<List<dynamic>> comments) {
     future: comments,
     builder: (context, commentSnapshot) {
       if (commentSnapshot.hasData) {
-        if (commentSnapshot.data.length == 0) return Container();
+        if (commentSnapshot.data.length == 0)
+          return Container(
+            height: 500,
+            alignment: Alignment.center,
+            child: Text(
+              "No Comments.\nBe the first to write one.",
+              textAlign: TextAlign.center,
+            ),
+          );
         return Column(
             children: commentSnapshot.data.map((item) {
           return InkWell(
