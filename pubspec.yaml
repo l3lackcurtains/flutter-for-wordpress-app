@@ -1,5 +1,5 @@
-name: icilome_mobile
-description: A new Flutter project.
+name: flutter_wordpress_app
+description: Flutter news app for wordpress platform
 
 version: 1.0.0+1
 
@@ -21,7 +21,6 @@ dependencies:
   share: ^0.6.3+3
   path_provider: ^1.4.5
   sqflite: ^1.1.7+3
-  youtube_player: ^3.5.0
   firebase_messaging: ^5.0.1
   shared_preferences: ^0.5.6
   flutter_widget_from_html: ^0.3.1-rc

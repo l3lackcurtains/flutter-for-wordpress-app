@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icilome_mobile/pages/category_articles.dart';
+import 'package:flutter_wordpress_app/pages/category_articles.dart';
 
 Widget searchBoxes(BuildContext context) {
   return GridView.count(

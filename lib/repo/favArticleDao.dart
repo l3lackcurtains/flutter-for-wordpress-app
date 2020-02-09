@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:icilome_mobile/models/Article.dart';
+import 'package:flutter_wordpress_app/models/Article.dart';
 
 import 'favArticleDb.dart';
 

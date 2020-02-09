@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.icilome_mobile">
+    package="com.example.flutter_wordpress_app">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="icilome_mobile"
+        android:label="flutter_wordpress_app"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

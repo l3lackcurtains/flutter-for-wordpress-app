@@ -1,10 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:icilome_mobile/pages/articles.dart';
-import 'package:icilome_mobile/pages/categories.dart';
-import 'package:icilome_mobile/pages/local_articles.dart';
-import 'package:icilome_mobile/pages/search.dart';
-import 'package:icilome_mobile/pages/settings.dart';
+import 'package:flutter_wordpress_app/pages/articles.dart';
+import 'package:flutter_wordpress_app/pages/categories.dart';
+import 'package:flutter_wordpress_app/pages/local_articles.dart';
+import 'package:flutter_wordpress_app/pages/search.dart';
+import 'package:flutter_wordpress_app/pages/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());

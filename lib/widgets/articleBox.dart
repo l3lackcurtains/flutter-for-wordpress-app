@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:icilome_mobile/models/Article.dart';
 
 Widget articleBox(BuildContext context, Article article, String heroId) {
   return ConstrainedBox(

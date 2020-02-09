@@ -1,4 +1,4 @@
-package com.example.icilome_mobile
+package com.example.flutter_wordpress_app
 
 import android.os.Bundle
 
