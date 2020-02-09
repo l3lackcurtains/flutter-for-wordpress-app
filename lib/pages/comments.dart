@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/screen_arguments.dart';
+import 'package:flutter_wordpress_app/models/Comment.dart';
+import 'package:flutter_wordpress_app/widgets/commentBox.dart';
 import 'package:http/http.dart' as http;
-import 'package:icilome_mobile/common/screen_arguments.dart';
-import 'package:icilome_mobile/models/Comment.dart';
-import 'package:icilome_mobile/widgets/commentBox.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 

@@ -1,4 +1,4 @@
-import 'package:icilome_mobile/models/Article.dart';
+import 'package:flutter_wordpress_app/models/Article.dart';
 
 import 'favArticleDao.dart';
 

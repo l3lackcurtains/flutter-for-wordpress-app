@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:icilome_mobile/common/screen_arguments.dart';
+import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 
 Future<bool> postComment(
     int id, String name, String email, String website, String comment) async {

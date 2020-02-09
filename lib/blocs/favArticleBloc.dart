@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:icilome_mobile/models/Article.dart';
-import 'package:icilome_mobile/repo/favArticleRepo.dart';
+import 'package:flutter_wordpress_app/models/Article.dart';
+import 'package:flutter_wordpress_app/repo/favArticleRepo.dart';
 
 class FavArticleBloc {
   final _articleRepository = FavArticleRepository();
