@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/single_Article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
@@ -10,8 +11,6 @@ import 'package:flutter_wordpress_app/widgets/articleBoxFeatured.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
-
-import 'category_articles.dart';
 
 class Articles extends StatefulWidget {
   @override
@@ -47,7 +46,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchLatestArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          '$WORDPRESS_URL/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link');
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -74,7 +73,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "https://demo.icilome.net/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          "$WORDPRESS_URL/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -114,37 +113,12 @@ class _ArticlesState extends State<Articles> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          centerTitle: true,
           title: Image(
             image: AssetImage('assets/icon.png'),
             height: 45,
           ),
           elevation: 5,
           backgroundColor: Colors.white,
-          actions: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CategoryArticles(70, "Voir TV"),
-                      ),
-                    );
-                  },
-                  child: Text("Voir TV",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          fontFamily: 'Poppins')),
-                ),
-              ],
-            )
-          ],
         ),
         body: Container(
           decoration: BoxDecoration(color: Colors.white70),

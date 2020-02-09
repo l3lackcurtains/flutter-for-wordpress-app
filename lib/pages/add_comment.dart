@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 
 Future<bool> postComment(
     int id, String name, String email, String website, String comment) async {
   try {
     Dio dio = new Dio();
-    Response response = await dio
-        .post("https://demo.icilome.net/wp-json/wp/v2/comments", data: {
+    Response response =
+        await dio.post("$WORDPRESS_URL/wp-json/wp/v2/comments", data: {
       "author_email": email,
       "author_name": name,
       "author_website": website,
@@ -52,7 +53,7 @@ class _AddCommentState extends State<AddComment> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Laisser un commentaire',
+        title: Text('Add Comment',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -73,7 +74,7 @@ class _AddCommentState extends State<AddComment> {
                   children: <Widget>[
                     TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Nom *',
+                          labelText: 'Name *',
                         ),
                         keyboardType: TextInputType.text,
                         validator: (value) {
@@ -102,7 +103,7 @@ class _AddCommentState extends State<AddComment> {
                     TextFormField(
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          labelText: 'Site',
+                          labelText: 'Website',
                         ),
                         onSaved: (String val) {
                           _website = val;
@@ -115,7 +116,7 @@ class _AddCommentState extends State<AddComment> {
                         maxLines: 5,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'Please enter some comment.';
+                            return 'Write some comment.';
                           }
                           return null;
                         },
@@ -124,12 +125,13 @@ class _AddCommentState extends State<AddComment> {
                         }),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 36.0),
+                      height: 120,
                       child: RaisedButton.icon(
                         icon: Icon(
                           Icons.check,
                           color: Colors.white,
                         ),
-                        color: Colors.black,
+                        color: Theme.of(context).accentColor,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
@@ -143,7 +145,7 @@ class _AddCommentState extends State<AddComment> {
                           }
                         },
                         label: Text(
-                          'Laisser un commentaire',
+                          'Send Comment',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

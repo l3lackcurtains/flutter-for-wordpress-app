@@ -104,7 +104,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Parcourir',
+        title: Text('Search',
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -128,7 +128,7 @@ class _SearchState extends State<Search> {
                     child: TextField(
                         controller: _textFieldController,
                         decoration: InputDecoration(
-                          labelText: 'Rechercher dans iciLome',
+                          labelText: 'Search news',
                           suffixIcon: _searchText == ""
                               ? Icon(Icons.search)
                               : IconButton(
