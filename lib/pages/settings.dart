@@ -78,17 +78,17 @@ class _SettingsState extends State<Settings> {
           children: <Widget>[
             Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: Image(
-                image: AssetImage('assets/logo.png'),
+                image: AssetImage('assets/icon.png'),
                 height: 50,
               ),
             ),
             Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
               child: Text(
-                "Version 1.0 \n iciLome.com \n Le portail togolais par excellence! \n Copyright @iciLome.com",
+                "Version 1.0.0 \n flutterblog.crumet.com \n Demo flutter app for wordpress news website",
                 textAlign: TextAlign.center,
                 style: TextStyle(height: 1.6, color: Colors.black87),
               ),
@@ -114,8 +114,8 @@ class _SettingsState extends State<Settings> {
                       "assets/more/favourite.png",
                       width: 30,
                     ),
-                    title: Text('Favoris'),
-                    subtitle: Text("Parcourir vos favoris"),
+                    title: Text('Favourite'),
+                    subtitle: Text("See the saved news article"),
                   ),
                 ),
                 ListTile(
@@ -123,13 +123,14 @@ class _SettingsState extends State<Settings> {
                     "assets/more/contact.png",
                     width: 30,
                   ),
-                  title: Text('Contactez-nous'),
+                  title: Text('Contact'),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       FlatButton(
+                          padding: EdgeInsets.all(0),
                           onPressed: () async {
-                            const url = 'https://icilome.com';
+                            const url = 'https://flutterblog.crumet.com';
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -137,12 +138,13 @@ class _SettingsState extends State<Settings> {
                             }
                           },
                           child: Text(
-                            "https://icilome.com",
+                            "flutterblog.crumet.com",
                             style: TextStyle(color: Colors.black54),
                           )),
                       FlatButton(
+                          padding: EdgeInsets.all(0),
                           onPressed: () async {
-                            const url = 'mailto:info@icilome.com';
+                            const url = 'mailto:info@crumet.com';
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -150,7 +152,7 @@ class _SettingsState extends State<Settings> {
                             }
                           },
                           child: Text(
-                            "info@icilome.com",
+                            "info@crumet.com",
                             style: TextStyle(color: Colors.black54),
                           )),
                     ],
@@ -158,15 +160,16 @@ class _SettingsState extends State<Settings> {
                 ),
                 InkWell(
                   onTap: () {
-                    Share.share('Visitez iciLome: https://icilome.com');
+                    Share.share(
+                        'Check out our blog: https://flutterblog.crumet.com');
                   },
                   child: ListTile(
                     leading: Image.asset(
                       "assets/more/share.png",
                       width: 30,
                     ),
-                    title: Text('Partager'),
-                    subtitle: Text("Spread the words of Icilome"),
+                    title: Text('Share'),
+                    subtitle: Text("Spread the words of flutter blog crumet"),
                   ),
                 ),
                 ListTile(
@@ -175,8 +178,8 @@ class _SettingsState extends State<Settings> {
                     width: 30,
                   ),
                   isThreeLine: true,
-                  title: Text('Alerte'),
-                  subtitle: Text("Changer vos préférences"),
+                  title: Text('Notification'),
+                  subtitle: Text("Change notification preference"),
                   trailing: Switch(
                       onChanged: (val) async {
                         await saveNotificationSetting(val);

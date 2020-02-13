@@ -165,7 +165,7 @@ class _CategoriesState extends State<Categories> {
             child: Loading(
                 indicator: BallBeatIndicator(),
                 size: 60.0,
-                color: Colors.redAccent));
+                color: Theme.of(context).accentColor));
       },
     );
   }

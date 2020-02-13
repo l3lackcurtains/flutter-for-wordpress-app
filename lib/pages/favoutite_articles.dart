@@ -32,7 +32,7 @@ class _FavouriteArticlesState extends State<FavouriteArticles> {
             Navigator.of(context).pop();
           },
         ),
-        title: Text("Favourite Articles",
+        title: Text("Favourite",
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.black,
@@ -84,7 +84,7 @@ class _FavouriteArticlesState extends State<FavouriteArticles> {
           child: Loading(
               indicator: BallBeatIndicator(),
               size: 60.0,
-              color: Colors.redAccent),
+              color: Theme.of(context).accentColor),
         );
       },
     );

@@ -201,7 +201,7 @@ class _SearchState extends State<Search> {
                       child: Loading(
                           indicator: BallBeatIndicator(),
                           size: 60.0,
-                          color: Colors.redAccent))
+                          color: Theme.of(context).accentColor))
                   : Container()
             ],
           );

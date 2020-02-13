@@ -6,7 +6,6 @@ import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/single_Article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
-import 'package:flutter_wordpress_app/widgets/articleBoxFeatured.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -20,8 +19,6 @@ class _LocalArticlesState extends State<LocalArticles> {
   List<dynamic> articles = [];
   Future<List<dynamic>> _futureArticles;
 
-  List<dynamic> featuredArticles = [];
-  Future<List<dynamic>> _futureFeaturedArticles;
   ScrollController _controller;
   int page = 1;
   bool _infiniteStop;
@@ -30,7 +27,6 @@ class _LocalArticlesState extends State<LocalArticles> {
   void initState() {
     super.initState();
     _futureArticles = fetchLocalArticles(1);
-    _futureFeaturedArticles = fetchFeaturedArticles(1);
     _controller =
         ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
     _controller.addListener(_scrollListener);
@@ -46,7 +42,7 @@ class _LocalArticlesState extends State<LocalArticles> {
   Future<List<dynamic>> fetchLocalArticles(int page) async {
     try {
       http.Response response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts/?tags_exclude[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          "$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$PAGE2_CATEGORY_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -72,33 +68,6 @@ class _LocalArticlesState extends State<LocalArticles> {
     return articles;
   }
 
-  Future<List<dynamic>> fetchFeaturedArticles(int page) async {
-    try {
-      var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts/?tags[]=140&categories[]=94&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
-
-      if (this.mounted) {
-        if (response.statusCode == 200) {
-          setState(() {
-            featuredArticles.addAll(json
-                .decode(response.body)
-                .map((m) => Article.fromJson(m))
-                .toList());
-          });
-
-          return featuredArticles;
-        } else {
-          setState(() {
-            _infiniteStop = true;
-          });
-        }
-      }
-    } on SocketException {
-      throw 'No Internet connection';
-    }
-    return featuredArticles;
-  }
-
   _scrollListener() {
     var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange;
@@ -117,7 +86,7 @@ class _LocalArticlesState extends State<LocalArticles> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "National",
+          PAGE2_CATEGORY_NAME,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -134,7 +103,6 @@ class _LocalArticlesState extends State<LocalArticles> {
             controller: _controller,
             child: Column(
               children: <Widget>[
-                featuredPost(_futureFeaturedArticles),
                 categoryPosts(_futureArticles),
               ],
             )),
@@ -172,7 +140,7 @@ class _LocalArticlesState extends State<LocalArticles> {
                       child: Loading(
                           indicator: BallBeatIndicator(),
                           size: 60.0,
-                          color: Colors.redAccent))
+                          color: Theme.of(context).accentColor))
                   : Container()
             ],
           );
@@ -188,66 +156,6 @@ class _LocalArticlesState extends State<LocalArticles> {
                 size: 60.0,
                 color: Theme.of(context).accentColor));
       },
-    );
-  }
-
-  Widget featuredPost(Future<List<dynamic>> featuredArticles) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: FutureBuilder<List<dynamic>>(
-        future: featuredArticles,
-        builder: (context, articleSnapshot) {
-          if (articleSnapshot.hasData) {
-            if (articleSnapshot.data.length == 0) return Container();
-            return Row(
-                children: articleSnapshot.data.map((item) {
-              final heroId = item.id.toString() + "-featured";
-              return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SingleArticle(item, heroId),
-                      ),
-                    );
-                  },
-                  child: articleBoxFeatured(context, item, heroId));
-            }).toList());
-          } else if (articleSnapshot.hasError) {
-            return Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(0, 60, 0, 0),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: <Widget>[
-                  Image.asset(
-                    "assets/no-internet.png",
-                    width: 250,
-                  ),
-                  Text("No Internet Connection."),
-                  FlatButton.icon(
-                    icon: Icon(Icons.refresh),
-                    label: Text("Reload"),
-                    onPressed: () {
-                      _futureArticles = fetchLocalArticles(1);
-                      _futureFeaturedArticles = fetchFeaturedArticles(1);
-                    },
-                  )
-                ],
-              ),
-            );
-          }
-          return Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: 280,
-              child: Loading(
-                  indicator: BallBeatIndicator(),
-                  size: 60.0,
-                  color: Theme.of(context).accentColor));
-        },
-      ),
     );
   }
 }

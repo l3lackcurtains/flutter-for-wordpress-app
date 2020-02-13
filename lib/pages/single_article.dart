@@ -7,7 +7,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:flutter_wordpress_app/blocs/favArticleBloc.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
-import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/comments.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
@@ -321,11 +320,9 @@ class _SingleArticleState extends State<SingleArticle> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Comments(),
-                            fullscreenDialog: true,
-                            settings: RouteSettings(
-                              arguments: CommentScreenArguments(article.id),
-                            )));
+                          builder: (context) => Comments(article.id),
+                          fullscreenDialog: true,
+                        ));
                   },
                 ),
               ),
@@ -338,7 +335,7 @@ class _SingleArticleState extends State<SingleArticle> {
                     size: 24.0,
                   ),
                   onPressed: () {
-                    Share.share('Visitez iciLome: ' + article.link);
+                    Share.share('Share the news: ' + article.link);
                   },
                 ),
               ),
@@ -361,7 +358,7 @@ class _SingleArticleState extends State<SingleArticle> {
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  "Autres sujets",
+                  "Related Posts",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontSize: 18,
