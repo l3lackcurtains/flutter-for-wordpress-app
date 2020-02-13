@@ -73,7 +73,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts/?tags=140&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          "$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$FEATURED_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -165,7 +165,7 @@ class _ArticlesState extends State<Articles> {
                       child: Loading(
                           indicator: BallBeatIndicator(),
                           size: 60.0,
-                          color: Colors.redAccent))
+                          color: Theme.of(context).accentColor))
                   : Container()
             ],
           );

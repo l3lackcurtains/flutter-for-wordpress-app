@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
-import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 import 'package:flutter_wordpress_app/models/Comment.dart';
 import 'package:flutter_wordpress_app/widgets/commentBox.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +31,9 @@ Future<List<dynamic>> fetchComments(int id) async {
 }
 
 class Comments extends StatefulWidget {
+  final int commentId;
+
+  Comments(this.commentId, {Key key}) : super(key: key);
   @override
   _CommentsState createState() => _CommentsState();
 }
@@ -39,8 +41,7 @@ class Comments extends StatefulWidget {
 class _CommentsState extends State<Comments> {
   @override
   Widget build(BuildContext context) {
-    final CommentScreenArguments args =
-        ModalRoute.of(context).settings.arguments;
+    int commentId = widget.commentId;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,7 +64,7 @@ class _CommentsState extends State<Comments> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-              children: <Widget>[commentSection(fetchComments(args.id))]),
+              children: <Widget>[commentSection(fetchComments(commentId))]),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -71,14 +72,12 @@ class _CommentsState extends State<Comments> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddComment(),
-                  fullscreenDialog: true,
-                  settings: RouteSettings(
-                    arguments: CommentScreenArguments(args.id),
-                  )));
+                builder: (context) => AddComment(commentId),
+                fullscreenDialog: true,
+              ));
         },
         child: Icon(Icons.add_comment),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
@@ -117,7 +116,7 @@ Widget commentSection(Future<List<dynamic>> comments) {
         child: Loading(
             indicator: BallBeatIndicator(),
             size: 60.0,
-            color: Colors.redAccent),
+            color: Theme.of(context).accentColor),
       );
     },
   );

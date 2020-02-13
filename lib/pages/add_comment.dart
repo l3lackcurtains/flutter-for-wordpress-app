@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
-import 'package:flutter_wordpress_app/common/screen_arguments.dart';
 
 Future<bool> postComment(
     int id, String name, String email, String website, String comment) async {
@@ -28,6 +27,9 @@ Future<bool> postComment(
 }
 
 class AddComment extends StatefulWidget {
+  final int commentId;
+
+  AddComment(this.commentId, {Key key}) : super(key: key);
   @override
   _AddCommentState createState() => _AddCommentState();
 }
@@ -42,8 +44,9 @@ class _AddCommentState extends State<AddComment> {
 
   @override
   Widget build(BuildContext context) {
-    final CommentScreenArguments args =
-        ModalRoute.of(context).settings.arguments;
+    int commentId = widget.commentId;
+    print(commentId);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -131,12 +134,12 @@ class _AddCommentState extends State<AddComment> {
                           Icons.check,
                           color: Colors.white,
                         ),
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).primaryColor,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            postComment(
-                                    args.id, _name, _email, _website, _comment)
+                            postComment(commentId, _name, _email, _website,
+                                    _comment)
                                 .then((back) {
                               if (back) {
                                 Navigator.of(context).pop();

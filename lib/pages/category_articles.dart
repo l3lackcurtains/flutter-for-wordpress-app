@@ -146,7 +146,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
                       child: Loading(
                           indicator: BallBeatIndicator(),
                           size: 60.0,
-                          color: Colors.redAccent))
+                          color: Theme.of(context).accentColor))
                   : Container()
             ],
           );
@@ -162,7 +162,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
           child: Loading(
               indicator: BallBeatIndicator(),
               size: 60.0,
-              color: Colors.redAccent),
+              color: Theme.of(context).accentColor),
         );
       },
     );

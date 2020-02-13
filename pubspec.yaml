@@ -4,7 +4,7 @@ description: Flutter news app for wordpress platform
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -45,25 +45,18 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo.png
     - assets/icon.png
     - assets/no-internet.png
     - assets/play-button.png
-    - assets/boxed/A-ne-pas-manquer.png
-    - assets/boxed/buzz.png
-    - assets/boxed/conseil-des-ministres.png
-    - assets/boxed/economie.png
-    - assets/boxed/English.png
-    - assets/boxed/faits-divers.png
-    - assets/boxed/opinion.png
-    - assets/boxed/politic.png
-    - assets/boxed/revue-de-presse.png
-    - assets/boxed/sante.png
+    - assets/boxed/fashion.png
+    - assets/boxed/health.png
+    - assets/boxed/lifestyle.png
+    - assets/boxed/music.png
+    - assets/boxed/photography.png
+    - assets/boxed/recipies.png
     - assets/boxed/sport.png
-    - assets/boxed/benin.png
-    - assets/boxed/society.png
-    - assets/boxed/international.png
-    - assets/boxed/diplomatie.png
+    - assets/boxed/travel.png
+    - assets/boxed/world.png
     - assets/more/favourite.png
     - assets/more/contact.png
     - assets/more/share.png

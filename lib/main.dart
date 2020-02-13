@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/pages/articles.dart';
 import 'package:flutter_wordpress_app/pages/categories.dart';
 import 'package:flutter_wordpress_app/pages/local_articles.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Icilome',
         theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: Colors.blue.shade500,
+          primaryColor: Color(0xFF385C7B),
           accentColor: Color(0xFFE74C3C),
           textTheme: TextTheme(
               title: TextStyle(
@@ -119,7 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home), title: Text('Home')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.broken_image), title: Text('National')),
+                icon: Icon(Icons.broken_image),
+                title: Text(PAGE2_CATEGORY_NAME)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.category), title: Text('Categories')),
             BottomNavigationBarItem(
@@ -128,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.menu), title: Text('More')),
           ],
           currentIndex: _selectedIndex,
-          fixedColor: Theme.of(context).accentColor,
+          fixedColor: Theme.of(context).primaryColor,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed),
     );
