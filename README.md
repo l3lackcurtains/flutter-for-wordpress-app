@@ -35,8 +35,6 @@ function flutter_news_rest_prepare_post($data, $post, $request)
     $_data['custom']["author"]["name"]   = get_author_name($_data['author']);
     $_data['custom']["author"]["avatar"] = get_avatar_url($_data['author']);
 	
-	
-	// Category
 	$categories = get_the_category($_data["id"]);
 	$_data['custom']["categories"] = $categories;
     
@@ -80,6 +78,18 @@ const List<dynamic> CUSTOM_CATEGORIES = [
   ["Recipies", "assets/boxed/recipies.png", 10],
 ];
 ```
+
+## Push Notification (Optional)
+
+This project uses firebase messenging for push notification.
+
+To integrate push notification from firebase follow the steps:
+- Go to firebase console
+- Generate and Download **google-services.json** file
+- Place **google-services.json** file inside android/app
+- It should be ready now. Test your push notification.
+
+For further instruction read documentation from https://pub.dev/packages/firebase_messaging
 
 # Screenshots
 

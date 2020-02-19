@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.icilome.mobile.app"
+        applicationId "com.flutter.wp.news.app"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
