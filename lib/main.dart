@@ -118,8 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.home), title: Text('Home')),
             BottomNavigationBarItem(
-                icon: Icon(Icons.broken_image),
-                title: Text(PAGE2_CATEGORY_NAME)),
+                icon: Icon(Icons.flare), title: Text(PAGE2_CATEGORY_NAME)),
             BottomNavigationBarItem(
                 icon: Icon(Icons.category), title: Text('Categories')),
             BottomNavigationBarItem(

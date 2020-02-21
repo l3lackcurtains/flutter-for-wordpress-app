@@ -1,7 +1,7 @@
 name: flutter_wordpress_app
 description: Flutter news app for wordpress platform
 
-version: 1.0.0+1
+version: 1.0.0+4
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -66,24 +66,9 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: fonts/Poppins/Poppins-Black.ttf
-        - asset: fonts/Poppins/Poppins-ExtraBold.ttf
-        - asset: fonts/Poppins/Poppins-ExtraLight.ttf
-        - asset: fonts/Poppins/Poppins-Light.ttf
-        - asset: fonts/Poppins/Poppins-Medium.ttf
-        - asset: fonts/Poppins/Poppins-SemiBold.ttf
-        - asset: fonts/Poppins/Poppins-Regular.ttf
         - asset: fonts/Poppins/Poppins-Bold.ttf
   
     - family: Soleil
       fonts:
-        - asset: fonts/Soleil/Soleil-Bold-italic.otf
         - asset: fonts/Soleil/Soleil-Bold.otf
-        - asset: fonts/Soleil/Soleil-ExtraBold-italic.otf
-        - asset: fonts/Soleil/Soleil-ExtraBold.otf
-        - asset: fonts/Soleil/Soleil-italic.otf
-        - asset: fonts/Soleil/Soleil-Light-italic.otf
-        - asset: fonts/Soleil/Soleil-Light.otf
         - asset: fonts/Soleil/Soleil-Regular.otf
-        - asset: fonts/Soleil/Soleil-SemiBold-italic.otf
-        - asset: fonts/Soleil/Soleil-SemiBold.otf
