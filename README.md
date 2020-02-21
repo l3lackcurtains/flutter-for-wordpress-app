@@ -6,7 +6,7 @@
 
 A flutter app for a wordpress based news website (https://flutterblog.crumet.com/).
 
-<img href="https://play.google.com/store/apps/details?id=com.wordpress.flutter.app" src="./resources/google-play-badge.png" style="width: 250px;" />
+<img href="https://play.google.com/store/apps/details?id=com.wordpress.flutter.app" src="./resources/google-play-badge.png" style="width: 200px;" />
 
 # Installation
 You need to have a wordpress website before you implement the app.
