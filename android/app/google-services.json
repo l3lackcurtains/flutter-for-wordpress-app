@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "305862062761",
+    "firebase_url": "https://flutter-wp-965b2.firebaseio.com",
+    "project_id": "flutter-wp-965b2",
+    "storage_bucket": "flutter-wp-965b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305862062761:android:94a3bb9714777406026fb8",
+        "android_client_info": {
+          "package_name": "com.wordpress.flutter.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305862062761-pu6ftpgt3be89eu1f03537acp44p0m2d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnap03TddsJIJFA6RQAiiah-FwR1z8fzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305862062761-pu6ftpgt3be89eu1f03537acp44p0m2d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

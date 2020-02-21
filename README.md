@@ -1,8 +1,12 @@
 [![Codemagic build status](https://api.codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/status_badge.svg)](https://codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/latest_build)
 
-# Flutter Wordpress News App
+# Flutter For Wordpress
 
-A flutter app for a wordpress based news website (https://flutterblog.crumet.com/). 
+![alt text](resources/banner.png "Banner")
+
+A flutter app for a wordpress based news website (https://flutterblog.crumet.com/).
+
+<img href="https://play.google.com/store/apps/details?id=com.wordpress.flutter.app" src="./resources/google-play-badge.png" style="width: 250px;" />
 
 # Installation
 You need to have a wordpress website before you implement the app.
