@@ -1,28 +1,27 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
+import 'package:http/http.dart' as http;
 
 Future<bool> postComment(
     int id, String name, String email, String website, String comment) async {
   try {
-    Dio dio = new Dio();
-    Response response =
-        await dio.post("$WORDPRESS_URL/wp-json/wp/v2/comments", data: {
-      "author_email": email,
+    var response =
+        await http.post("$WORDPRESS_URL/wp-json/wp/v2/comments", body: {
+      "author_email": email.trim().toLowerCase(),
       "author_name": name,
       "author_website": website,
       "content": comment,
-      "post": id
+      "post": id.toString()
     });
 
-    if (response != null) {
+    if (response.statusCode == 201) {
       return true;
     }
     return false;
   } catch (e) {
-    throw Exception('Failed to load posts');
+    throw Exception('Failed to post comment');
   }
 }
 
@@ -45,120 +44,128 @@ class _AddCommentState extends State<AddComment> {
   @override
   Widget build(BuildContext context) {
     int commentId = widget.commentId;
-    print(commentId);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text('Add Comment',
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                fontFamily: 'Poppins')),
-        elevation: 5,
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Name *',
-                        ),
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter your name.';
-                          }
-                          return null;
-                        },
-                        onSaved: (String val) {
-                          _name = val;
-                        }),
-                    TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Email *',
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter your email.';
-                          }
-                          return null;
-                        },
-                        onSaved: (String val) {
-                          _email = val;
-                        }),
-                    TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          labelText: 'Website',
-                        ),
-                        onSaved: (String val) {
-                          _website = val;
-                        }),
-                    TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Comment *',
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Write some comment.';
-                          }
-                          return null;
-                        },
-                        onSaved: (String val) {
-                          _comment = val;
-                        }),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 36.0),
-                      height: 120,
-                      child: RaisedButton.icon(
-                        icon: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                        ),
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            postComment(commentId, _name, _email, _website,
-                                    _comment)
-                                .then((back) {
-                              if (back) {
-                                Navigator.of(context).pop();
-                              }
-                            });
-                          }
-                        },
-                        label: Text(
-                          'Send Comment',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ) // Build this out in the next steps.
-                ),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.close),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
+          title: Text('Add Comment',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontFamily: 'Poppins')),
+          elevation: 5,
+          backgroundColor: Colors.white,
         ),
-      ),
-    );
+        body: Builder(builder: (BuildContext context) {
+          return Container(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(24, 36, 24, 36),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Name *',
+                            ),
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your name.';
+                              }
+                              return null;
+                            },
+                            onSaved: (String val) {
+                              _name = val;
+                            }),
+                        TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Email *',
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your email.';
+                              }
+                              return null;
+                            },
+                            onSaved: (String val) {
+                              _email = val;
+                            }),
+                        TextFormField(
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              labelText: 'Website',
+                            ),
+                            onSaved: (String val) {
+                              _website = val;
+                            }),
+                        TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Comment *',
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 5,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Write some comment.';
+                              }
+                              return null;
+                            },
+                            onSaved: (String val) {
+                              _comment = val;
+                            }),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 36.0),
+                          height: 120,
+                          child: RaisedButton.icon(
+                            icon: Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                postComment(commentId, _name, _email, _website,
+                                        _comment)
+                                    .then((back) {
+                                  if (back) {
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    final snackBar = SnackBar(
+                                        content: Text(
+                                            'Error while posting comment. Try again.'));
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                                  }
+                                });
+                              }
+                            },
+                            label: Text(
+                              'Send Comment',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Note: Your posted comment will appear in comments section once admin approve it.",
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ) // Build this out in the next steps.
+                    ),
+              ),
+            ),
+          );
+        }));
   }
 }

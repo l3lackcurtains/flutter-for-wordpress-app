@@ -97,7 +97,6 @@ class _LocalArticlesState extends State<LocalArticles> {
         backgroundColor: Colors.white,
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             controller: _controller,
