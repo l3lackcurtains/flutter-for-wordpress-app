@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (value == 1) {
       _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-          print("onMessage: $message");
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -91,14 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         onLaunch: (Map<String, dynamic> message) async {
-          print("onLaunch: $message");
+          // print("onLaunch: $message");
         },
         onResume: (Map<String, dynamic> message) async {
-          print("onResume: $message");
+          // print("onResume: $message");
         },
       );
       _firebaseMessaging.getToken().then((token) {
-        print("Firebase Token:" + token);
+        // print("Firebase Token:" + token);
       });
     }
   }

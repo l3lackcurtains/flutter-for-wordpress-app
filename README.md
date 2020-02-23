@@ -48,6 +48,14 @@ function flutter_news_rest_prepare_post($data, $post, $request)
 }
 
 add_filter('rest_prepare_post', 'flutter_news_rest_prepare_post', 10, 3);
+
+// Enable comment without being loggedin
+function filter_rest_allow_anonymous_comments() {
+    return true;
+}
+
+add_filter('rest_allow_anonymous_comments','filter_rest_allow_anonymous_comments');
+
 ```
 
 ## Edit the constants

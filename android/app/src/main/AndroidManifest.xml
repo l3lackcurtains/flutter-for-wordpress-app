@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_wordpress_app"
+        android:label="Flutter for Wordpress"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
