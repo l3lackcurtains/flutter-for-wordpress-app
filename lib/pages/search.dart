@@ -43,7 +43,7 @@ class _SearchState extends State<Search> {
       String searchText, bool empty, int page, bool scrollUpdate) async {
     try {
       if (empty) {
-        searchText = "12g2g12vhgv2hg1v2ghv1hg2vhg1v2gh1v2"; // No posts.
+        return searchedArticles;
       }
 
       var response = await http.get(
