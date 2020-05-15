@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFF385C7B),
           accentColor: Color(0xFFE74C3C),
           textTheme: TextTheme(
-              title: TextStyle(
+              headline1: TextStyle(
                 fontSize: 17,
                 color: Colors.black,
                 height: 1.2,
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
                 fontFamily: "Soleil",
               ),
               caption: TextStyle(color: Colors.black45, fontSize: 10),
-              body1: TextStyle(
+              bodyText1: TextStyle(
                 fontSize: 16,
                 height: 1.5,
                 color: Colors.black87,

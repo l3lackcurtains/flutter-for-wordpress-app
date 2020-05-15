@@ -202,7 +202,7 @@ class _SingleArticleState extends State<SingleArticle> {
                                 case "h1":
                                   return Theme.of(context)
                                       .textTheme
-                                      .title
+                                      .headline1
                                       .merge(TextStyle(fontSize: 20));
                               }
                             }
@@ -235,20 +235,12 @@ class _SingleArticleState extends State<SingleArticle> {
                           ),
                         ),
                       ),
-                      Html(
-                          data: "<div>" + article.content + "</div>",
-                          padding: EdgeInsets.fromLTRB(16, 36, 16, 50),
-                          customTextStyle:
-                              (dom.Node node, TextStyle baseStyle) {
-                            if (node is dom.Element) {
-                              switch (node.localName) {
-                                case "div":
-                                  return baseStyle
-                                      .merge(Theme.of(context).textTheme.body1);
-                              }
-                            }
-                            return baseStyle;
-                          }),
+                      HtmlWidget(
+                        article.content,
+                        webView: true,
+                        bodyPadding: EdgeInsets.fromLTRB(16, 36, 16, 50),
+                        textStyle: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ],
                   ),
                 ),
