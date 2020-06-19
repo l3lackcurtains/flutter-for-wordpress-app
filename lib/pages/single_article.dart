@@ -122,7 +122,6 @@ class _SingleArticleState extends State<SingleArticle> {
                                       <iframe src="https://www.youtube.com/embed/$youtubeUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                       """,
                                           webView: true,
-                                          bodyPadding: EdgeInsets.all(0),
                                         ),
                                       )
                                     : articleVideo.contains("dailymotion")
@@ -144,7 +143,6 @@ class _SingleArticleState extends State<SingleArticle> {
                                       </iframe>
                                       """,
                                               webView: true,
-                                              bodyPadding: EdgeInsets.all(0),
                                             ),
                                           )
                                         : Container(
@@ -164,7 +162,6 @@ class _SingleArticleState extends State<SingleArticle> {
                                       </video>
                                       """,
                                               webView: true,
-                                              bodyPadding: EdgeInsets.all(0),
                                             ),
                                           )
                                 : Image.network(
@@ -235,11 +232,13 @@ class _SingleArticleState extends State<SingleArticle> {
                           ),
                         ),
                       ),
-                      HtmlWidget(
-                        article.content,
-                        webView: true,
-                        bodyPadding: EdgeInsets.fromLTRB(16, 36, 16, 50),
-                        textStyle: Theme.of(context).textTheme.bodyText1,
+                      Container(
+                        padding: EdgeInsets.fromLTRB(16, 36, 16, 50),
+                        child: HtmlWidget(
+                          article.content,
+                          webView: true,
+                          textStyle: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ],
                   ),
