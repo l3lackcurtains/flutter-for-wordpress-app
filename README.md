@@ -21,12 +21,7 @@ Update the wordpress **functions.php** file on your theme by appending the follo
 function flutter_news_rest_prepare_post($data, $post, $request)
 {
     $_data = $data->data;
-    $video = get_post_meta($post->ID, 'td_post_video', true);
-    if ($video) {
-        $_data["custom"] = get_post_meta($post->ID, 'td_post_video', true);
-    } else {
-        $_data["custom"]["td_video"] = "";
-    }
+    $_data["custom"]["td_video"] = get_post_meta($post->ID, 'td_post_video', true) ?? '';
     $featured_image_id  = $_data['featured_media'];
     $featured_image_url = get_the_post_thumbnail_url($post->ID, "original");
     
