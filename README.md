@@ -1,6 +1,6 @@
 [![Codemagic build status](https://api.codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/status_badge.svg)](https://codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/latest_build)
 
-# Flutter For Wordpress
+# Flutter For WordPress
 
 ![alt text](resources/banner.png "Banner")
 
@@ -11,34 +11,28 @@ A flutter app for a wordpress based news website (https://flutterblog.crumet.com
 # Installation
 You need to have a wordpress website before you implement the app.
 
-If you have wordpress website already then follow the simple steps given below to build your own **Wordpress Flutter App**.
+If you have a wordpress website already then follow the simple steps given below to build your own **Wordpress Flutter App**.
 
-## Edit your wordpress theme
+## Install a wordpress plugin
+
+Install [Flutter for wordpress (wp plugin)](https://github.com/l3lackcurtains/flutter-for-wordpress-wp-plugin/releases) in your wordpress website before you build a mobile application. This plugin is important for the enhancement of the performance in the app. Always keep this plugin active for the mobile app to run smoothly.
+
+If you do not want to install the plugin then you can edit the functions.php file in child theme.
+
+
+## Edit your wordpress theme (Skip if plugin installed)
 
 Update the wordpress **functions.php** file on your theme by appending the following code at the end. The app will not function correctly if this step is not followed.
 
 ```php
-function flutter_news_rest_prepare_post($data, $post, $request)
-{
+function flutter_news_rest_prepare_post($data, $post, $request) {
     $_data = $data->data;
     $_data["custom"]["td_video"] = get_post_meta($post->ID, 'td_post_video', true) ?? '';
-    $featured_image_id  = $_data['featured_media'];
-    $featured_image_url = get_the_post_thumbnail_url($post->ID, "original");
-    
-    if ($featured_image_url) {
-        $_data['custom']["featured_image"] = $featured_image_url;
-    } else {
-        $_data['custom']["featured_image"] = "";
-    }
-    
+    $_data['custom']["featured_image"] = get_the_post_thumbnail_url($post->ID, "original") ?? '';
     $_data['custom']["author"]["name"]   = get_author_name($_data['author']);
     $_data['custom']["author"]["avatar"] = get_avatar_url($_data['author']);
-	
-	$categories = get_the_category($_data["id"]);
-	$_data['custom']["categories"] = $categories;
-    
+    $_data['custom']["categories"] = get_the_category($_data["id"]);
     $data->data = $_data;
-    
     return $data;
 }
 
@@ -88,7 +82,7 @@ const List<dynamic> CUSTOM_CATEGORIES = [
 
 ## Push Notification (Optional)
 
-This project uses firebase messenging for push notification.
+This project uses firebase messaging for push notification.
 
 To integrate push notification from firebase follow the steps:
 - Go to firebase console
