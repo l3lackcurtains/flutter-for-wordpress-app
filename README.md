@@ -30,7 +30,6 @@ You need to have a wordpress website before you implement the app.
 If you have a wordpress website already then follow the simple steps given below to build your own **Wordpress Flutter App**.
 
 ### 🔥 Install a wordpress plugin
-----------------------------
 
 Install [Flutter for wordpress (wp plugin)](https://github.com/l3lackcurtains/flutter-for-wordpress-wp-plugin/releases) in your wordpress website before you build a mobile application. This plugin is important for the enhancement of the performance in the app. Always keep this plugin active for the mobile app to run smoothly.
 
@@ -38,7 +37,7 @@ If you do not want to install the plugin then you can edit the functions.php fil
 
 
 ### 📌 Edit your wordpress theme (Skip if plugin installed)
-----------------------------
+
 Update the wordpress **functions.php** file on your theme by appending the following code at the end. The app will not function correctly if this step is not followed.
 
 ```php
@@ -65,7 +64,7 @@ add_filter('rest_allow_anonymous_comments','filter_rest_allow_anonymous_comments
 ```
 
 ### 🔨 Edit the constants
-----------------------------
+
 Change the constants from the **./lib/common/constants.dart** file. For the categories name and ID refer to your wordpress website.
 
 ```dart
@@ -98,7 +97,7 @@ const List<dynamic> CUSTOM_CATEGORIES = [
 ```
 
 ### 🔔 Push Notification (Optional)
-----------------------------
+
 This project uses firebase messaging for push notification.
 
 To integrate push notification from firebase follow the steps:
