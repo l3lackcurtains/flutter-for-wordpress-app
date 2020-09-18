@@ -1,10 +1,18 @@
+<div align="center">
+  <img src="resources/icon.png" alt="Daily Logo" width="150">
+  <h1>Flutter for Wordpress</h1>
+  <strong>A flutter app for a wordpress websites with clean and elegant design. This app is available in free and pro version. You can choose to use the one you need.</strong>
+</div>
+<br>
+
 [![Codemagic build status](https://api.codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/status_badge.svg)](https://codemagic.io/apps/5dda7273011bc91bb5e1e928/5dda7273011bc91bb5e1e927/latest_build)
 
-# Flutter For WordPress
 
 ![alt text](resources/banner.png "Banner")
 
-A flutter app for a wordpress websites with clean and elegant design. This app is available in free and pro version. You can choose to use the one you need.
+## 📌 Get Flutter for Wordpress
+
+Flutter for wordpress is currently available in free and pro version:
 
 |Flutter for Wordpress|Flutter for Wordpress Pro|
 |---|---|
@@ -15,20 +23,22 @@ A flutter app for a wordpress websites with clean and elegant design. This app i
 |<p align="center">[![alt text](resources/button_download.png "Download")](https://github.com/l3lackcurtains/Flutter-for-Wordpress-App/releases)<p>|<p align="center">[![alt text](resources/button_purchase.png "Purchase")](https://codecanyon.net/item/flutter-for-wordpress-pro/27977169)</p>|
 
 
-# Installation
+# 🚀 Installation
+
 You need to have a wordpress website before you implement the app.
 
 If you have a wordpress website already then follow the simple steps given below to build your own **Wordpress Flutter App**.
 
-## Install a wordpress plugin
+### 🔥 Install a wordpress plugin
+----------------------------
 
 Install [Flutter for wordpress (wp plugin)](https://github.com/l3lackcurtains/flutter-for-wordpress-wp-plugin/releases) in your wordpress website before you build a mobile application. This plugin is important for the enhancement of the performance in the app. Always keep this plugin active for the mobile app to run smoothly.
 
 If you do not want to install the plugin then you can edit the functions.php file in child theme.
 
 
-## Edit your wordpress theme (Skip if plugin installed)
-
+### 📌 Edit your wordpress theme (Skip if plugin installed)
+----------------------------
 Update the wordpress **functions.php** file on your theme by appending the following code at the end. The app will not function correctly if this step is not followed.
 
 ```php
@@ -54,8 +64,8 @@ add_filter('rest_allow_anonymous_comments','filter_rest_allow_anonymous_comments
 
 ```
 
-## Edit the constants
-
+### 🔨 Edit the constants
+----------------------------
 Change the constants from the **./lib/common/constants.dart** file. For the categories name and ID refer to your wordpress website.
 
 ```dart
@@ -87,8 +97,8 @@ const List<dynamic> CUSTOM_CATEGORIES = [
 ];
 ```
 
-## Push Notification (Optional)
-
+### 🔔 Push Notification (Optional)
+----------------------------
 This project uses firebase messaging for push notification.
 
 To integrate push notification from firebase follow the steps:
@@ -99,7 +109,7 @@ To integrate push notification from firebase follow the steps:
 
 For further instruction read documentation from https://pub.dev/packages/firebase_messaging
 
-# Screenshots
+## 📱 Screenshots
 
 |   |   |   |
 |---|---|---|
@@ -108,6 +118,14 @@ For further instruction read documentation from https://pub.dev/packages/firebas
 |![alt text](resources/Screenshot_7.png "Screenshot 7")|![alt text](resources/Screenshot_8.png "Screenshot 8")|![alt text](resources/Screenshot_9.png "Screenshot 9")|
 |![alt text](resources/Screenshot_10.png "Screenshot 10")|![alt text](resources/Screenshot_11.png "Screenshot 11")|![alt text](resources/Screenshot_12.png "Screenshot 12")|
 
-# LICENCE
+## 🙌 Want to Contribute?
+
+We are open to all kinds of contributions. If you want to:
+* 🤔 Suggest a feature
+* 🐛 Report an issue
+* 👨‍💻 Contribute to the code
+
+
+## 📑 LICENCE
 
 Released under the [MIT](./LICENSE) License.<br>
