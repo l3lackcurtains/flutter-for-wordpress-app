@@ -173,13 +173,14 @@ class _ArticlesState extends State<Articles> {
           return Container();
         }
         return Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            height: 150,
-            child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 60.0,
-                color: Theme.of(context).accentColor));
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          height: 150,
+          child: Loading(
+              indicator: BallBeatIndicator(),
+              size: 60.0,
+              color: Theme.of(context).accentColor),
+        );
       },
     );
   }

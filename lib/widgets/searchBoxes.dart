@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/pages/category_articles.dart';
@@ -28,7 +29,20 @@ Widget searchBoxes(BuildContext context) {
             padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
             child: Column(
               children: <Widget>[
-                SizedBox(width: 100, height: 45, child: Image.asset(image)),
+                SizedBox(
+                  width: 100,
+                  height: 45,
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "https://res.cloudinary.com/demo/image/fetch/h_600,q_auto:best/" +
+                            image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
                 Spacer(),
                 Text(
                   name,

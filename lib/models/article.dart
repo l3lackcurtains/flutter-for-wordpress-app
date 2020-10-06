@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 class Article {
   final int id;
+  final int commentsNumber;
   final String title;
   final String content;
   final String image;
@@ -24,10 +25,12 @@ class Article {
       this.category,
       this.date,
       this.link,
-      this.catId});
+      this.catId,
+      this.commentsNumber});
 
   factory Article.fromJson(Map<String, dynamic> json) {
-    String content = json['content'] != null ? json['content']['rendered'] : "";
+    // print(json['custom']['comments_number']);
+    String content = json['content'] != null ? json['custom']['content'] : "";
 
     String image = json['custom']["featured_image"] != ""
         ? json['custom']["featured_image"]
@@ -47,22 +50,26 @@ class Article {
         ? json["custom"]["categories"][0]["cat_ID"]
         : 0;
 
+    int commentNumber = json['custom']['comments_number'];
+
     String date = DateFormat('dd MMMM, yyyy', 'en_US')
         .format(DateTime.parse(json["date"]))
         .toString();
 
     return Article(
-        id: json['id'],
-        title: json['title']['rendered'],
-        content: content,
-        image: image,
-        video: video,
-        author: author,
-        avatar: avatar,
-        category: category,
-        date: date,
-        link: json["link"],
-        catId: catId);
+      id: json['id'],
+      title: json['title']['rendered'],
+      content: content,
+      image: image,
+      video: video,
+      author: author,
+      avatar: avatar,
+      category: category,
+      date: date,
+      link: json["link"],
+      catId: catId,
+      commentsNumber: commentNumber,
+    );
   }
 
   factory Article.fromDatabaseJson(Map<String, dynamic> data) => Article(
@@ -76,7 +83,8 @@ class Article {
       category: data['category'],
       date: data['date'],
       link: data['link'],
-      catId: data["catId"]);
+      catId: data["catId"],
+      commentsNumber: data['commentNumber']);
 
   Map<String, dynamic> toDatabaseJson() => {
         'id': this.id,
@@ -89,6 +97,7 @@ class Article {
         'category': this.category,
         'date': this.date,
         'link': this.link,
-        'catId': this.catId
+        'catId': this.catId,
+        'commentNumber': this.commentsNumber
       };
 }

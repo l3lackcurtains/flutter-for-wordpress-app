@@ -2,15 +2,18 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:flutter_wordpress_app/blocs/favArticleBloc.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/comments.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
-import 'package:html/dom.dart' as dom;
+//import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -48,7 +51,7 @@ class _SingleArticleState extends State<SingleArticle> {
       int postId = widget.article.id;
       int catId = widget.article.catId;
       var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
+          "$WORDPRESS_URL/wp-json/wp/v2/posts?_embed&exclude=$postId&categories[]=$catId&per_page=3");
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -81,6 +84,7 @@ class _SingleArticleState extends State<SingleArticle> {
     final articleVideo = widget.article.video;
     String youtubeUrl = "";
     String dailymotionUrl = "";
+    int cartCount = article.commentsNumber;
     if (articleVideo.contains("youtube")) {
       youtubeUrl = articleVideo.split('?v=')[1];
     }
@@ -164,9 +168,23 @@ class _SingleArticleState extends State<SingleArticle> {
                                               webView: true,
                                             ),
                                           )
-                                : Image.network(
-                                    article.image,
-                                    fit: BoxFit.cover,
+                                : CachedNetworkImage(
+                                    imageUrl:
+                                        "https://res.cloudinary.com/demo/image/fetch/h_600,q_auto:best/" +
+                                            article.image,
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) =>
+                                            Container(
+                                      alignment: Alignment.center,
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 150,
+                                      child: Loading(
+                                          indicator: BallBeatIndicator(),
+                                          size: 60.0,
+                                          color: Theme.of(context).accentColor),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
                                   ),
                           ),
                         ),
@@ -190,21 +208,12 @@ class _SingleArticleState extends State<SingleArticle> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Html(
-                          data: "<h1>" + article.title + "</h1>",
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                          customTextStyle:
-                              (dom.Node node, TextStyle baseStyle) {
-                            if (node is dom.Element) {
-                              switch (node.localName) {
-                                case "h1":
-                                  return Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .merge(TextStyle(fontSize: 20));
-                              }
-                            }
-                            return baseStyle;
-                          }),
+                        data: "<h1>" + article.title + "</h1>",
+                        style: {
+                          "h1": Style(
+                              color: Colors.black, fontSize: FontSize.xLarge),
+                        },
+                      ),
                       Container(
                         decoration: BoxDecoration(
                             color: Color(0xFFE3E3E3),
@@ -302,11 +311,26 @@ class _SingleArticleState extends State<SingleArticle> {
               Container(
                 child: IconButton(
                   padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.comment,
-                    color: Colors.blue,
-                    size: 24.0,
-                  ),
+                  icon: cartCount > 0
+                      ? Badge(
+                          badgeColor: Colors.red,
+                          padding: EdgeInsets.all(3),
+                          animationType: BadgeAnimationType.slide,
+                          shape: BadgeShape.circle,
+                          badgeContent: Text(cartCount.toString()),
+                          child: Icon(Icons.comment,
+                              color: Colors.blue, size: 24.0),
+                        )
+                      : Icon(
+                          Icons.comment,
+                          color: Colors.blue,
+                          size: 24.0,
+                        ),
+                  // Icon(
+                  //   Icons.comment,
+                  //   color: Colors.blue,
+                  //   size: 24.0,
+                  // ),
                   onPressed: () {
                     Navigator.push(
                         context,

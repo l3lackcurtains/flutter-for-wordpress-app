@@ -43,6 +43,7 @@ Update the wordpress **functions.php** file on your theme by appending the follo
 ```php
 function flutter_news_rest_prepare_post($data, $post, $request) {
     $_data = $data->data;
+    $_data["custom"]["comments_number"] = get_comments_number($post->ID);
     $_data["custom"]["td_video"] = get_post_meta($post->ID, 'td_post_video', true) ?? '';
     $_data['custom']["featured_image"] = get_the_post_thumbnail_url($post->ID, "original") ?? '';
     $_data['custom']["author"]["name"]   = get_author_name($_data['author']);

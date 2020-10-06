@@ -14,8 +14,9 @@ import 'add_comment.dart';
 
 Future<List<dynamic>> fetchComments(int id) async {
   try {
-    var response = await http
-        .get("$WORDPRESS_URL/wp-json/wp/v2/comments?post=" + id.toString());
+    var response = await http.get(
+        "$WORDPRESS_URL/wp-json/wp/v2/comments?per_page=100&post=" +
+            id.toString());
 
     if (response.statusCode == 200) {
       return json
@@ -41,7 +42,7 @@ class Comments extends StatefulWidget {
 class _CommentsState extends State<Comments> {
   @override
   Widget build(BuildContext context) {
-    int commentId = widget.commentId;
+    int postId = widget.commentId;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,8 +64,8 @@ class _CommentsState extends State<Comments> {
       body: Container(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Column(
-              children: <Widget>[commentSection(fetchComments(commentId))]),
+          child:
+              Column(children: <Widget>[commentSection(fetchComments(postId))]),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -72,7 +73,7 @@ class _CommentsState extends State<Comments> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddComment(commentId),
+                builder: (context) => AddComment(postId),
                 fullscreenDialog: true,
               ));
         },
@@ -100,8 +101,16 @@ Widget commentSection(Future<List<dynamic>> comments) {
         return Column(
             children: commentSnapshot.data.map((item) {
           return InkWell(
-            onTap: () {},
-            child: commentBox(context, item.author, item.avatar, item.content),
+            onTap: () {
+              print(item.links.children);
+            },
+            child: commentBox(
+              context,
+              item.author,
+              item.avatar,
+              item.date,
+              item.content,
+            ),
           );
         }).toList());
       } else if (commentSnapshot.hasError) {
