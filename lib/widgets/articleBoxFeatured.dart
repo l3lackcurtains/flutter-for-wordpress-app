@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
-import 'package:html/dom.dart' as dom;
 
 Widget articleBoxFeatured(
     BuildContext context, Article article, String heroId) {
@@ -20,10 +21,21 @@ Widget articleBoxFeatured(
                 tag: heroId,
                 child: ClipRRect(
                   borderRadius: new BorderRadius.circular(8.0),
-                  child: Image.network(
-                    article.image,
-                    fit: BoxFit.cover,
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        "https://res.cloudinary.com/demo/image/fetch/h_600,q_auto:best/" +
+                            article.image,
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
+                  // Image.network(
+                  //   "https://res.cloudinary.com/demo/image/fetch/h_600,q_auto:best/" +
+                  //       article.image,
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
               shape: RoundedRectangleBorder(
@@ -51,22 +63,16 @@ Widget articleBoxFeatured(
                     children: <Widget>[
                       Container(
                         child: Html(
-                            data: article.title.length > 70
-                                ? "<h1>" +
-                                    article.title.substring(0, 70) +
-                                    "...</h1>"
-                                : "<h1>" + article.title + "</h1>",
-                            customTextStyle:
-                                (dom.Node node, TextStyle baseStyle) {
-                              if (node is dom.Element) {
-                                switch (node.localName) {
-                                  case "h1":
-                                    return baseStyle.merge(
-                                        Theme.of(context).textTheme.headline1);
-                                }
-                              }
-                              return baseStyle;
-                            }),
+                          data: article.title.length > 70
+                              ? "<h1>" +
+                                  article.title.substring(0, 70) +
+                                  "...</h1>"
+                              : "<h1>" + article.title + "</h1>",
+                          style: {
+                            "h1": Style(
+                                color: Colors.black, fontSize: FontSize.xLarge),
+                          },
+                        ),
                       ),
                       Container(
                         alignment: Alignment.topLeft,
