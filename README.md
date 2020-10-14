@@ -97,7 +97,7 @@ const List<dynamic> CUSTOM_CATEGORIES = [
 ```
 
 ### 🔔 Push Notification (Optional)
-
+gh
 This project uses firebase messaging for push notification.
 
 To integrate push notification from firebase follow the steps:
