@@ -112,14 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
               TextStyle(fontWeight: FontWeight.w500, fontFamily: "Soleil"),
           unselectedLabelStyle: TextStyle(fontFamily: "Soleil"),
           items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Home')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.flare), title: Text(PAGE2_CATEGORY_NAME)),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.search), title: Text('Search')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.menu), title: Text('More')),
+                icon: Icon(Icons.flare), label: PAGE2_CATEGORY_NAME),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
           ],
           currentIndex: _selectedIndex,
           fixedColor: Theme.of(context).primaryColor,
