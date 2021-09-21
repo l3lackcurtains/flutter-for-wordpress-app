@@ -9,8 +9,6 @@ import 'package:flutter_wordpress_app/pages/single_article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
 import 'package:flutter_wordpress_app/widgets/searchBoxes.dart';
 import 'package:http/http.dart' as http;
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -20,13 +18,13 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   String _searchText = "";
   List<dynamic> searchedArticles = [];
-  Future<List<dynamic>> _futureSearchedArticles;
-  ScrollController _controller;
+  Future<List<dynamic>>? _futureSearchedArticles;
+  ScrollController? _controller;
   final TextEditingController _textFieldController =
       new TextEditingController();
 
   int page = 1;
-  bool _infiniteStop;
+  bool _infiniteStop = false;
 
   @override
   void initState() {
@@ -35,7 +33,7 @@ class _SearchState extends State<Search> {
         fetchSearchedArticles(_searchText, _searchText == "", page, false);
     _controller =
         ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-    _controller.addListener(_scrollListener);
+    _controller!.addListener(_scrollListener);
     _infiniteStop = false;
   }
 
@@ -47,7 +45,7 @@ class _SearchState extends State<Search> {
       }
 
       var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -82,8 +80,8 @@ class _SearchState extends State<Search> {
   }
 
   _scrollListener() {
-    var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange;
+    var isEnd = _controller!.offset >= _controller!.position.maxScrollExtent &&
+        !_controller!.position.outOfRange;
     if (isEnd) {
       setState(() {
         page += 1;
@@ -97,7 +95,7 @@ class _SearchState extends State<Search> {
   void dispose() {
     super.dispose();
     _textFieldController.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override
@@ -158,7 +156,7 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               ),
-              searchPosts(_futureSearchedArticles)
+              searchPosts(_futureSearchedArticles as Future<List<dynamic>>)
             ],
           ),
         ),
@@ -171,7 +169,7 @@ class _SearchState extends State<Search> {
       future: articles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data.length == 0) {
+          if (articleSnapshot.data!.length == 0) {
             return Column(
               children: <Widget>[
                 searchBoxes(context),
@@ -181,7 +179,7 @@ class _SearchState extends State<Search> {
           return Column(
             children: <Widget>[
               Column(
-                  children: articleSnapshot.data.map((item) {
+                  children: articleSnapshot.data!.map((item) {
                 final heroId = item.id.toString() + "-searched";
                 return InkWell(
                   onTap: () {
@@ -199,10 +197,7 @@ class _SearchState extends State<Search> {
                   ? Container(
                       alignment: Alignment.center,
                       height: 30,
-                      child: Loading(
-                          indicator: BallBeatIndicator(),
-                          size: 60.0,
-                          color: Theme.of(context).accentColor))
+                          )
                   : Container()
             ],
           );
@@ -219,7 +214,7 @@ class _SearchState extends State<Search> {
                   width: 250,
                 ),
                 Text("No Internet Connection."),
-                FlatButton.icon(
+                TextButton.icon(
                   icon: Icon(Icons.refresh),
                   label: Text("Reload"),
                   onPressed: () {
@@ -234,11 +229,8 @@ class _SearchState extends State<Search> {
         return Container(
             alignment: Alignment.center,
             width: 300,
-            height: 150,
-            child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 60.0,
-                color: Theme.of(context).accentColor));
+            height: 150
+            );
       },
     );
   }

@@ -8,7 +8,7 @@ Future<bool> postComment(
     int id, String name, String email, String website, String comment) async {
   try {
     var response =
-        await http.post("$WORDPRESS_URL/wp-json/wp/v2/comments", body: {
+        await http.post(Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/comments"), body: {
       "author_email": email.trim().toLowerCase(),
       "author_name": name,
       "author_website": website,
@@ -28,7 +28,7 @@ Future<bool> postComment(
 class AddComment extends StatefulWidget {
   final int commentId;
 
-  AddComment(this.commentId, {Key key}) : super(key: key);
+  AddComment(this.commentId, {Key? key}) : super(key: key);
   @override
   _AddCommentState createState() => _AddCommentState();
 }
@@ -79,13 +79,13 @@ class _AddCommentState extends State<AddComment> {
                             ),
                             keyboardType: TextInputType.text,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter your name.';
                               }
                               return null;
                             },
-                            onSaved: (String val) {
-                              _name = val;
+                            onSaved: (String? val) {
+                              _name = val.toString();
                             }),
                         TextFormField(
                             decoration: InputDecoration(
@@ -93,21 +93,21 @@ class _AddCommentState extends State<AddComment> {
                             ),
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Please enter your email.';
                               }
                               return null;
                             },
-                            onSaved: (String val) {
-                              _email = val;
+                            onSaved: (String? val) {
+                              _email = val.toString();
                             }),
                         TextFormField(
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               labelText: 'Website',
                             ),
-                            onSaved: (String val) {
-                              _website = val;
+                            onSaved: (String? val) {
+                              _website = val.toString();
                             }),
                         TextFormField(
                             decoration: InputDecoration(
@@ -116,26 +116,25 @@ class _AddCommentState extends State<AddComment> {
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Write some comment.';
                               }
                               return null;
                             },
-                            onSaved: (String val) {
-                              _comment = val;
+                            onSaved: (String? val) {
+                              _comment = val.toString();
                             }),
                         Container(
                           padding: EdgeInsets.symmetric(vertical: 36.0),
                           height: 120,
-                          child: RaisedButton.icon(
+                          child: ElevatedButton.icon(
                             icon: Icon(
                               Icons.check,
                               color: Colors.white,
                             ),
-                            color: Theme.of(context).primaryColor,
                             onPressed: () {
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
                                 postComment(commentId, _name, _email, _website,
                                         _comment)
                                     .then((back) {
@@ -145,7 +144,7 @@ class _AddCommentState extends State<AddComment> {
                                     final snackBar = SnackBar(
                                         content: Text(
                                             'Error while posting comment. Try again.'));
-                                    Scaffold.of(context).showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   }
                                 });
                               }

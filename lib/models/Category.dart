@@ -1,8 +1,8 @@
 class Category {
-  final int id;
-  final String name;
-  final int parent;
-  final int count;
+  final int? id;
+  final String? name;
+  final int? parent;
+  final int? count;
 
   Category({this.id, this.name, this.parent, this.count});
 

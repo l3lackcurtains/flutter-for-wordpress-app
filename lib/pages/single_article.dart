@@ -5,22 +5,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:flutter_wordpress_app/blocs/favArticleBloc.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/comments.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:share/share.dart';
 
 class SingleArticle extends StatefulWidget {
   final dynamic article;
   final String heroId;
 
-  SingleArticle(this.article, this.heroId, {Key key}) : super(key: key);
+  SingleArticle(this.article, this.heroId, {Key? key}) : super(key: key);
 
   @override
   _SingleArticleState createState() => _SingleArticleState();
@@ -28,27 +24,21 @@ class SingleArticle extends StatefulWidget {
 
 class _SingleArticleState extends State<SingleArticle> {
   List<dynamic> relatedArticles = [];
-  Future<List<dynamic>> _futureRelatedArticles;
-
-  final FavArticleBloc favArticleBloc = FavArticleBloc();
-
-  Future<dynamic> favArticle;
+  Future<List<dynamic>>? _futureRelatedArticles;
 
   @override
   void initState() {
     super.initState();
 
     _futureRelatedArticles = fetchRelatedArticles();
-
-    favArticle = favArticleBloc.getFavArticle(widget.article.id);
   }
 
   Future<List<dynamic>> fetchRelatedArticles() async {
     try {
       int postId = widget.article.id;
       int catId = widget.article.catId;
-      var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3");
+      var response = await http.get(Uri.parse(
+          "$WORDPRESS_URL/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3"));
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -189,22 +179,13 @@ class _SingleArticleState extends State<SingleArticle> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Html(
-                          data: "<h1>" + article.title + "</h1>",
-                          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                          customTextStyle:
-                              (dom.Node node, TextStyle baseStyle) {
-                            if (node is dom.Element) {
-                              switch (node.localName) {
-                                case "h1":
-                                  return Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      .merge(TextStyle(fontSize: 20));
-                              }
-                            }
-                            return baseStyle;
-                          }),
+                      Html(data: "<h2>" + article.title + "</h2>", style: {
+                        "h2": Style(
+                            color: Theme.of(context).primaryColorDark,
+                            fontWeight: FontWeight.w500,
+                            fontSize: FontSize.em(1.6),
+                            padding: EdgeInsets.all(4)),
+                      }),
                       Container(
                         decoration: BoxDecoration(
                             color: Color(0xFFE3E3E3),
@@ -237,13 +218,13 @@ class _SingleArticleState extends State<SingleArticle> {
                         child: HtmlWidget(
                           article.content,
                           webView: true,
-                          textStyle: Theme.of(context).textTheme.bodyText1,
+                          textStyle: Theme.of(context).textTheme.bodyText1 ?? TextStyle(),
                         ),
                       ),
                     ],
                   ),
                 ),
-                relatedPosts(_futureRelatedArticles)
+                relatedPosts(_futureRelatedArticles as Future<List<dynamic>>)
               ],
             ),
           )),
@@ -255,50 +236,6 @@ class _SingleArticleState extends State<SingleArticle> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              FutureBuilder<dynamic>(
-                  future: favArticle,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        decoration: BoxDecoration(),
-                        child: IconButton(
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 24.0,
-                          ),
-                          onPressed: () {
-                            // Favourite post
-                            favArticleBloc.deleteFavArticleById(article.id);
-                            setState(() {
-                              favArticle =
-                                  favArticleBloc.getFavArticle(article.id);
-                            });
-                          },
-                        ),
-                      );
-                    }
-                    return Container(
-                      decoration: BoxDecoration(),
-                      child: IconButton(
-                        padding: EdgeInsets.all(0),
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.red,
-                          size: 24.0,
-                        ),
-                        onPressed: () {
-                          favArticleBloc.addFavArticle(article);
-                          setState(() {
-                            favArticle =
-                                favArticleBloc.getFavArticle(article.id);
-                          });
-                        },
-                      ),
-                    );
-                  }),
               Container(
                 child: IconButton(
                   padding: EdgeInsets.all(0),
@@ -342,7 +279,7 @@ class _SingleArticleState extends State<SingleArticle> {
       future: latestArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data.length == 0) return Container();
+          if (articleSnapshot.data!.length == 0) return Container();
           return Column(
             children: <Widget>[
               Container(
@@ -358,7 +295,7 @@ class _SingleArticleState extends State<SingleArticle> {
                 ),
               ),
               Column(
-                children: articleSnapshot.data.map((item) {
+                children: articleSnapshot.data!.map((item) {
                   final heroId = item.id.toString() + "-related";
                   return InkWell(
                     onTap: () {
@@ -387,11 +324,8 @@ class _SingleArticleState extends State<SingleArticle> {
         return Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
-            height: 150,
-            child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 60.0,
-                color: Theme.of(context).accentColor));
+            height: 150
+            );
       },
     );
   }

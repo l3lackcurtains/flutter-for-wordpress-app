@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../main.dart';
-import 'favoutite_articles.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -12,48 +8,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool _notification = false;
 
   @override
   void initState() {
     super.initState();
-    checkNotificationSetting();
   }
 
-  checkNotificationSetting() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'notification';
-    final value = prefs.getInt(key) ?? 0;
-    if (value == 0) {
-      setState(() {
-        _notification = false;
-      });
-    } else {
-      setState(() {
-        _notification = true;
-      });
-    }
-  }
 
-  saveNotificationSetting(bool val) async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'notification';
-    final value = val ? 1 : 0;
-    prefs.setInt(key, value);
-    if (value == 1) {
-      setState(() {
-        _notification = true;
-      });
-    } else {
-      setState(() {
-        _notification = false;
-      });
-    }
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (BuildContext context) => MyHomePage()));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +49,7 @@ class _SettingsState extends State<Settings> {
               alignment: Alignment.center,
               padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
               child: Text(
-                "Version 1.0.0 \n flutterblog.crumet.com \n Demo flutter app for wordpress news website",
+                "Version 2.0.0 \n flutterblog.crumet.com \n Demo flutter app for wordpress news website",
                 textAlign: TextAlign.center,
                 style: TextStyle(height: 1.6, color: Colors.black87),
               ),
@@ -100,24 +61,7 @@ class _SettingsState extends State<Settings> {
             ListView(
               shrinkWrap: true,
               children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FavouriteArticles(),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: Image.asset(
-                      "assets/more/favourite.png",
-                      width: 30,
-                    ),
-                    title: Text('Favourite'),
-                    subtitle: Text("See the saved news article"),
-                  ),
-                ),
+                
                 ListTile(
                   leading: Image.asset(
                     "assets/more/contact.png",
@@ -127,8 +71,7 @@ class _SettingsState extends State<Settings> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      FlatButton(
-                          padding: EdgeInsets.all(0),
+                      TextButton(
                           onPressed: () async {
                             const url = 'https://flutterblog.crumet.com';
                             if (await canLaunch(url)) {
@@ -141,8 +84,7 @@ class _SettingsState extends State<Settings> {
                             "flutterblog.crumet.com",
                             style: TextStyle(color: Colors.black54),
                           )),
-                      FlatButton(
-                          padding: EdgeInsets.all(0),
+                      TextButton(
                           onPressed: () async {
                             const url = 'mailto:info@crumet.com';
                             if (await canLaunch(url)) {
@@ -171,20 +113,6 @@ class _SettingsState extends State<Settings> {
                     title: Text('Share'),
                     subtitle: Text("Spread the words of flutter blog crumet"),
                   ),
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    "assets/more/notification.png",
-                    width: 30,
-                  ),
-                  isThreeLine: true,
-                  title: Text('Notification'),
-                  subtitle: Text("Change notification preference"),
-                  trailing: Switch(
-                      onChanged: (val) async {
-                        await saveNotificationSetting(val);
-                      },
-                      value: _notification),
                 ),
               ],
             )

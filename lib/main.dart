@@ -1,11 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wordpress_app/common/constants.dart';
 import 'package:flutter_wordpress_app/pages/articles.dart';
 import 'package:flutter_wordpress_app/pages/local_articles.dart';
 import 'package:flutter_wordpress_app/pages/search.dart';
 import 'package:flutter_wordpress_app/pages/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +15,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           brightness: Brightness.light,
           primaryColor: Color(0xFF385C7B),
-          accentColor: Color(0xFFE74C3C),
+          primaryColorLight: Colors.white,
+          primaryColorDark: Colors.black,
           textTheme: TextTheme(
               headline1: TextStyle(
                 fontSize: 17,
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
                 fontSize: 16,
                 height: 1.5,
                 color: Colors.black87,
+                fontWeight: FontWeight.normal
               )),
         ),
         home: MyHomePage());
@@ -43,8 +43,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Firebase Cloud Messeging setup
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
@@ -59,46 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  startFirebase() async {
-    final prefs = await SharedPreferences.getInstance();
-    final key = 'notification';
-    final value = prefs.getInt(key) ?? 0;
-    if (value == 1) {
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(
-                  message["notification"]["title"],
-                  style: TextStyle(fontFamily: "Soleil", fontSize: 18),
-                ),
-                content: Text(message["notification"]["body"]),
-                actions: <Widget>[
-                  FlatButton(
-                    child: new Text("Dismiss"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          // print("onLaunch: $message");
-        },
-        onResume: (Map<String, dynamic> message) async {
-          // print("onResume: $message");
-        },
-      );
-      _firebaseMessaging.getToken().then((token) {
-        // print("Firebase Token:" + token);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,6 @@ import 'package:flutter_wordpress_app/pages/single_Article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
 import 'package:flutter_wordpress_app/widgets/articleBoxFeatured.dart';
 import 'package:http/http.dart' as http;
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 
 class Articles extends StatefulWidget {
   @override
@@ -20,11 +18,11 @@ class Articles extends StatefulWidget {
 class _ArticlesState extends State<Articles> {
   List<dynamic> featuredArticles = [];
   List<dynamic> latestArticles = [];
-  Future<List<dynamic>> _futureLastestArticles;
-  Future<List<dynamic>> _futureFeaturedArticles;
-  ScrollController _controller;
+  Future<List<dynamic>>? _futureLastestArticles;
+  Future<List<dynamic>>? _futureFeaturedArticles;
+  ScrollController? _controller;
   int page = 1;
-  bool _infiniteStop;
+  bool _infiniteStop = false;
 
   @override
   void initState() {
@@ -33,20 +31,20 @@ class _ArticlesState extends State<Articles> {
     _futureFeaturedArticles = fetchFeaturedArticles(1);
     _controller =
         ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-    _controller.addListener(_scrollListener);
+    _controller!.addListener(_scrollListener);
     _infiniteStop = false;
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   Future<List<dynamic>> fetchLatestArticles(int page) async {
     try {
       var response = await http.get(
-          '$WORDPRESS_URL/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link');
+          Uri.parse('$WORDPRESS_URL/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link'));
       if (this.mounted) {
         if (response.statusCode == 200) {
           setState(() {
@@ -73,7 +71,7 @@ class _ArticlesState extends State<Articles> {
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
       var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$FEATURED_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$FEATURED_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -98,8 +96,8 @@ class _ArticlesState extends State<Articles> {
   }
 
   _scrollListener() {
-    var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange;
+    var isEnd = _controller!.offset >= _controller!.position.maxScrollExtent &&
+        !_controller!.position.outOfRange;
     if (isEnd) {
       setState(() {
         page += 1;
@@ -127,8 +125,8 @@ class _ArticlesState extends State<Articles> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: <Widget>[
-                featuredPost(_futureFeaturedArticles),
-                latestPosts(_futureLastestArticles)
+                featuredPost(_futureFeaturedArticles as Future<List<dynamic>>),
+                latestPosts(_futureLastestArticles as Future<List<dynamic>>)
               ],
             ),
           ),
@@ -140,11 +138,11 @@ class _ArticlesState extends State<Articles> {
       future: latestArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data.length == 0) return Container();
+          if (articleSnapshot.data!.length == 0) return Container();
           return Column(
             children: <Widget>[
               Column(
-                  children: articleSnapshot.data.map((item) {
+                  children: articleSnapshot.data!.map((item) {
                 final heroId = item.id.toString() + "-latest";
                 return InkWell(
                   onTap: () {
@@ -159,13 +157,7 @@ class _ArticlesState extends State<Articles> {
                 );
               }).toList()),
               !_infiniteStop
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 30,
-                      child: Loading(
-                          indicator: BallBeatIndicator(),
-                          size: 60.0,
-                          color: Theme.of(context).accentColor))
+                  ? Container()
                   : Container()
             ],
           );
@@ -176,10 +168,7 @@ class _ArticlesState extends State<Articles> {
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             height: 150,
-            child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 60.0,
-                color: Theme.of(context).accentColor));
+                );
       },
     );
   }
@@ -191,9 +180,9 @@ class _ArticlesState extends State<Articles> {
         future: featuredArticles,
         builder: (context, articleSnapshot) {
           if (articleSnapshot.hasData) {
-            if (articleSnapshot.data.length == 0) return Container();
+            if (articleSnapshot.data!.length == 0) return Container();
             return Row(
-                children: articleSnapshot.data.map((item) {
+                children: articleSnapshot.data!.map((item) {
               final heroId = item.id.toString() + "-featured";
               return InkWell(
                   onTap: () {
@@ -219,7 +208,7 @@ class _ArticlesState extends State<Articles> {
                     width: 250,
                   ),
                   Text("No Internet Connection."),
-                  FlatButton.icon(
+                  TextButton.icon(
                     icon: Icon(Icons.refresh),
                     label: Text("Reload"),
                     onPressed: () {
@@ -235,10 +224,8 @@ class _ArticlesState extends State<Articles> {
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
               height: 280,
-              child: Loading(
-                  indicator: BallBeatIndicator(),
-                  size: 60.0,
-                  color: Theme.of(context).accentColor));
+                  
+                  );
         },
       ),
     );

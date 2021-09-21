@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
 
 Widget commentBox(
     BuildContext context, String author, String avatar, String content) {
@@ -11,17 +10,13 @@ Widget commentBox(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(avatar),
       ),
-      title: Html(
-          data: content,
-          customTextStyle: (dom.Node node, TextStyle baseStyle) {
-            if (node is dom.Element) {
-              switch (node.localName) {
-                case "p":
-                  return baseStyle.merge(Theme.of(context).textTheme.bodyText1);
-              }
-            }
-            return baseStyle;
-          }),
+      title: Html(data: content, style: {
+        "p": Style(
+            color: Theme.of(context).primaryColorDark,
+            fontWeight: FontWeight.w400,
+            fontSize: FontSize.em(1),
+            padding: EdgeInsets.all(4)),
+      }),
       subtitle: Container(
         margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
         padding: EdgeInsets.fromLTRB(4, 8, 0, 8),

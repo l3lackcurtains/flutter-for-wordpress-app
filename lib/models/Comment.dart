@@ -1,8 +1,8 @@
 class Comment {
-  final int id;
-  final String author;
-  final String avatar;
-  final String content;
+  final int? id;
+  final String? author;
+  final String? avatar;
+  final String? content;
 
   Comment({this.id, this.author, this.avatar, this.content});
 

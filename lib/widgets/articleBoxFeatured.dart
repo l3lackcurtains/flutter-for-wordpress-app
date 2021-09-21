@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_wordpress_app/models/Article.dart';
-import 'package:html/dom.dart' as dom;
 
 Widget articleBoxFeatured(
     BuildContext context, Article article, String heroId) {
@@ -21,7 +20,7 @@ Widget articleBoxFeatured(
                 child: ClipRRect(
                   borderRadius: new BorderRadius.circular(8.0),
                   child: Image.network(
-                    article.image,
+                    article.image.toString(),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -51,21 +50,18 @@ Widget articleBoxFeatured(
                     children: <Widget>[
                       Container(
                         child: Html(
-                            data: article.title.length > 70
-                                ? "<h1>" +
-                                    article.title.substring(0, 70) +
-                                    "...</h1>"
-                                : "<h1>" + article.title + "</h1>",
-                            customTextStyle:
-                                (dom.Node node, TextStyle baseStyle) {
-                              if (node is dom.Element) {
-                                switch (node.localName) {
-                                  case "h1":
-                                    return baseStyle.merge(
-                                        Theme.of(context).textTheme.headline1);
-                                }
-                              }
-                              return baseStyle;
+                            data: article.title!.length > 70
+                                ? "<h2>" +
+                                    article.title.toString().substring(0, 70) +
+                                    "...</h2>"
+                                : "<h2>" + article.title.toString() + "</h2>",
+                            style: {
+                              "h2": Style(
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: FontSize.em(1.05),
+                                  padding: EdgeInsets.all(2),
+                                  ),
                             }),
                       ),
                       Container(
@@ -81,7 +77,7 @@ Widget articleBoxFeatured(
                               padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                               margin: EdgeInsets.fromLTRB(0, 0, 0, 8),
                               child: Text(
-                                article.category,
+                                article.category.toString(),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 11,
@@ -101,7 +97,7 @@ Widget articleBoxFeatured(
                                     width: 4,
                                   ),
                                   Text(
-                                    article.date,
+                                    article.date.toString(),
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ],
@@ -122,7 +118,6 @@ Widget articleBoxFeatured(
                 left: 18,
                 top: 18,
                 child: Card(
-                  color: Theme.of(context).accentColor,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.transparent,

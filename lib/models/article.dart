@@ -1,17 +1,17 @@
 import 'package:intl/intl.dart';
 
 class Article {
-  final int id;
-  final String title;
-  final String content;
-  final String image;
-  final String video;
-  final String author;
-  final String avatar;
-  final String category;
-  final String date;
-  final String link;
-  final int catId;
+  final int? id;
+  final String? title;
+  final String? content;
+  final String? image;
+  final String? video;
+  final String? author;
+  final String? avatar;
+  final String? category;
+  final String? date;
+  final String? link;
+  final int? catId;
 
   Article(
       {this.id,

@@ -7,23 +7,21 @@ import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/single_Article.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
 import 'package:http/http.dart' as http;
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 
 class CategoryArticles extends StatefulWidget {
   final int id;
   final String name;
-  CategoryArticles(this.id, this.name, {Key key}) : super(key: key);
+  CategoryArticles(this.id, this.name, {Key? key}) : super(key: key);
   @override
   _CategoryArticlesState createState() => _CategoryArticlesState();
 }
 
 class _CategoryArticlesState extends State<CategoryArticles> {
   List<dynamic> categoryArticles = [];
-  Future<List<dynamic>> _futureCategoryArticles;
-  ScrollController _controller;
+  Future<List<dynamic>>? _futureCategoryArticles;
+  ScrollController? _controller;
   int page = 1;
-  bool _infiniteStop;
+  bool _infiniteStop = false;
 
   @override
   void initState() {
@@ -31,22 +29,22 @@ class _CategoryArticlesState extends State<CategoryArticles> {
     _futureCategoryArticles = fetchCategoryArticles(1);
     _controller =
         ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
-    _controller.addListener(_scrollListener);
+    _controller!.addListener(_scrollListener);
     _infiniteStop = false;
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   Future<List<dynamic>> fetchCategoryArticles(int page) async {
     try {
       var response = await http.get(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts?categories[]=" +
+          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts?categories[]=" +
               widget.id.toString() +
-              "&page=$page&per_page=10&_fields=id,date,title,content,custom,link");
+              "&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
 
       if (this.mounted) {
         if (response.statusCode == 200) {
@@ -73,8 +71,8 @@ class _CategoryArticlesState extends State<CategoryArticles> {
   }
 
   _scrollListener() {
-    var isEnd = _controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange;
+    var isEnd = _controller!.offset >= _controller!.position.maxScrollExtent &&
+        !_controller!.position.outOfRange;
     if (isEnd) {
       setState(() {
         page += 1;
@@ -111,7 +109,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
             controller: _controller,
             scrollDirection: Axis.vertical,
             child: Column(
-                children: <Widget>[categoryPosts(_futureCategoryArticles)])),
+                children: <Widget>[categoryPosts(_futureCategoryArticles as Future<List<dynamic>>)])),
       ),
     );
   }
@@ -121,11 +119,11 @@ class _CategoryArticlesState extends State<CategoryArticles> {
       future: categoryArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data.length == 0) return Container();
+          if (articleSnapshot.data!.length == 0) return Container();
           return Column(
             children: <Widget>[
               Column(
-                  children: articleSnapshot.data.map((item) {
+                  children: articleSnapshot.data!.map((item) {
                 final heroId = item.id.toString() + "-categorypost";
                 return InkWell(
                   onTap: () {
@@ -143,10 +141,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
                   ? Container(
                       alignment: Alignment.center,
                       height: 30,
-                      child: Loading(
-                          indicator: BallBeatIndicator(),
-                          size: 60.0,
-                          color: Theme.of(context).accentColor))
+                      )
                   : Container()
             ],
           );
@@ -159,10 +154,7 @@ class _CategoryArticlesState extends State<CategoryArticles> {
         return Container(
           alignment: Alignment.center,
           height: 400,
-          child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 60.0,
-              color: Theme.of(context).accentColor),
+          
         );
       },
     );
