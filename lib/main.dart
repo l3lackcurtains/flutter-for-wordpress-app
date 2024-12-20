@@ -1,49 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wordpress_app/common/constants.dart';
-import 'package:flutter_wordpress_app/pages/articles.dart';
-import 'package:flutter_wordpress_app/pages/local_articles.dart';
-import 'package:flutter_wordpress_app/pages/search.dart';
-import 'package:flutter_wordpress_app/pages/settings.dart';
 
-void main() => runApp(MyApp());
+import 'common/constants.dart';
+import 'pages/articles.dart';
+import 'pages/local_articles.dart';
+import 'pages/search.dart';
+import 'pages/settings.dart';
 
-class MyApp extends StatelessWidget {
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Icilome',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Color(0xFF385C7B),
-          primaryColorLight: Colors.white,
-          primaryColorDark: Colors.black,
-          textTheme: TextTheme(
-              headline1: TextStyle(
-                fontSize: 17,
-                color: Colors.black,
-                height: 1.2,
-                fontWeight: FontWeight.w500,
-                fontFamily: "Soleil",
-              ),
-              caption: TextStyle(color: Colors.black45, fontSize: 10),
-              bodyText1: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: Colors.black87,
-                fontWeight: FontWeight.normal
-              )),
-        ),
-        home: MyHomePage());
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Color(0xFF385C7B),
+        primaryColorLight: Colors.white,
+        primaryColorDark: Colors.black,
+        // textTheme: TextTheme(
+        //   headline1: TextStyle(
+        //     fontSize: 17,
+        //     color: Colors.black,
+        //     height: 1.2,
+        //     fontWeight: FontWeight.w500,
+        //     fontFamily: "Soleil",
+        //   ),
+        //   caption: TextStyle(color: Colors.black45, fontSize: 10),
+        //   bodyText1: TextStyle(
+        //       fontSize: 16,
+        //       height: 1.5,
+        //       color: Colors.black87,
+        //       fontWeight: FontWeight.normal),
+        // ),
+      ),
+      home: MyHomePage(),
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
     Articles(),
@@ -56,7 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.flare), label: PAGE2_CATEGORY_NAME),
+                icon: Icon(Icons.flare), label: page2CategoryName),
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
             BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
           ],

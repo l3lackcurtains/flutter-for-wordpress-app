@@ -1,3 +1,4 @@
+// ignore: file_names
 class Comment {
   final int? id;
   final String? author;

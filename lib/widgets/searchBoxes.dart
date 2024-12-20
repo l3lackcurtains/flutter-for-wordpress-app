@@ -8,8 +8,8 @@ Widget searchBoxes(BuildContext context) {
     shrinkWrap: true,
     physics: ScrollPhysics(),
     crossAxisCount: 3,
-    children: List.generate(CUSTOM_CATEGORIES.length, (index) {
-      var cat = CUSTOM_CATEGORIES[index];
+    children: List.generate(customCategories.length, (index) {
+      var cat = customCategories[index];
       var name = cat[0];
       var image = cat[1];
       var catId = cat[2];

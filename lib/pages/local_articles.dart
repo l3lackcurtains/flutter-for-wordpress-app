@@ -9,8 +9,10 @@ import 'package:flutter_wordpress_app/widgets/articleBox.dart';
 import 'package:http/http.dart' as http;
 
 class LocalArticles extends StatefulWidget {
+  const LocalArticles({super.key});
+
   @override
-  _LocalArticlesState createState() => _LocalArticlesState();
+  State<LocalArticles> createState() => _LocalArticlesState();
 }
 
 class _LocalArticlesState extends State<LocalArticles> {
@@ -39,9 +41,9 @@ class _LocalArticlesState extends State<LocalArticles> {
 
   Future<List<dynamic>> fetchLocalArticles(int page) async {
     try {
-      http.Response response = await http.get(
-          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$PAGE2_CATEGORY_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
-      if (this.mounted) {
+      http.Response response = await http.get(Uri.parse(
+          "$wordpressUrl/wp-json/wp/v2/posts/?categories[]=$page2CategoryId&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
+      if (mounted) {
         if (response.statusCode == 200) {
           setState(() {
             articles.addAll(json
@@ -84,7 +86,7 @@ class _LocalArticlesState extends State<LocalArticles> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          PAGE2_CATEGORY_NAME,
+          page2CategoryName,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -94,16 +96,14 @@ class _LocalArticlesState extends State<LocalArticles> {
         elevation: 5,
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            controller: _controller,
-            child: Column(
-              children: <Widget>[
-                categoryPosts(_futureArticles as Future<List<dynamic>>),
-              ],
-            )),
-      ),
+      body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          controller: _controller,
+          child: Column(
+            children: <Widget>[
+              categoryPosts(_futureArticles as Future<List<dynamic>>),
+            ],
+          )),
     );
   }
 
@@ -112,12 +112,12 @@ class _LocalArticlesState extends State<LocalArticles> {
       future: futureArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data!.length == 0) return Container();
+          if (articleSnapshot.data!.isEmpty) return Container();
           return Column(
             children: <Widget>[
               Column(
                   children: articleSnapshot.data!.map((item) {
-                final heroId = item.id.toString() + "-latest";
+                final heroId = "${item.id}-latest";
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -134,7 +134,7 @@ class _LocalArticlesState extends State<LocalArticles> {
                   ? Container(
                       alignment: Alignment.center,
                       height: 30,
-)
+                    )
                   : Container()
             ],
           );
@@ -142,10 +142,10 @@ class _LocalArticlesState extends State<LocalArticles> {
           return Container();
         }
         return Container(
-            alignment: Alignment.center,
-            height: 400,
-            width: MediaQuery.of(context).size.width - 30,
-);
+          alignment: Alignment.center,
+          height: 400,
+          width: MediaQuery.of(context).size.width - 30,
+        );
       },
     );
   }

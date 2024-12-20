@@ -79,16 +79,16 @@ class Article {
       catId: data["catId"]);
 
   Map<String, dynamic> toDatabaseJson() => {
-        'id': this.id,
-        'title': this.title,
-        'content': this.content,
-        'image': this.image,
-        'video': this.video,
-        'author': this.author,
-        'avatar': this.avatar,
-        'category': this.category,
-        'date': this.date,
-        'link': this.link,
-        'catId': this.catId
+        'id': id,
+        'title': title,
+        'content': content,
+        'image': image,
+        'video': video,
+        'author': author,
+        'avatar': avatar,
+        'category': category,
+        'date': date,
+        'link': link,
+        'catId': catId
       };
 }
