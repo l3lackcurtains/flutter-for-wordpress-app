@@ -11,8 +11,10 @@ import 'package:flutter_wordpress_app/widgets/searchBoxes.dart';
 import 'package:http/http.dart' as http;
 
 class Search extends StatefulWidget {
+  const Search({super.key});
+
   @override
-  _SearchState createState() => _SearchState();
+  State<Search> createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
@@ -44,10 +46,10 @@ class _SearchState extends State<Search> {
         return searchedArticles;
       }
 
-      var response = await http.get(
-          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
+      var response = await http.get(Uri.parse(
+          "$wordpressUrl/wp-json/wp/v2/posts?search=$searchText&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
 
-      if (this.mounted) {
+      if (mounted) {
         if (response.statusCode == 200) {
           setState(() {
             if (scrollUpdate) {
@@ -112,53 +114,51 @@ class _SearchState extends State<Search> {
         elevation: 5,
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          controller: _controller,
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Card(
-                  elevation: 6,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16, 4, 16, 4),
-                    child: TextField(
-                        controller: _textFieldController,
-                        decoration: InputDecoration(
-                          labelText: 'Search news',
-                          suffixIcon: _searchText == ""
-                              ? Icon(Icons.search)
-                              : IconButton(
-                                  icon: Icon(Icons.close),
-                                  onPressed: () {
-                                    _textFieldController.clear();
-                                    setState(() {
-                                      _searchText = "";
-                                      _futureSearchedArticles =
-                                          fetchSearchedArticles(_searchText,
-                                              _searchText == "", page, false);
-                                    });
-                                  },
-                                ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                        ),
-                        onChanged: (text) {
-                          setState(() {
-                            _searchText = text;
-                            page = 1;
-                            _futureSearchedArticles = fetchSearchedArticles(
-                                _searchText, _searchText == "", page, false);
-                          });
-                        }),
-                  ),
+      body: SingleChildScrollView(
+        controller: _controller,
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Card(
+                elevation: 6,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16, 4, 16, 4),
+                  child: TextField(
+                      controller: _textFieldController,
+                      decoration: InputDecoration(
+                        labelText: 'Search news',
+                        suffixIcon: _searchText == ""
+                            ? Icon(Icons.search)
+                            : IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  _textFieldController.clear();
+                                  setState(() {
+                                    _searchText = "";
+                                    _futureSearchedArticles =
+                                        fetchSearchedArticles(_searchText,
+                                            _searchText == "", page, false);
+                                  });
+                                },
+                              ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                      onChanged: (text) {
+                        setState(() {
+                          _searchText = text;
+                          page = 1;
+                          _futureSearchedArticles = fetchSearchedArticles(
+                              _searchText, _searchText == "", page, false);
+                        });
+                      }),
                 ),
               ),
-              searchPosts(_futureSearchedArticles as Future<List<dynamic>>)
-            ],
-          ),
+            ),
+            searchPosts(_futureSearchedArticles as Future<List<dynamic>>)
+          ],
         ),
       ),
     );
@@ -169,7 +169,7 @@ class _SearchState extends State<Search> {
       future: articles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data!.length == 0) {
+          if (articleSnapshot.data!.isEmpty) {
             return Column(
               children: <Widget>[
                 searchBoxes(context),
@@ -180,7 +180,7 @@ class _SearchState extends State<Search> {
             children: <Widget>[
               Column(
                   children: articleSnapshot.data!.map((item) {
-                final heroId = item.id.toString() + "-searched";
+                final heroId = "${item.id}-searched";
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -197,7 +197,7 @@ class _SearchState extends State<Search> {
                   ? Container(
                       alignment: Alignment.center,
                       height: 30,
-                          )
+                    )
                   : Container()
             ],
           );
@@ -226,11 +226,7 @@ class _SearchState extends State<Search> {
             ),
           );
         }
-        return Container(
-            alignment: Alignment.center,
-            width: 300,
-            height: 150
-            );
+        return Container(alignment: Alignment.center, width: 300, height: 150);
       },
     );
   }

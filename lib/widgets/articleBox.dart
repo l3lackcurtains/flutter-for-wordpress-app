@@ -4,7 +4,7 @@ import 'package:flutter_wordpress_app/models/Article.dart';
 
 Widget articleBox(BuildContext context, Article article, String heroId) {
   return ConstrainedBox(
-    constraints: new BoxConstraints(
+    constraints: BoxConstraints(
       minHeight: 160.0,
       maxHeight: 175.0,
     ),
@@ -23,21 +23,18 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                     padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          child: Html(
-                              data: article.title!.length > 70
-                                  ? "<h2>" +
-                                      article.title!.substring(0, 70) +
-                                      "...</h2>"
-                                  : "<h2>" + article.title.toString() + "</h2>",
-                              style: {
-                                "h2": Style(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: FontSize.em(1.05),
-                                    padding: EdgeInsets.all(2),
-                                )},
-                          ),
+                        Html(
+                          data: article.title!.length > 70
+                              ? "<h2>${article.title!.substring(0, 70)}...</h2>"
+                              : "<h2>${article.title}</h2>",
+                          style: {
+                            "h2": Style(
+                              color: Theme.of(context).primaryColorDark,
+                              fontWeight: FontWeight.w500,
+                              fontSize: FontSize.em(1.05),
+                              padding: EdgeInsets.all(2),
+                            )
+                          },
                         ),
                         Container(
                           alignment: Alignment.topLeft,
@@ -74,7 +71,7 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                                     Text(
                                       article.date.toString(),
                                       style:
-                                          Theme.of(context).textTheme.caption,
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
@@ -94,6 +91,11 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
           height: 170,
           width: 145,
           child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            elevation: 0,
+            margin: EdgeInsets.all(10),
             child: Hero(
               tag: heroId,
               child: ClipRRect(
@@ -104,11 +106,6 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                 ),
               ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            elevation: 0,
-            margin: EdgeInsets.all(10),
           ),
         ),
         article.video != ""
@@ -116,14 +113,14 @@ Widget articleBox(BuildContext context, Article article, String heroId) {
                 left: 12,
                 top: 12,
                 child: Card(
+                  elevation: 8,
+                  shape: CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.transparent,
                     child: Image.asset("assets/play-button.png"),
                   ),
-                  elevation: 8,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.antiAlias,
                 ),
               )
             : Container(),

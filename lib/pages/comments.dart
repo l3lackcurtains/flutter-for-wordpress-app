@@ -13,7 +13,7 @@ import 'add_comment.dart';
 Future<List<dynamic>> fetchComments(int id) async {
   try {
     var response = await http
-        .get(Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/comments?post=" + id.toString()));
+        .get(Uri.parse("$wordpressUrl/wp-json/wp/v2/comments?post=$id"));
 
     if (response.statusCode == 200) {
       return json
@@ -31,9 +31,9 @@ Future<List<dynamic>> fetchComments(int id) async {
 class Comments extends StatefulWidget {
   final int commentId;
 
-  Comments(this.commentId, {Key? key}) : super(key: key);
+  const Comments(this.commentId, {super.key});
   @override
-  _CommentsState createState() => _CommentsState();
+  State<Comments> createState() => _CommentsState();
 }
 
 class _CommentsState extends State<Comments> {
@@ -58,12 +58,10 @@ class _CommentsState extends State<Comments> {
         elevation: 5,
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-              children: <Widget>[commentSection(fetchComments(commentId))]),
-        ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+            children: <Widget>[commentSection(fetchComments(commentId))]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -74,8 +72,8 @@ class _CommentsState extends State<Comments> {
                 fullscreenDialog: true,
               ));
         },
-        child: Icon(Icons.add_comment),
         backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(Icons.add_comment),
       ),
     );
   }
@@ -86,7 +84,7 @@ Widget commentSection(Future<List<dynamic>> comments) {
     future: comments,
     builder: (context, commentSnapshot) {
       if (commentSnapshot.hasData) {
-        if (commentSnapshot.data!.length == 0)
+        if (commentSnapshot.data!.isEmpty) {
           return Container(
             height: 500,
             alignment: Alignment.center,
@@ -95,6 +93,7 @@ Widget commentSection(Future<List<dynamic>> comments) {
               textAlign: TextAlign.center,
             ),
           );
+        }
         return Column(
             children: commentSnapshot.data!.map((item) {
           return InkWell(

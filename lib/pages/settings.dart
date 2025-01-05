@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
+  const Settings({super.key});
+
   @override
-  _SettingsState createState() => _SettingsState();
+  State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
-
   @override
   void initState() {
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +60,6 @@ class _SettingsState extends State<Settings> {
             ListView(
               shrinkWrap: true,
               children: <Widget>[
-                
                 ListTile(
                   leading: Image.asset(
                     "assets/more/contact.png",
@@ -101,10 +99,8 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    Share.share(
-                        'Check out our blog: https://flutterblog.crumet.com');
-                  },
+                  onTap: () => Share.share(
+                      'Check out our blog: https://flutterblog.crumet.com'),
                   child: ListTile(
                     leading: Image.asset(
                       "assets/more/share.png",

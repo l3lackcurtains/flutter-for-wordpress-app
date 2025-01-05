@@ -5,16 +5,21 @@ import 'package:flutter_wordpress_app/models/Article.dart';
 Widget articleBoxFeatured(
     BuildContext context, Article article, String heroId) {
   return ConstrainedBox(
-    constraints: new BoxConstraints(
+    constraints: BoxConstraints(
         minHeight: 280.0, maxHeight: 290.0, minWidth: 360.0, maxWidth: 360.0),
     child: Stack(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.all(8),
-          child: Container(
+          child: SizedBox(
             height: 200,
             width: 400,
             child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 1,
+              margin: EdgeInsets.all(10),
               child: Hero(
                 tag: heroId,
                 child: ClipRRect(
@@ -25,11 +30,6 @@ Widget articleBoxFeatured(
                   ),
                 ),
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              elevation: 1,
-              margin: EdgeInsets.all(10),
             ),
           ),
         ),
@@ -48,22 +48,18 @@ Widget articleBoxFeatured(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Container(
-                        child: Html(
-                            data: article.title!.length > 70
-                                ? "<h2>" +
-                                    article.title.toString().substring(0, 70) +
-                                    "...</h2>"
-                                : "<h2>" + article.title.toString() + "</h2>",
-                            style: {
-                              "h2": Style(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: FontSize.em(1.05),
-                                  padding: EdgeInsets.all(2),
-                                  ),
-                            }),
-                      ),
+                      Html(
+                          data: article.title!.length > 70
+                              ? "<h2>${article.title.toString().substring(0, 70)}...</h2>"
+                              : "<h2>${article.title}</h2>",
+                          style: {
+                            "h2": Style(
+                              color: Theme.of(context).primaryColorDark,
+                              fontWeight: FontWeight.w500,
+                              fontSize: FontSize.em(1.05),
+                              padding: EdgeInsets.all(2),
+                            ),
+                          }),
                       Container(
                         alignment: Alignment.topLeft,
                         child: Column(
@@ -98,7 +94,8 @@ Widget articleBoxFeatured(
                                   ),
                                   Text(
                                     article.date.toString(),
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
@@ -118,14 +115,14 @@ Widget articleBoxFeatured(
                 left: 18,
                 top: 18,
                 child: Card(
+                  elevation: 18.0,
+                  shape: CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.transparent,
                     child: Image.asset("assets/play-button.png"),
                   ),
-                  elevation: 18.0,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.antiAlias,
                 ),
               )
             : Container()

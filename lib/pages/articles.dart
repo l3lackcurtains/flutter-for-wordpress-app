@@ -11,8 +11,10 @@ import 'package:flutter_wordpress_app/widgets/articleBoxFeatured.dart';
 import 'package:http/http.dart' as http;
 
 class Articles extends StatefulWidget {
+  const Articles({super.key});
+
   @override
-  _ArticlesState createState() => _ArticlesState();
+  State<Articles> createState() => _ArticlesState();
 }
 
 class _ArticlesState extends State<Articles> {
@@ -43,9 +45,9 @@ class _ArticlesState extends State<Articles> {
 
   Future<List<dynamic>> fetchLatestArticles(int page) async {
     try {
-      var response = await http.get(
-          Uri.parse('$WORDPRESS_URL/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link'));
-      if (this.mounted) {
+      var response = await http.get(Uri.parse(
+          '$wordpressUrl/wp-json/wp/v2/posts/?page=$page&per_page=10&_fields=id,date,title,content,custom,link'));
+      if (mounted) {
         if (response.statusCode == 200) {
           setState(() {
             latestArticles.addAll(json
@@ -70,10 +72,10 @@ class _ArticlesState extends State<Articles> {
 
   Future<List<dynamic>> fetchFeaturedArticles(int page) async {
     try {
-      var response = await http.get(
-          Uri.parse("$WORDPRESS_URL/wp-json/wp/v2/posts/?categories[]=$FEATURED_ID&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
+      var response = await http.get(Uri.parse(
+          "$wordpressUrl/wp-json/wp/v2/posts/?categories[]=$featuredId&page=$page&per_page=10&_fields=id,date,title,content,custom,link"));
 
-      if (this.mounted) {
+      if (mounted) {
         if (response.statusCode == 200) {
           setState(() {
             featuredArticles.addAll(json
@@ -138,12 +140,12 @@ class _ArticlesState extends State<Articles> {
       future: latestArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data!.length == 0) return Container();
+          if (articleSnapshot.data!.isEmpty) return Container();
           return Column(
             children: <Widget>[
               Column(
                   children: articleSnapshot.data!.map((item) {
-                final heroId = item.id.toString() + "-latest";
+                final heroId = "${item.id}-latest";
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -156,19 +158,17 @@ class _ArticlesState extends State<Articles> {
                   child: articleBox(context, item, heroId),
                 );
               }).toList()),
-              !_infiniteStop
-                  ? Container()
-                  : Container()
+              !_infiniteStop ? Container() : Container()
             ],
           );
         } else if (articleSnapshot.hasError) {
           return Container();
         }
         return Container(
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            height: 150,
-                );
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          height: 150,
+        );
       },
     );
   }
@@ -180,10 +180,10 @@ class _ArticlesState extends State<Articles> {
         future: featuredArticles,
         builder: (context, articleSnapshot) {
           if (articleSnapshot.hasData) {
-            if (articleSnapshot.data!.length == 0) return Container();
+            if (articleSnapshot.data!.isEmpty) return Container();
             return Row(
                 children: articleSnapshot.data!.map((item) {
-              final heroId = item.id.toString() + "-featured";
+              final heroId = "${item.id}-featured";
               return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -221,11 +221,10 @@ class _ArticlesState extends State<Articles> {
             );
           }
           return Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: 280,
-                  
-                  );
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: 280,
+          );
         },
       ),
     );

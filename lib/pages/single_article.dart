@@ -10,16 +10,15 @@ import 'package:flutter_wordpress_app/models/Article.dart';
 import 'package:flutter_wordpress_app/pages/comments.dart';
 import 'package:flutter_wordpress_app/widgets/articleBox.dart';
 import 'package:http/http.dart' as http;
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SingleArticle extends StatefulWidget {
   final dynamic article;
   final String heroId;
 
-  SingleArticle(this.article, this.heroId, {Key? key}) : super(key: key);
-
+  const SingleArticle(this.article, this.heroId, {super.key});
   @override
-  _SingleArticleState createState() => _SingleArticleState();
+  State<SingleArticle> createState() => _SingleArticleState();
 }
 
 class _SingleArticleState extends State<SingleArticle> {
@@ -38,9 +37,9 @@ class _SingleArticleState extends State<SingleArticle> {
       int postId = widget.article.id;
       int catId = widget.article.catId;
       var response = await http.get(Uri.parse(
-          "$WORDPRESS_URL/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3"));
+          "$wordpressUrl/wp-json/wp/v2/posts?exclude=$postId&categories[]=$catId&per_page=3"));
 
-      if (this.mounted) {
+      if (mounted) {
         if (response.statusCode == 200) {
           setState(() {
             relatedArticles = json
@@ -87,78 +86,72 @@ class _SingleArticleState extends State<SingleArticle> {
               children: <Widget>[
                 Stack(
                   children: <Widget>[
-                    Container(
-                      child: Hero(
-                        tag: heroId,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(60.0)),
-                          child: ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.3),
-                                BlendMode.overlay),
-                            child: articleVideo != ""
-                                ? articleVideo.contains("youtube")
-                                    ? Container(
-                                        padding: EdgeInsets.fromLTRB(
-                                            0,
-                                            MediaQuery.of(context).padding.top,
-                                            0,
-                                            0),
-                                        decoration:
-                                            BoxDecoration(color: Colors.black),
-                                        child: HtmlWidget(
-                                          """
-                                      <iframe src="https://www.youtube.com/embed/$youtubeUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                      """,
-                                          webView: true,
-                                        ),
-                                      )
-                                    : articleVideo.contains("dailymotion")
-                                        ? Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0,
-                                                MediaQuery.of(context)
-                                                    .padding
-                                                    .top,
-                                                0,
-                                                0),
-                                            decoration: BoxDecoration(
-                                                color: Colors.black),
-                                            child: HtmlWidget(
-                                              """
-                                      <iframe frameborder="0"
-                                      src="https://www.dailymotion.com/embed/video/$dailymotionUrl?autoplay=1&mute=1"
-                                      allowfullscreen allow="autoplay">
-                                      </iframe>
-                                      """,
-                                              webView: true,
-                                            ),
-                                          )
-                                        : Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0,
-                                                MediaQuery.of(context)
-                                                    .padding
-                                                    .top,
-                                                0,
-                                                0),
-                                            decoration: BoxDecoration(
-                                                color: Colors.black),
-                                            child: HtmlWidget(
-                                              """
-                                      <video autoplay="" playsinline="" controls>
-                                      <source type="video/mp4" src="$articleVideo">
-                                      </video>
-                                      """,
-                                              webView: true,
-                                            ),
-                                          )
-                                : Image.network(
-                                    article.image,
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
+                    Hero(
+                      tag: heroId,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(60.0)),
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.3), BlendMode.overlay),
+                          child: articleVideo != ""
+                              ? articleVideo.contains("youtube")
+                                  ? Container(
+                                      padding: EdgeInsets.fromLTRB(
+                                          0,
+                                          MediaQuery.of(context).padding.top,
+                                          0,
+                                          0),
+                                      decoration:
+                                          BoxDecoration(color: Colors.black),
+                                      child: HtmlWidget(
+                                        """
+                                    <iframe src="https://www.youtube.com/embed/$youtubeUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    """,
+                                      ),
+                                    )
+                                  : articleVideo.contains("dailymotion")
+                                      ? Container(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0,
+                                              MediaQuery.of(context)
+                                                  .padding
+                                                  .top,
+                                              0,
+                                              0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black),
+                                          child: HtmlWidget(
+                                            """
+                                    <iframe frameborder="0"
+                                    src="https://www.dailymotion.com/embed/video/$dailymotionUrl?autoplay=1&mute=1"
+                                    allowfullscreen allow="autoplay">
+                                    </iframe>
+                                    """,
+                                          ),
+                                        )
+                                      : Container(
+                                          padding: EdgeInsets.fromLTRB(
+                                              0,
+                                              MediaQuery.of(context)
+                                                  .padding
+                                                  .top,
+                                              0,
+                                              0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black),
+                                          child: HtmlWidget(
+                                            """
+                                    <video autoplay="" playsinline="" controls>
+                                    <source type="video/mp4" src="$articleVideo">
+                                    </video>
+                                    """,
+                                          ),
+                                        )
+                              : Image.network(
+                                  article.image,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                     ),
@@ -174,55 +167,53 @@ class _SingleArticleState extends State<SingleArticle> {
                     ),
                   ],
                 ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Html(data: "<h2>" + article.title + "</h2>", style: {
-                        "h2": Style(
-                            color: Theme.of(context).primaryColorDark,
-                            fontWeight: FontWeight.w500,
-                            fontSize: FontSize.em(1.6),
-                            padding: EdgeInsets.all(4)),
-                      }),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xFFE3E3E3),
-                            borderRadius: BorderRadius.circular(3)),
-                        padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
-                        margin: EdgeInsets.all(16),
-                        child: Text(
-                          article.category,
-                          style: TextStyle(color: Colors.black, fontSize: 11),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Html(data: "<h2>${article.title}</h2>", style: {
+                      "h2": Style(
+                          color: Theme.of(context).primaryColorDark,
+                          fontWeight: FontWeight.w500,
+                          fontSize: FontSize.em(1.6),
+                          padding: EdgeInsets.all(4)),
+                    }),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xFFE3E3E3),
+                          borderRadius: BorderRadius.circular(3)),
+                      padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      margin: EdgeInsets.all(16),
+                      child: Text(
+                        article.category,
+                        style: TextStyle(color: Colors.black, fontSize: 11),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(article.avatar),
+                        ),
+                        title: Text(
+                          "By ${article.author}",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        subtitle: Text(
+                          article.date,
+                          style: TextStyle(fontSize: 11),
                         ),
                       ),
-                      SizedBox(
-                        height: 45,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(article.avatar),
-                          ),
-                          title: Text(
-                            "By " + article.author,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          subtitle: Text(
-                            article.date,
-                            style: TextStyle(fontSize: 11),
-                          ),
-                        ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(16, 36, 16, 50),
+                      child: HtmlWidget(
+                        article.content,
+                        textStyle: Theme.of(context).textTheme.bodyLarge ??
+                            TextStyle(),
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16, 36, 16, 50),
-                        child: HtmlWidget(
-                          article.content,
-                          webView: true,
-                          textStyle: Theme.of(context).textTheme.bodyText1 ?? TextStyle(),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 relatedPosts(_futureRelatedArticles as Future<List<dynamic>>)
               ],
@@ -236,36 +227,30 @@ class _SingleArticleState extends State<SingleArticle> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Container(
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.comment,
-                    color: Colors.blue,
-                    size: 24.0,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Comments(article.id),
-                          fullscreenDialog: true,
-                        ));
-                  },
+              IconButton(
+                padding: EdgeInsets.all(0),
+                icon: Icon(
+                  Icons.comment,
+                  color: Colors.blue,
+                  size: 24.0,
                 ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Comments(article.id),
+                        fullscreenDialog: true,
+                      ));
+                },
               ),
-              Container(
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.share,
-                    color: Colors.green,
-                    size: 24.0,
-                  ),
-                  onPressed: () {
-                    Share.share('Share the news: ' + article.link);
-                  },
+              IconButton(
+                padding: EdgeInsets.all(0),
+                icon: Icon(
+                  Icons.share,
+                  color: Colors.green,
+                  size: 24.0,
                 ),
+                onPressed: () => Share.share("Share the news: ${article.link}"),
               ),
             ],
           ),
@@ -279,7 +264,7 @@ class _SingleArticleState extends State<SingleArticle> {
       future: latestArticles,
       builder: (context, articleSnapshot) {
         if (articleSnapshot.hasData) {
-          if (articleSnapshot.data!.length == 0) return Container();
+          if (articleSnapshot.data!.isEmpty) return Container();
           return Column(
             children: <Widget>[
               Container(
@@ -296,7 +281,7 @@ class _SingleArticleState extends State<SingleArticle> {
               ),
               Column(
                 children: articleSnapshot.data!.map((item) {
-                  final heroId = item.id.toString() + "-related";
+                  final heroId = "${item.id}-related";
                   return InkWell(
                     onTap: () {
                       Navigator.pushReplacement(
@@ -324,8 +309,7 @@ class _SingleArticleState extends State<SingleArticle> {
         return Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
-            height: 150
-            );
+            height: 150);
       },
     );
   }
